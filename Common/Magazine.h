@@ -16,22 +16,15 @@
 
 
 
-
-
-typedef enum {
-	MagazineCompartmentMain,
-	MagazineCompartmentSpecial
-} MagazineCompartment;
+typedef Baton[kMagazineCapacity] MagazineContents;
 
 
 
-typedef struct {
-	Baton[2][kMagazineCapacity];
-} Magazine;
+task MagazineEat(float time);	//	time is in ms????? distance??? # of batons???
+task MagazineEject(int count);
+task MagazinePack();			//	pushes the batons back tight
 
 
-
-float MagazineGetPosition();
-
+task MagazineSaveContents();	//	saves magine contents to a file.  where??????????????
 
 
