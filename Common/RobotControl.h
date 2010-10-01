@@ -14,7 +14,11 @@ typedef struct {
 
 
 
-bool RobotFollowWhiteLine();
+task RobotFollowWhiteLine();
+
+
+task RobotFollowIR();
+
 
 
 
