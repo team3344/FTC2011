@@ -6,7 +6,7 @@
 
 
 
-task RobotGoToNode(Node target);
+task RobotGoToNode(NodeID target);
 
 
 

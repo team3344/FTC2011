@@ -18,7 +18,7 @@
 typedef enum {
 	LandmarkWhiteLineEnd,
 	LandmarkWhiteLineMiddle
-} Landmark
+} Landmark;
 
 
 
