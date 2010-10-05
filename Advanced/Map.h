@@ -7,76 +7,18 @@
  *
  */
 
-#define kMapResolution 50	//	width & height of map.  bigger # = more accurate, but slower
 
-
-
-
-typedef struct {
-	float x, y;
-} Point;
-
-Point PointMake(float x, float y);
+#import "Vector.h"
+#import "Geometry.h"
 
 
 
 
 
-
-
-
-typedef struct {
-	float width, height;
-} Size;
-
-Size SizeMake(float width, float height);
-
-
-
-
-
-typedef struct {
-	Point origin;
-	Size size;
-} Rect;
-
-
-Rect RectMake(float x, float y, float width, float height);
-
-bool RectContainsPoint(Rect rect, Point point);
-
-
-
-
-
-
-
-
-
-
-
-Vector VectorMake(float x, float y);
-
-
-typedef Point Vector;
-
-
-float VectorGetMagnitude(Vector v);
-float VectorGetAngle(Vector v);		//	angle is in radians
-
-Vector VectorAdd(Vector v1, Vector v2);
-Vector VectorSubtract(Vector v1, Vector v2);	//	returns v1 - v2
-
-float VectorScalarMultiply(Vector v, float value);
-
-
-float VectorDotProduct(Vector v1, Vector v2);
-
-
-
-
-Vector VectorGetDisplacementFromPointToPoint(Point from, Point to);
-
+typedef enum {
+	LandmarkWhiteLineEnd,
+	LandmarkWhiteLineMiddle
+} Landmark
 
 
 
@@ -84,27 +26,8 @@ Vector VectorGetDisplacementFromPointToPoint(Point from, Point to);
 
 
 typedef enum {
-	MapItemBlank = 0,
-	MapItemRobot,	//	friend vs. foe????????????
-	MapItemMobileGoal,
-	MapItemStationaryGoal,
-	MapItemBatonDispenser,
-	MapItemBridge	//	ours vs. theirs????????????
-} MapItem;
-
-
-typedef struct {
-	MapItem items[kMapResolution][kMapResolution];
-} Map;
-
-
-
-//	//////////////////////////////////////////////////////////////////////
-
-
-
-
-typedef enum {
+	NodeTypeNone,
+	
 	//	dispensers
 	NodeBlueLeftDispenser,
 	NodeBlueCenterDispenser,
@@ -115,8 +38,18 @@ typedef enum {
 	NodeRedRightDispenser,
 	
 	
+	
+	
+	NodeBlueBridgeCenter,
+	NodeRedBridgeCenter,
+	
+	
+	
+	
+	
+	
+	
 	//	goals
-	Node
 	
 	
 	NodeWhiteLineEnd,
@@ -135,7 +68,39 @@ typedef enum {
 } NodeType;
 
 
-#define kNodeCount 30	//	FIXME: set legit
+#define kNodeCount 30	//	FIXME: set legit value
+#define kPathCacheSize 10
+
+
+
+//	field coordinates are in inches
+//	the origin is at the corner on the red side
+
+/************************************************
+ *			*						 *(144, 144)*
+ *			*						 *			*
+ *	 BLUE	*						 *	 BLUE	*
+ *			*						 *			*
+ *			*						 *			*
+ ************						 ************
+ *												*
+ *												*
+ *												*
+ *												*
+ *												*
+ ************************************************
+ *												*
+ *												*
+ *												*
+ *												*
+ ************						*************
+ *			*						*			*
+ *			*						*			*
+ *	 RED	*						*	 RED	*
+ *			*						*			*
+ * (0,0)	*						*			*
+ ************************************************/
+
 
 
 
@@ -143,32 +108,52 @@ typedef enum {
 typedef struct {
 	Point location;
 	NodeType type;
-} NodeInfo;
+	string name;
+} Node;
 
 
 
 
+extern const NodeID NodeIDZero;
 extern const Node NodeZero;
 
 
-
-typedef unsigned int Node;
-
-void MapInvalidatePath(Node n1, Node n2);
-
-void MapSetCurrentNode(Node current);
-Node MapGetCurrentNode();
-
-void MapSetGoalNode(Node goal);
-
-Node MapAdvance();	//	Sets current node to next node and returns the next node after that
+typedef int NodeID;
 
 
 
+//	non-directed graph (dist from A to B is equal to distance from B to A)
 typedef struct {
-	Node cachedPath[10];
-	
+	Node nodes[kNodeCount];
+	NodeID cachedPath[10];
+	NodeID goalNodeID;
+	bool cached;
+	float pathCosts[kNodeCount][kNodeCount];
 } Map;
+
+
+
+
+void MapConnectNodes(NodeID n1, NodeID n2, float cost);	//	tell it the distance between the two given nodes
+void MapInvalidatePath(NodeID n1, NodeID n2);			//	tell it there is no path between the two given nodes
+
+void MapSetCurrentNodeID(NodeID current);				//	tell the map where we are at the moment
+NodeID MapGetCurrentNodeID();							//	ask the map where it thinks we are
+
+void MapSetGoalNodeID(NodeID goal);						//	tell it where we want to go
+NodeID MapGetGoalNodeID();
+NodeID MapAdvance();									//	sets current node to next node and returns the next node after that
+
+
+void MapReset();	//	sets cost from each node to itself to zero, and the rest to infinity.  clears all Nodes from nodes array.  clears cachedPath.
+
+void MapInit();		//	sets values specific to our field. (i.e. locations of nodes and costs between them)
+
+void MapSetNodeForID(NodeID nodeID, Node node);			//	give it the node info for a given node id
+Node MapGetNode(NodeID nodeID);							//	get the node info for a given node id
+
+
+
 
 
 
