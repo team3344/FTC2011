@@ -1,4 +1,8 @@
 
+#import "Geometry.h"
+#import "RobotC_Defines.h"	//	FIXME: remove this
+
+
 
 typedef struct {
 	Point location;

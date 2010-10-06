@@ -15,7 +15,7 @@ typedef enum {
 	BatonTypeRegular,
 	BatonTypeMagnet,
 	BatonTypePointDoubler
-} BatonType;
+} Baton;
 
 
 

@@ -11,12 +11,17 @@
 
 #import "Baton.h"
 
+#import "RobotC_Defines.h"	//	FIXME: remove this!!!
+
+
+
+
 
 #define kMagazineCapacity 5
 
 
 
-typedef Baton[kMagazineCapacity] MagazineContents;
+typedef Baton MagazineContents[kMagazineCapacity];
 
 
 

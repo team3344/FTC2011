@@ -12,6 +12,10 @@
 #import "Geometry.h"
 
 
+#import "RobotC_Defines.h"	//	FIXME: remove this
+#import <stdio.h>
+#import <stdlib.h>
+
 
 
 
@@ -26,22 +30,23 @@ typedef enum {
 
 
 typedef enum {
-	NodeTypeNone,
+	NodeIDZero = 0,
+	
 	
 	//	dispensers
-	NodeBlueLeftDispenser,
-	NodeBlueCenterDispenser,
-	NodeBlueRightDispenser,
+	NodeIDBlueLeftDispenser,
+	NodeIDBlueCenterDispenser,
+	NodeIDBlueRightDispenser,
 	
-	NodeRedLeftDispenser,
-	NodeRedCenterDispenser,
-	NodeRedRightDispenser,
-	
-	
+	NodeIDRedLeftDispenser,
+	NodeIDRedCenterDispenser,
+	NodeIDRedRightDispenser,
 	
 	
-	NodeBlueBridgeCenter,
-	NodeRedBridgeCenter,
+	
+	
+	NodeIDBlueBridgeCenter,
+	NodeIDRedBridgeCenter,
 	
 	
 	
@@ -52,24 +57,23 @@ typedef enum {
 	//	goals
 	
 	
-	NodeWhiteLineEnd,
+	NodeIDWhiteLineEnd,
 	
-	NodeBridgeCenter,
-	NodeBridgeEnd,
+	NodeIDBridgeCenter,
+	NodeIDBridgeEnd,
 	
-	NodeHillCenter,
-	NodeHillBase,
+	NodeIDHillCenter,
+	NodeIDHillBase,
 	
-	NodeFieldCorner,
+	NodeIDFieldCorner,
 	
-	NodePitCenter,
+	NodeIDPitCenter,
 	
 	
-} NodeType;
+} NodeID;
 
 
 #define kNodeCount 30	//	FIXME: set legit value
-#define kPathCacheSize 10
 
 
 
@@ -107,25 +111,21 @@ typedef enum {
 
 typedef struct {
 	Point location;
-	NodeType type;
+	NodeID type;
 	string name;
 } Node;
 
 
-
-
-extern const NodeID NodeIDZero;
 extern const Node NodeZero;
 
 
-typedef int NodeID;
 
 
 
 //	non-directed graph (dist from A to B is equal to distance from B to A)
 typedef struct {
 	Node nodes[kNodeCount];
-	NodeID cachedPath[10];
+	NodeID cachedPath[kNodeCount];
 	NodeID goalNodeID;
 	bool cached;
 	float pathCosts[kNodeCount][kNodeCount];

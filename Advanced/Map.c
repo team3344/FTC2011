@@ -10,7 +10,7 @@
 #include "Map.h"
 
 
-#define INFINITY 1000000
+//	FIXME: necessary???   #define kInfinity 1000000
 
 
 
@@ -21,14 +21,20 @@ float tentativeCosts[kNodeCount];
 bool traveled[kNodeCount];
 
 
-const NodeID NodeIDZero = -1;
-const Node NodeZero = { PointZero, NodeTypeNone };
+const Node NodeZero;//FIXME: set this correctly = { PointZero, NodeTypeNone, stringZero };
 
 
 static Map globalMap;	//	this is the map that everything works from
 
 
 
+
+#pragma mark Dijkstra's Algorithm
+//=========================================================================================================
+
+
+
+#define kInfinity 100000
 
 
 
@@ -37,17 +43,124 @@ void _MapResetDijkstraAlgorithmCache()
 	for ( NodeID n = 0; n < kNodeCount; n++ )
 	{
 		previous[n] = NodeIDZero;
-		tentativeCosts[n] = INFINITY;
+		tentativeCosts[n] = kInfinity;
 		traveled[n] = false;
 	}
 }
 
-//	FIXME: find path function
+bool MapNodesAreConnected(NodeID n1, NodeID n2)
+{
+	return globalMap.pathCosts[n1][n2] != kInfinity;
+}
+
+
+void _MapTravelNode(NodeID nodeID)
+{
+	traveled[nodeID] = true;
+	
+	printf("traveling node %d\n", nodeID);
+	
+	for ( NodeID n = 0; n < kNodeCount; n++ )
+	{
+		if ( MapNodesAreConnected(nodeID, n) )	//	if they're connected, lets see if we have a shorter path
+		{
+			float totalCost = globalMap.pathCosts[nodeID][n] + tentativeCosts[nodeID];	//	cost from our current position to n + cost from start to current position
+			
+			printf("cost from %d to %d is %f\n", nodeID, n, totalCost);
+			printf("tentative cost to %d is %f\n", n, tentativeCosts[n]);
+			
+			if ( totalCost < tentativeCosts[n] )	//	we found a path shorter than the one previously recorded
+			{
+				printf("found new shortest path to %d with cost %f\n", n, totalCost);
+				tentativeCosts[n] = totalCost;		//	new shortest cost to get to n
+				previous[n] = nodeID;				//	shortest path to get to n 
+			}
+		}
+	}
+	
+	for ( NodeID n = 0; n < kNodeCount; n++ )	//	loop through each node
+	{
+		if ( MapNodesAreConnected(nodeID, n) && traveled[n] == false )
+		{
+			printf("traveling to %d from %d\n", n, nodeID);
+			_MapTravelNode(n);	//	if we're connected and it hasn't been traveled, travel it
+		}
+	}
+}
+
+
+void _MapPrintPath()
+{
+	printf("\n\npath:\n");
+	
+	for ( NodeID n = 0; n < kNodeCount; n++ )
+	{
+		NodeID id = globalMap.cachedPath[n];
+		if ( id == NodeIDZero ) break;	//	stop if we hit the end
+		
+		printf("%d", id);
+		printf(globalMap.nodes[id].name);
+		printf("\n");
+	}
+	
+	printf("\n");
+}
+
+
+
+void _MapClearCachedPath()
+{
+	for ( NodeID n = 0; n < kNodeCount; n++ )
+	{
+		globalMap.cachedPath[n] = NodeIDZero;
+	}
+}
 
 
 void _MapFindShortestPath(NodeID from, NodeID to)
 {
-	//	FIXME: pull in code from dijkstra.c
+	_MapResetDijkstraAlgorithmCache();
+	_MapClearCachedPath();				//	clear previous path
+	
+	
+	tentativeCosts[from] = 0;
+	
+	
+	_MapTravelNode(from);			//	start at 'from' and find shortest path
+	
+	
+	/*	count how many segments are in the path	*/
+	int pathItemCount = 0;									//	number of nodes in the path including the start and the finish
+	for ( NodeID n = to; n != NodeIDZero; n = previous[n] )	//	iterate through the path until we hit the beginning
+	{
+		pathItemCount++;				//	increment count
+	}
+	
+	printf("pathitemcount = %d", pathItemCount);
+	
+	
+	if ( pathItemCount > 1 )	//	see if we even have a path
+	{
+		//	store the path for later use
+		int i = pathItemCount - 1;	//	index in cachedPath where we'll put the node id
+		for ( NodeID n = to; i >= 0; i-- )																//	FIXME: infinite loop!!!!!!!!!!!!!!
+		{
+			printf("putting node id %d into slot %d\n", n, i);
+			
+			printf("\niterate2\n");	//	FIXME: remove
+			globalMap.cachedPath[i] = n;
+			n = previous[n];
+		}
+	}
+	
+	
+	
+	globalMap.cached = true;	//	we just cached the results
+	
+	_MapPrintPath();	//	FIXME: remove this
+	
+	
+	//	FIXME: debug this!!!!!!!!!!!!!!!
 }
 
 
@@ -67,7 +180,7 @@ void MapConnectNodes(NodeID n1, NodeID n2, float cost)
 
 void MapInvalidatePath(NodeID n1, NodeID n2)
 {
-	MapConnectNodes(n1, n2, INFINITY);
+	MapConnectNodes(n1, n2, kInfinity);
 }
 
 void MapSetCurrentNodeID(NodeID current)
@@ -78,7 +191,7 @@ void MapSetCurrentNodeID(NodeID current)
 
 NodeID MapGetCurrentNodeID()
 {
-	return globalMap.path[0];	//	first node in path is our current position
+	return globalMap.cachedPath[0];	//	first node in path is our current position
 }
 
 
@@ -91,16 +204,20 @@ void MapSetGoalNodeID(NodeID goal)
 
 NodeID MapAdvance()	//	Sets current node to next node and returns the next node after that
 {
-	for ( NodeID n = 1; n < kPathCacheSize; n++ )
+	if ( !globalMap.cached ) _MapFindShortestPath(globalMap.cachedPath[0], globalMap.goalNodeID);
+	
+	for ( NodeID n = 1; n < kNodeCount; n++ )
 	{
-		globalMap.cachedPath[n - 1] = globalMap.cachedPath[n];	//	shift nodes in array over 1 slot
+		NodeID id = globalMap.cachedPath[n];
+		globalMap.cachedPath[n - 1] = id;	//	shift nodes in array over 1 slot
+		
+		if ( id == NodeIDZero ) break;
 	}
 	
 	
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//	FIXME: exceptions???
 	
-	//	FIXME: exceptions??? recalculate???
-	//	FIXME: return value???
+	return globalMap.cachedPath[0];
 }
 
 
@@ -116,7 +233,7 @@ void MapReset()	//	sets cost from each node to itself to zero, and the rest to i
 			}
 			else
 			{
-				globalMap.pathCosts[i][j] = INFINITY;	//	default value of infinity says there's no path between i & j
+				globalMap.pathCosts[i][j] = kInfinity;	//	default value of infinity says there's no path between i & j
 			}
 		}
 		
@@ -141,8 +258,22 @@ NodeID MapGetGoalNodeID()
 	return globalMap.goalNodeID;
 }
 
+
+
+void _MapLoadDebugValues()	//	load crap values so we can test stuff
+{
+	MapConnectNodes(NodeIDBlueBridgeCenter, NodeIDBlueCenterDispenser, 10);
+	MapConnectNodes(NodeIDBlueCenterDispenser, NodeIDRedCenterDispenser, 2);
+	MapConnectNodes(NodeIDRedBridgeCenter, NodeIDRedCenterDispenser, 15);
+}
+
+
+
 void MapInit()		//	sets values specific to our field.
 {
+	MapReset();	//	clear old values
+	
+	
 	//	FIXME: implement
 	
 	
@@ -159,7 +290,14 @@ void MapInit()		//	sets values specific to our field.
 	
 	
 	//
+	
+	
+	
+	
+	_MapLoadDebugValues();	//	FIXME: remove this
 }
+
+
 
 
 

@@ -8,15 +8,17 @@
  */
 
 #import "Geometry.h"
+#import <math.h>
 
+
+
+typedef Point Vector;
 
 
 
 
 Vector VectorMake(float x, float y);
 
-
-typedef Point Vector;
 
 
 float VectorGetMagnitude(Vector v);
@@ -25,7 +27,7 @@ float VectorGetAngle(Vector v);		//	angle is in radians
 Vector VectorAdd(Vector v1, Vector v2);
 Vector VectorSubtract(Vector v1, Vector v2);	//	returns v1 - v2
 
-float VectorScalarMultiply(Vector v, float value);
+Vector VectorScalarMultiply(Vector v, float value);
 float VectorDotProduct(Vector v1, Vector v2);
 
 

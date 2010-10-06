@@ -13,7 +13,7 @@
 
 float VectorGetMagnitude(Vector v)
 {
-	return sqrt( powf(v.x, 2), powf(v.y, 2) );
+	return sqrt( powf(v.x, 2) + powf(v.y, 2) );
 }
 
 float VectorGetAngle(Vector v)
@@ -39,7 +39,7 @@ Vector VectorSubtract(Vector v1, Vector v2)	//	returns v1 - v2
 	return result;
 }
 
-float VectorScalarMultiply(Vector v, float value)
+Vector VectorScalarMultiply(Vector v, float value)
 {
 	Vector result;
 	result.x = v.x * value;

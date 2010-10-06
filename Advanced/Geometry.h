@@ -9,11 +9,18 @@
 
 
 
+
+
 typedef struct {
 	float x, y;
 } Point;
 
 Point PointMake(float x, float y);
+
+
+
+extern const Point PointZero;
+
 
 
 
@@ -36,6 +43,6 @@ typedef struct {
 
 
 Rect RectMake(float x, float y, float width, float height);
-bool RectContainsPoint(Rect rect, Point point);
+//bool RectContainsPoint(Rect rect, Point point);
 
 
