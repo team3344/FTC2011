@@ -13,8 +13,7 @@
 
 
 #import "RobotC_Defines.h"	//	FIXME: remove this
-#import <stdio.h>
-#import <stdlib.h>
+
 
 
 
@@ -110,7 +109,7 @@ typedef enum {
 
 
 typedef struct {
-	Point location;
+	Vector location;
 	string name;
 } Node;
 
@@ -131,7 +130,7 @@ typedef struct {
 
 
 
-bool MapNodesAreConnected(NodeID, n1, NodeID n2);		//	note: order matters
+bool MapNodesAreConnected(NodeID n1, NodeID n2);		//	note: order matters
 void MapConnectNodes(NodeID n1, NodeID n2, float cost);	//	tell it the distance between the two given nodes
 void MapConnectNodesAutomatically(NodeID n1, NodeID n2);//	calculates the distance between the nodes using their locations. note: order doesn't matter
 void MapInvalidatePath(NodeID n1, NodeID n2);			//	tell it there is no path between the two given nodes. note: order matters

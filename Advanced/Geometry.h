@@ -8,15 +8,22 @@
  */
 
 
+#import "Vector.h"
 
 
 
-typedef struct {
-	float x, y;
-} Point;
 
-Point PointMake(float x, float y);
 
+typedef Vector Point;
+
+
+static inline Point PointMake(float x, float y)
+{
+	Point p;
+	p.x = x;
+	p.y = y;
+	return p;
+}
 
 
 extern const Point PointZero;

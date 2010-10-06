@@ -88,7 +88,7 @@ void _MapPrintPath()
 		if ( id == NodeIDZero ) break;	//	stop if we hit the end
 		
 		printf("%d", id);
-		printf(globalMap.nodes[id].name);
+		printf("%s", globalMap.nodes[id].name);
 		printf("\n");
 	}
 	
@@ -153,7 +153,7 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 
 void MapConnectNodesAutomatically(NodeID n1, NodeID n2)
 {
-	float distance = PointGetDistanceToPoint(globalMap.nodes[n1].location, globalMap.nodes[n2].location);
+	float distance = VectorGetMagnitude(VectorSubtract( globalMap.nodes[n2].location, globalMap.nodes[n1].location));
 	MapConnectNodes(n1, n2, distance);
 	MapConnectNodes(n2, n1, distance);
 }
@@ -252,9 +252,9 @@ NodeID MapGetGoalNodeID()
 
 void _MapLoadDebugValues()	//	load crap values so we can test stuff
 {
-	MapConnectNodes(NodeIDBlueBridgeCenter, NodeIDBlueCenterDispenser, 10);
-	MapConnectNodes(NodeIDBlueCenterDispenser, NodeIDRedCenterDispenser, 2);
-	MapConnectNodes(NodeIDRedBridgeCenter, NodeIDRedCenterDispenser, 15);
+	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueCenterDispenser);
+	MapConnectNodesAutomatically(NodeIDBlueCenterDispenser, NodeIDRedCenterDispenser);
+	//MapConnectNodes(NodeIDRedBridgeCenter, NodeIDRedCenterDispenser, 15);
 }
 
 
@@ -270,11 +270,29 @@ void MapInit()		//	sets values specific to our field.
 	
 	
 	
-	node.location = PointMake(0, 0);	//	FIXME: bad
-	node.name = "left red corner";		//	FIXME: this isn't right??
-	MapSetNodeForID(node, NodeIDLeftRedCorner);
+	node.location = PointMake(5, 20);	//	FIXME: bad
+	strcpy(node.name, "R left dispenser");		//	FIXME: this isn't right??
+	MapSetNodeForID(NodeIDRedLeftDispenser, node);
 	
 	
+	node.location = PointMake(20, 50);
+	strcpy(node.name, "B bridge center");
+	MapSetNodeForID(NodeIDBlueBridgeCenter, node);
+	
+	
+	node.location = PointMake(72, 134);
+	strcpy(node.name, "B cntr disp");
+	MapSetNodeForID(NodeIDBlueCenterDispenser, node);
+	
+	
+	node.location = PointMake(72, 10);
+	strcpy(node.name, "R center dispenser");
+	MapSetNodeForID(NodeIDRedCenterDispenser, node);
+	
+	
+	
+	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueCenterDispenser);
+	MapConnectNodesAutomatically(NodeIDBlueCenterDispenser, NodeIDRedCenterDispenser);
 	
 	
 	

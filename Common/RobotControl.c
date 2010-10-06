@@ -46,3 +46,26 @@ task RobotFollowIR()
 
 
 
+
+
+task RobotRotate(float angle)
+{
+	printf("rotating angle: %f\n", angle);
+	
+	
+	
+}
+
+
+task RobotMove(float distance)
+{
+	
+	printf("moving distance: %f\n", distance);
+	
+	
+}
+
+
+
+
+

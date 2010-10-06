@@ -6,13 +6,19 @@
 static int previousRightEncoder;
 static int previousLeftEncoder;
 
+static RobotPosition currentRobotPosition;
 
 
+RobotPosition TrackerGetCurrentPosition()
+{
+	return currentRobotPosition;
+}
 
 
-
-
-
+void TrackerSetCurrentPosition(RobotPosition position)
+{
+	currentRobotPosition = position;
+}
 
 
 

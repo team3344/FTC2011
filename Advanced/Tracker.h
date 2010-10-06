@@ -2,6 +2,7 @@
 #import "Vector.h"
 #import "Geometry.h"
 #import "Constants.h"
+#import "RobotControl.h"
 
 #import "RobotC_Defines.h"	//	FIXME: remove this!!!
 
@@ -15,13 +16,17 @@ typedef struct {
 
 
 
-task TrackAllMotion();
+task TrackAllMotion();	//	FIXME: is this a necessary function???
 
 
 
 PositionChange TrackerCalculateChange(int dl, int dr);
 
 
+
+
+RobotPosition TrackerGetCurrentPosition();
+void TrackerSetCurrentPosition(RobotPosition position);
 
 
 

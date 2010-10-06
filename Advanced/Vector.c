@@ -13,10 +13,10 @@
 
 float VectorGetMagnitude(Vector v)
 {
-	return sqrt( powf(v.x, 2) + powf(v.y, 2) );
+	return sqrt( powf(v.x, 2) + powf(v.y, 2) + powf(v.z, 2) );
 }
 
-float VectorGetAngle(Vector v)
+float VectorGetAngle(Vector v)	//	note: ignores the z component
 {
 	float angle = atanf(v.y / v.x);
 	if ( v.x > 0 && v.y > 0 ) angle += M_PI;
@@ -28,6 +28,7 @@ Vector VectorAdd(Vector v1, Vector v2)
 	Vector result;
 	result.x = v1.x + v2.x;
 	result.y = v1.y + v2.y;
+	result.z = v1.z + v2.z;
 	return result;
 }
 
@@ -36,9 +37,11 @@ Vector VectorSubtract(Vector v1, Vector v2)	//	returns v1 - v2
 	Vector result;
 	result.x = v1.x - v2.x;
 	result.y = v1.y - v2.y;
+	result.z = v1.z - v2.z;
 	return result;
 }
 
+/*
 Vector VectorScalarMultiply(Vector v, float value)
 {
 	Vector result;
@@ -51,11 +54,5 @@ float VectorDotProduct(Vector v1, Vector v2)
 {
 	return (v1.x * v2.x) + (v1.y * v2.y);
 }
-
-
-Vector VectorGetDisplacementFromPointToPoint(Point from, Point to)
-{
-	return VectorSubtract(to, from);
-}
-
+*/
 
