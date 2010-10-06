@@ -10,11 +10,6 @@
 #include "Map.h"
 
 
-//	FIXME: necessary???   #define kInfinity 1000000
-
-
-
-
 //	caches used for dijkstra's algorithm
 NodeID previous[kNodeCount];
 float tentativeCosts[kNodeCount];
@@ -34,7 +29,7 @@ static Map globalMap;	//	this is the map that everything works from
 
 
 
-#define kInfinity 100000
+#define kInfinity 100000	//	FIXME: real value for this???
 
 
 
@@ -47,12 +42,6 @@ void _MapResetDijkstraAlgorithmCache()
 		traveled[n] = false;
 	}
 }
-
-bool MapNodesAreConnected(NodeID n1, NodeID n2)
-{
-	return globalMap.pathCosts[n1][n2] != kInfinity;
-}
-
 
 void _MapTravelNode(NodeID nodeID)
 {
@@ -136,18 +125,13 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 		pathItemCount++;				//	increment count
 	}
 	
-	printf("pathitemcount = %d", pathItemCount);
-	
 	
 	if ( pathItemCount > 1 )	//	see if we even have a path
 	{
 		//	store the path for later use
 		int i = pathItemCount - 1;	//	index in cachedPath where we'll put the node id
-		for ( NodeID n = to; i >= 0; i-- )																//	FIXME: infinite loop!!!!!!!!!!!!!!
+		for ( NodeID n = to; i >= 0; i-- )
 		{
-			printf("putting node id %d into slot %d\n", n, i);
-			
-			printf("\niterate2\n");	//	FIXME: remove
 			globalMap.cachedPath[i] = n;
 			n = previous[n];
 		}
@@ -176,6 +160,11 @@ void MapConnectNodes(NodeID n1, NodeID n2, float cost)
 	globalMap.pathCosts[n2][n1] = cost;
 }
 
+
+bool MapNodesAreConnected(NodeID n1, NodeID n2)
+{
+	return globalMap.pathCosts[n1][n2] != kInfinity;
+}
 
 
 void MapInvalidatePath(NodeID n1, NodeID n2)
@@ -214,8 +203,6 @@ NodeID MapAdvance()	//	Sets current node to next node and returns the next node 
 		if ( id == NodeIDZero ) break;
 	}
 	
-	
-	//	FIXME: exceptions???
 	
 	return globalMap.cachedPath[0];
 }

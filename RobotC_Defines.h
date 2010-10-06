@@ -7,7 +7,9 @@
  *
  */
 
-
+/*
+ *	This defines robotc stuff so the compiler won't complain when testing stuff on a real computer
+ */
 
 
 

@@ -133,7 +133,7 @@ typedef struct {
 
 
 
-
+bool MapNodesAreConnected(NodeID, n1, NodeID n2);
 void MapConnectNodes(NodeID n1, NodeID n2, float cost);	//	tell it the distance between the two given nodes
 void MapInvalidatePath(NodeID n1, NodeID n2);			//	tell it there is no path between the two given nodes
 
