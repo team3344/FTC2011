@@ -111,7 +111,6 @@ typedef enum {
 
 typedef struct {
 	Point location;
-	NodeID type;
 	string name;
 } Node;
 

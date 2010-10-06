@@ -142,9 +142,6 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 	globalMap.cached = true;	//	we just cached the results
 	
 	_MapPrintPath();	//	FIXME: remove this
-	
-	
-	//	FIXME: debug this!!!!!!!!!!!!!!!
 }
 
 
@@ -200,7 +197,7 @@ NodeID MapAdvance()	//	Sets current node to next node and returns the next node 
 		NodeID id = globalMap.cachedPath[n];
 		globalMap.cachedPath[n - 1] = id;	//	shift nodes in array over 1 slot
 		
-		if ( id == NodeIDZero ) break;
+		if ( id == NodeIDZero ) break;	//	we hit the end
 	}
 	
 	
@@ -259,6 +256,22 @@ void _MapLoadDebugValues()	//	load crap values so we can test stuff
 void MapInit()		//	sets values specific to our field.
 {
 	MapReset();	//	clear old values
+	
+	
+	
+	Node node;
+	
+	
+	
+	
+	node.location = PointMake(0, 0);	//	FIXME: bad
+	node.name = "left red corner";		//	FIXME: this isn't right??
+	MapSetNodeForID(node, NodeIDLeftRedCorner);
+	
+	
+	
+	
+	
 	
 	
 	//	FIXME: implement
