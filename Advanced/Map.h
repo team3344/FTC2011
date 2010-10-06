@@ -121,7 +121,6 @@ extern const Node NodeZero;
 
 
 
-//	non-directed graph (dist from A to B is equal to distance from B to A)
 typedef struct {
 	Node nodes[kNodeCount];
 	NodeID cachedPath[kNodeCount];
@@ -132,9 +131,10 @@ typedef struct {
 
 
 
-bool MapNodesAreConnected(NodeID, n1, NodeID n2);
+bool MapNodesAreConnected(NodeID, n1, NodeID n2);		//	note: order matters
 void MapConnectNodes(NodeID n1, NodeID n2, float cost);	//	tell it the distance between the two given nodes
-void MapInvalidatePath(NodeID n1, NodeID n2);			//	tell it there is no path between the two given nodes
+void MapConnectNodesAutomatically(NodeID n1, NodeID n2);//	calculates the distance between the nodes using their locations. note: order doesn't matter
+void MapInvalidatePath(NodeID n1, NodeID n2);			//	tell it there is no path between the two given nodes. note: order matters
 
 void MapSetCurrentNodeID(NodeID current);				//	tell the map where we are at the moment
 NodeID MapGetCurrentNodeID();							//	ask the map where it thinks we are

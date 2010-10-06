@@ -24,6 +24,11 @@ extern const Point PointZero;
 
 
 
+float PointGetDistanceToPoint(Point p1, Point p2);
+float PointGetAngleToPoint(Point p1, Point p2);
+
+
+
 
 
 typedef struct {

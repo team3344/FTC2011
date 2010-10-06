@@ -151,10 +151,16 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 
 #pragma mark Map
 
+void MapConnectNodesAutomatically(NodeID n1, NodeID n2)
+{
+	float distance = PointGetDistanceToPoint(globalMap.nodes[n1].location, globalMap.nodes[n2].location);
+	MapConnectNodes(n1, n2, distance);
+	MapConnectNodes(n2, n1, distance);
+}
+
 void MapConnectNodes(NodeID n1, NodeID n2, float cost)
 {
 	globalMap.pathCosts[n1][n2] = cost;
-	globalMap.pathCosts[n2][n1] = cost;
 }
 
 

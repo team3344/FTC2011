@@ -12,6 +12,10 @@
  */
 
 
+#import <stdio.h>
+#import <stdlib.h>
+
+
 
 typedef _Bool bool;
 typedef char string[20];
