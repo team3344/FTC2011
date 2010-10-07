@@ -34,6 +34,10 @@ static Map globalMap;	//	this is the map that everything works from
 
 
 
+
+
+#pragma mark Map Private
+
 void _MapResetDijkstraAlgorithmCache()
 {
 	for ( NodeID n = 0; n < kNodeCount; n++ )
@@ -251,12 +255,48 @@ NodeID MapGetGoalNodeID()
 
 
 
-void _MapLoadDebugValues()	//	load crap values so we can test stuff
+void _MapLoadDebugValues()	//	load crap values so we can test stuff	//	FIXME: this function is shenannigans
 {
-	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueCenterDispenser);
-	MapConnectNodesAutomatically(NodeIDBlueCenterDispenser, NodeIDRedCenterDispenser);
+	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(NodeIDBlueDispenserCenter, NodeIDRedDispenserCenter);
 	//MapConnectNodes(NodeIDRedBridgeCenter, NodeIDRedCenterDispenser, 15);
 }
+
+
+void MapSetNodeNameForID(NodeID nodeID, string name)
+{
+	strcpy(globalMap.nodes[nodeID].name, name);
+}
+
+void MapSetNodeLocationForID(NodeID nodeID, Vector location)
+{
+	globalMap.nodes[nodeID].location = location;
+}
+
+
+
+
+
+
+#pragma mark Field-specific details
+//========================================================================================================================
+
+
+
+
+
+
+
+#define kFieldWidth 144
+#define kFieldHeight 144
+
+
+#define kDispenserPerpendicularDistance 10	//	distance from a dispenser to its corresponding node
+#define kSideDispenserDistanceFromFieldEnd 10
+
+#define kStartSquareWidth 18
+
+
 
 
 
@@ -269,31 +309,68 @@ void MapInit()		//	sets values specific to our field.
 	Node node;
 	
 	
+	/**********		Start Sqruares		**********/
+	MapSetNodeNameForID(NodeIDRedStartSquareLeft, "R left start sqr");
+	MapSetNodeLocationForID(NodeIDRedStartSquareLeft, Vector2DMake(kStartSquareWidth / 2, kStartSquareWidth / 2) );
+	
+	MapSetNodeNameForID(NodeIDRedStartSquareRight, "R right start sqr");
+	MapSetNodeLocationForID(NodeIDRedStartSquareRight, Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kStartSquareWidth / 2) );
+	
+	MapSetNodeNameForID(NodeIDBlueStartSquareLeft, "B left start sqr");
+	MapSetNodeLocationForID(NodeIDBlueStartSquareLeft, Vector2DMake(kStartSquareWidth / 2, kFieldHeight - (kStartSquareWidth / 2)) );
+	
+	MapSetNodeNameForID(NodeIDBlueStartSquareRight, "B right start sqr");
+	MapSetNodeLocationForID(NodeIDBlueStartSquareRight, Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kFieldHeight - (kStartSquareWidth / 2)) );
 	
 	
-	node.location = Vector2DMake(5, 20);			//	FIXME: bad
-	strcpy(node.name, "R left dispenser");		//	FIXME: this isn't right??
-	MapSetNodeForID(NodeIDRedLeftDispenser, node);
 	
 	
-	node.location = Vector2DMake(20, 50);
+	
+	
+	
+	
+	
+	/**********		Dispensers		**********/
+	strcpy(node.name, "R left dispenser");
+	node.location = Vector2DMake(kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd);
+	MapSetNodeForID(NodeIDRedDispenserLeft, node);
+	
+	strcpy(node.name, "R cntr dispenser");
+	node.location = Vector2DMake(kFieldWidth / 2, kDispenserPerpendicularDistance);
+	MapSetNodeForID(NodeIDRedDispenserCenter, node);
+	
+	strcpy(node.name, "R right dispenser");
+	node.location = Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd);
+	MapSetNodeForID(NodeIDRedDispenserRight, node);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	strcpy(node.name, "B bridge center");
+	node.location = Vector2DMake(20, 50);
 	MapSetNodeForID(NodeIDBlueBridgeCenter, node);
 	
 	
-	node.location = Vector2DMake(72, 134);
-	strcpy(node.name, "B cntr disp");
-	MapSetNodeForID(NodeIDBlueCenterDispenser, node);
-	
-	
-	node.location = Vector2DMake(72, 10);
-	strcpy(node.name, "R center dispenser");
-	MapSetNodeForID(NodeIDRedCenterDispenser, node);
+	strcpy(node.name, "B cntr dispenser");
+	node.location = Vector2DMake(kFieldWidth / 2, kFieldHeight - kDispenserPerpendicularDistance);
+	MapSetNodeForID(NodeIDBlueDispenserCenter, node);
 	
 	
 	
-	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueCenterDispenser);
-	MapConnectNodesAutomatically(NodeIDBlueCenterDispenser, NodeIDRedCenterDispenser);
+	
+	
+	
+	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(NodeIDBlueDispenserCenter, NodeIDRedDispenserCenter);
 	
 	
 	

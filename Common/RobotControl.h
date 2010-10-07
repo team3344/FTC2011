@@ -1,11 +1,11 @@
 
-#import "Geometry.h"
+#import "Vector.h"
 #import "RobotC_Defines.h"	//	FIXME: remove this
 
 
 
 typedef struct {
-	Point location;
+	Vector location;
 	float orientation;
 } RobotPosition;
 

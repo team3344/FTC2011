@@ -9,70 +9,12 @@
 
 
 #import "Vector.h"
-#import "Geometry.h"
 
 
 #import "RobotC_Defines.h"	//	FIXME: remove this
 
 
 
-
-
-typedef enum {
-	LandmarkWhiteLineEnd,
-	LandmarkWhiteLineMiddle
-} Landmark;
-
-
-
-
-
-
-typedef enum {
-	NodeIDZero = 0,
-	
-	
-	//	dispensers
-	NodeIDBlueLeftDispenser,
-	NodeIDBlueCenterDispenser,
-	NodeIDBlueRightDispenser,
-	
-	NodeIDRedLeftDispenser,
-	NodeIDRedCenterDispenser,
-	NodeIDRedRightDispenser,
-	
-	
-	
-	
-	NodeIDBlueBridgeCenter,
-	NodeIDRedBridgeCenter,
-	
-	
-	
-	
-	
-	
-	
-	//	goals
-	
-	
-	NodeIDWhiteLineEnd,
-	
-	NodeIDBridgeCenter,
-	NodeIDBridgeEnd,
-	
-	NodeIDHillCenter,
-	NodeIDHillBase,
-	
-	NodeIDFieldCorner,
-	
-	NodeIDPitCenter,
-	
-	
-} NodeID;
-
-
-#define kNodeCount 30	//	FIXME: set legit value
 
 
 
@@ -103,6 +45,82 @@ typedef enum {
  *			*						*			*
  * (0,0)	*						*			*
  ************************************************/
+
+
+
+
+
+
+
+
+
+typedef enum {
+	NodeIDZero = 0,
+	
+	
+	//	dispensers	//
+	NodeIDBlueDispenserLeft,
+	NodeIDBlueDispenserCenter,
+	NodeIDBlueDispenserRight,
+	
+	NodeIDRedDispenserLeft,
+	NodeIDRedDispenserCenter,
+	NodeIDRedDispenserRight,
+	
+	
+	//	bridges	//
+	NodeIDBlueBridgeTop,
+	NodeIDBlueBridgeCenter,
+	NodeIDBlueBridgeBottom,
+	
+	NodeIDRedBridgeTop,
+	NodeIDRedBridgeCenter,
+	NodeIDRedBridgeBottom,
+	
+	
+	//	mountain	//
+	NodeIDMountainCenterTopEdge,
+	NodeIDMountainCenterPeak,
+	NodeIDMountainCenterBottomEdge,
+	
+	
+	//	pit goals	//
+	NodeIDRedPitCenter,
+	NodeIDBluePitCenter,
+	
+	
+	//	start squares	//
+	NodeIDRedStartSquareLeft,
+	NodeIDRedStartSquareRight,
+	
+	NodeIDBlueStartSquareLeft,
+	NodeIDBlueStartSquareRight,
+	
+	
+	
+	
+	
+	//	white lines???
+	
+	//	ramps????
+	
+	
+	
+	
+	NodeIDHillBase,
+	
+	NodeIDFieldCorner
+	
+	
+	
+} NodeID;
+
+
+#define kNodeCount 30	//	FIXME: set legit value
+
+
+
+
 
 
 
@@ -146,6 +164,10 @@ NodeID MapAdvance();									//	sets current node to next node and returns the n
 void MapReset();	//	sets cost from each node to itself to zero, and the rest to infinity.  clears all Nodes from nodes array.  clears cachedPath.
 
 void MapInit();		//	sets values specific to our field. (i.e. locations of nodes and costs between them)
+
+
+void MapSetNodeNameForID(NodeID nodeID, string name);
+void MapSetNodeLocationForID(NodeID nodeID, Vector location);
 
 void MapSetNodeForID(NodeID nodeID, Node node);			//	give it the node info for a given node id
 Node MapGetNode(NodeID nodeID);							//	get the node info for a given node id

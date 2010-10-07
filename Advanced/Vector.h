@@ -17,12 +17,6 @@ typedef struct {
 } Vector;
 
 
-
-static inline Vector Vector2DMake(float x, float y)
-{
-	return VectorMake(x, y, 0);
-}
-
 static inline Vector VectorMake(float x, float y, float z)
 {
 	Vector v;
@@ -31,6 +25,12 @@ static inline Vector VectorMake(float x, float y, float z)
 	v.z = z;
 	return v;
 }
+
+static inline Vector Vector2DMake(float x, float y)
+{
+	return VectorMake(x, y, 0);
+}
+
 
 
 
