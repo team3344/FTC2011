@@ -18,8 +18,9 @@ bool traveled[kNodeCount];
 
 const Node NodeZero;//FIXME: set this correctly = { PointZero, NodeTypeNone, stringZero };
 
-
 static Map globalMap;	//	this is the map that everything works from
+
+
 
 
 
@@ -270,22 +271,22 @@ void MapInit()		//	sets values specific to our field.
 	
 	
 	
-	node.location = PointMake(5, 20);	//	FIXME: bad
+	node.location = Vector2DMake(5, 20);			//	FIXME: bad
 	strcpy(node.name, "R left dispenser");		//	FIXME: this isn't right??
 	MapSetNodeForID(NodeIDRedLeftDispenser, node);
 	
 	
-	node.location = PointMake(20, 50);
+	node.location = Vector2DMake(20, 50);
 	strcpy(node.name, "B bridge center");
 	MapSetNodeForID(NodeIDBlueBridgeCenter, node);
 	
 	
-	node.location = PointMake(72, 134);
+	node.location = Vector2DMake(72, 134);
 	strcpy(node.name, "B cntr disp");
 	MapSetNodeForID(NodeIDBlueCenterDispenser, node);
 	
 	
-	node.location = PointMake(72, 10);
+	node.location = Vector2DMake(72, 10);
 	strcpy(node.name, "R center dispenser");
 	MapSetNodeForID(NodeIDRedCenterDispenser, node);
 	

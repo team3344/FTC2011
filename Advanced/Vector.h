@@ -18,6 +18,10 @@ typedef struct {
 
 
 
+static inline Vector Vector2DMake(float x, float y)
+{
+	return VectorMake(x, y, 0);
+}
 
 static inline Vector VectorMake(float x, float y, float z)
 {
@@ -35,8 +39,4 @@ float VectorGetAngle(Vector v);		//	angle is in radians.  note: this ignores the
 
 Vector VectorAdd(Vector v1, Vector v2);
 Vector VectorSubtract(Vector v1, Vector v2);	//	returns v1 - v2
-
-//	FIXME: are the below functions even necessary???
-//Vector VectorScalarMultiply(Vector v, float value);
-//float VectorDotProduct(Vector v1, Vector v2);
 
