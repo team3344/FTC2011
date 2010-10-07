@@ -52,7 +52,7 @@ void _MapTravelNode(NodeID nodeID)
 {
 	traveled[nodeID] = true;
 	
-	printf("traveling node %d\n", nodeID);
+	//printf("traveling node %d\n", nodeID);
 	
 	for ( NodeID n = 0; n < kNodeCount; n++ )
 	{
@@ -60,12 +60,12 @@ void _MapTravelNode(NodeID nodeID)
 		{
 			float totalCost = globalMap.pathCosts[nodeID][n] + tentativeCosts[nodeID];	//	cost from our current position to n + cost from start to current position
 			
-			printf("cost from %d to %d is %f\n", nodeID, n, totalCost);
-			printf("tentative cost to %d is %f\n", n, tentativeCosts[n]);
+			//printf("cost from %d to %d is %f\n", nodeID, n, totalCost);
+			//printf("tentative cost to %d is %f\n", n, tentativeCosts[n]);
 			
 			if ( totalCost < tentativeCosts[n] )	//	we found a path shorter than the one previously recorded
 			{
-				printf("found new shortest path to %d with cost %f\n", n, totalCost);
+				//printf("found new shortest path to %d with cost %f\n", n, totalCost);
 				tentativeCosts[n] = totalCost;		//	new shortest cost to get to n
 				previous[n] = nodeID;				//	shortest path to get to n 
 			}
@@ -76,7 +76,7 @@ void _MapTravelNode(NodeID nodeID)
 	{
 		if ( MapNodesAreConnected(nodeID, n) && traveled[n] == false )
 		{
-			printf("traveling to %d from %d\n", n, nodeID);
+			//printf("traveling to %d from %d\n", n, nodeID);
 			_MapTravelNode(n);	//	if we're connected and it hasn't been traveled, travel it
 		}
 	}
@@ -92,7 +92,6 @@ void _MapPrintPath()
 		NodeID id = globalMap.cachedPath[n];
 		if ( id == NodeIDZero ) break;	//	stop if we hit the end
 		
-		printf("%d", id);
 		printf("%s", globalMap.nodes[id].name);
 		printf("\n");
 	}
@@ -255,22 +254,16 @@ NodeID MapGetGoalNodeID()
 
 
 
-void _MapLoadDebugValues()	//	load crap values so we can test stuff	//	FIXME: this function is shenannigans
+void MapSetNodeInfoForID(NodeID nodeID, string name, Vector location)
 {
-	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueDispenserCenter);
-	MapConnectNodesAutomatically(NodeIDBlueDispenserCenter, NodeIDRedDispenserCenter);
-	//MapConnectNodes(NodeIDRedBridgeCenter, NodeIDRedCenterDispenser, 15);
+	strcpy(globalMap.nodes[nodeID].name, name);
+	globalMap.nodes[nodeID].location = location;
 }
 
 
 void MapSetNodeNameForID(NodeID nodeID, string name)
 {
 	strcpy(globalMap.nodes[nodeID].name, name);
-}
-
-void MapSetNodeLocationForID(NodeID nodeID, Vector location)
-{
-	globalMap.nodes[nodeID].location = location;
 }
 
 
@@ -284,17 +277,35 @@ void MapSetNodeLocationForID(NodeID nodeID, Vector location)
 
 
 
-
+//	note: width is the dimension that runs along the x-axis, and length runs along the y-axis
 
 
 #define kFieldWidth 144
-#define kFieldHeight 144
+#define kFieldLength 144
 
 
 #define kDispenserPerpendicularDistance 10	//	distance from a dispenser to its corresponding node
 #define kSideDispenserDistanceFromFieldEnd 10
 
 #define kStartSquareWidth 18
+
+
+#define kBridgeDistanceFromSide 50
+
+#define kBridgeHeight 6
+#define kBridgeWidth 20
+#define kBridgeLength 60
+
+
+#define kPitWidth 20
+#define kPitLength 20
+
+
+#define kMountainHeight 6
+#define kMountainLength 12
+#define kMountainWidth 50
+
+
 
 
 
@@ -305,103 +316,136 @@ void MapInit()		//	sets values specific to our field.
 	MapReset();	//	clear old values
 	
 	
+	/**********		Start Squares		**********/
+	MapSetNodeInfoForID(NodeIDRedStartSquareLeft, "R left start sqr",
+						Vector2DMake(kStartSquareWidth / 2, kStartSquareWidth / 2) );
 	
-	Node node;
+	MapSetNodeInfoForID(NodeIDRedStartSquareRight, "R right start sqr",
+						Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kStartSquareWidth / 2) );
 	
+	MapSetNodeInfoForID(NodeIDBlueStartSquareLeft, "B left start sqr",
+						Vector2DMake(kStartSquareWidth / 2, kFieldLength - (kStartSquareWidth / 2)) );
 	
-	/**********		Start Sqruares		**********/
-	MapSetNodeNameForID(NodeIDRedStartSquareLeft, "R left start sqr");
-	MapSetNodeLocationForID(NodeIDRedStartSquareLeft, Vector2DMake(kStartSquareWidth / 2, kStartSquareWidth / 2) );
-	
-	MapSetNodeNameForID(NodeIDRedStartSquareRight, "R right start sqr");
-	MapSetNodeLocationForID(NodeIDRedStartSquareRight, Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kStartSquareWidth / 2) );
-	
-	MapSetNodeNameForID(NodeIDBlueStartSquareLeft, "B left start sqr");
-	MapSetNodeLocationForID(NodeIDBlueStartSquareLeft, Vector2DMake(kStartSquareWidth / 2, kFieldHeight - (kStartSquareWidth / 2)) );
-	
-	MapSetNodeNameForID(NodeIDBlueStartSquareRight, "B right start sqr");
-	MapSetNodeLocationForID(NodeIDBlueStartSquareRight, Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kFieldHeight - (kStartSquareWidth / 2)) );
-	
-	
-	
-	
-	
-	
-	
+	MapSetNodeInfoForID(NodeIDBlueStartSquareRight, "B right start sqr",
+						Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kFieldLength - (kStartSquareWidth / 2)) );
 	
 	
 	/**********		Dispensers		**********/
-	strcpy(node.name, "R left dispenser");
-	node.location = Vector2DMake(kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd);
-	MapSetNodeForID(NodeIDRedDispenserLeft, node);
+	MapSetNodeInfoForID(NodeIDRedDispenserLeft, "R left dispenser",
+						Vector2DMake(kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd) );
 	
-	strcpy(node.name, "R cntr dispenser");
-	node.location = Vector2DMake(kFieldWidth / 2, kDispenserPerpendicularDistance);
-	MapSetNodeForID(NodeIDRedDispenserCenter, node);
+	MapSetNodeInfoForID(NodeIDRedDispenserCenter, "R cntr dispenser",
+						Vector2DMake(kFieldWidth / 2, kFieldLength - kDispenserPerpendicularDistance) );
 	
-	strcpy(node.name, "R right dispenser");
-	node.location = Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd);
-	MapSetNodeForID(NodeIDRedDispenserRight, node);
+	MapSetNodeInfoForID(NodeIDRedDispenserRight, "R right dispenser",
+						Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd) );
 	
 	
+	MapSetNodeInfoForID(NodeIDBlueDispenserLeft, "B left dispenser",
+						Vector2DMake(kDispenserPerpendicularDistance, kFieldLength - kSideDispenserDistanceFromFieldEnd) );
+	
+	MapSetNodeInfoForID(NodeIDBlueDispenserCenter, "B cntr dispenser",
+						Vector2DMake(kFieldWidth / 2, kDispenserPerpendicularDistance) );
+	
+	MapSetNodeInfoForID(NodeIDBlueDispenserRight, "B right dispenser",
+						Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kFieldLength - kSideDispenserDistanceFromFieldEnd) );
 	
 	
+	/**********		Bridges		**********/
+	
+	MapSetNodeInfoForID(NodeIDRedBridgeTop, "R bridge top",
+						Vector2DMake(kFieldWidth - kBridgeDistanceFromSide, (kFieldLength / 2) + (kBridgeLength / 2)) );
+	
+	MapSetNodeInfoForID(NodeIDRedBridgeCenter, "R bridge cntr",
+						VectorMake(kFieldWidth - kBridgeDistanceFromSide, kFieldLength / 2, kBridgeHeight) );
+	
+	MapSetNodeInfoForID(NodeIDRedBridgeBottom, "R bridge btm",
+						Vector2DMake(kFieldWidth - kBridgeDistanceFromSide, (kFieldLength / 2) - (kBridgeLength / 2)) );
 	
 	
+	MapSetNodeInfoForID(NodeIDBlueBridgeTop, "B bridge top",
+						Vector2DMake(kBridgeDistanceFromSide, (kFieldLength / 2) + (kBridgeLength / 2)) );
+	
+	MapSetNodeInfoForID(NodeIDBlueBridgeCenter, "B bridge cntr",
+						VectorMake(kBridgeDistanceFromSide, kFieldLength / 2, kBridgeHeight) );
+	
+	MapSetNodeInfoForID(NodeIDBlueBridgeBottom, "B bridge btm",
+						Vector2DMake(kBridgeDistanceFromSide, (kFieldLength / 2) - (kBridgeLength / 2)) );
 	
 	
+	/**********		Pit Goals		**********/
+	MapSetNodeInfoForID(NodeIDRedPitCenter, "R pit goal cntr",
+						Vector2DMake(kFieldWidth - (kPitWidth / 2), (kFieldLength / 2) - (kPitLength / 2)) );
+	
+	MapSetNodeInfoForID(NodeIDBluePitCenter, "B pit goal cntr",
+						Vector2DMake(kPitWidth / 2, (kFieldLength / 2) + (kPitLength / 2)) );
 	
 	
+	/**********		Mountain		**********/
+	MapSetNodeInfoForID(NodeIDMountainCenterTopEdge, "mntn cntr top edge",
+						Vector2DMake(kFieldWidth / 2, (kFieldLength / 2) + (kMountainLength / 2)) );
 	
+	MapSetNodeInfoForID(NodeIDMountainCenterPeak, "mntn cntr peak",
+						VectorMake(kFieldWidth / 2, kFieldLength / 2, kMountainHeight) );
 	
-	
-	strcpy(node.name, "B bridge center");
-	node.location = Vector2DMake(20, 50);
-	MapSetNodeForID(NodeIDBlueBridgeCenter, node);
-	
-	
-	strcpy(node.name, "B cntr dispenser");
-	node.location = Vector2DMake(kFieldWidth / 2, kFieldHeight - kDispenserPerpendicularDistance);
-	MapSetNodeForID(NodeIDBlueDispenserCenter, node);
-	
-	
-	
-	
-	
-	
-	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueDispenserCenter);
-	MapConnectNodesAutomatically(NodeIDBlueDispenserCenter, NodeIDRedDispenserCenter);
-	
-	
-	
-	
-	
-	//	FIXME: implement
-	
-	
-	//
-	
-	
-	//
-	
-	
-	//
-	
-	
-	//
-	
-	
-	//
+	MapSetNodeInfoForID(NodeIDMountainCenterBottomEdge, "mntn cntr btm edge",
+						Vector2DMake(kFieldWidth / 2, (kFieldLength / 2) - (kMountainLength / 2)) );
 	
 	
 	
 	
-	_MapLoadDebugValues();	//	FIXME: remove this
+	
+	/******************************		Connections between Nodes	******************************/
+	
+	
+	/**********		Start Squares	**********/
+	MapConnectNodesAutomatically(NodeIDRedStartSquareLeft, NodeIDBlueDispenserLeft);
+	MapConnectNodesAutomatically(NodeIDRedStartSquareLeft, NodeIDBlueDispenserCenter);
+	
+	MapConnectNodesAutomatically(NodeIDRedStartSquareRight, NodeIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(NodeIDRedStartSquareRight, NodeIDBlueDispenserRight);
+	
+	
+	MapConnectNodesAutomatically(NodeIDBlueStartSquareLeft, NodeIDRedDispenserLeft);
+	MapConnectNodesAutomatically(NodeIDBlueStartSquareLeft, NodeIDRedDispenserCenter);
+	
+	MapConnectNodesAutomatically(NodeIDBlueStartSquareRight, NodeIDRedDispenserCenter);
+	MapConnectNodesAutomatically(NodeIDBlueStartSquareRight, NodeIDRedDispenserRight);
+	
+	
+	/**********		Bridge Centers		**********/
+	MapConnectNodesAutomatically(NodeIDRedBridgeCenter, NodeIDRedBridgeTop);
+	MapConnectNodesAutomatically(NodeIDRedBridgeCenter, NodeIDRedBridgeBottom);
+	
+	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueBridgeTop);
+	MapConnectNodesAutomatically(NodeIDBlueBridgeCenter, NodeIDBlueBridgeBottom);
+	
+	
+	/**********		Mountain	**********/
+	MapConnectNodesAutomatically(NodeIDMountainCenterPeak, NodeIDMountainCenterTopEdge);
+	MapConnectNodesAutomatically(NodeIDMountainCenterPeak, NodeIDMountainCenterBottomEdge);
+	
+	
+	/**********		Pits	**********/
+	MapConnectNodesAutomatically(NodeIDRedPitCenter, NodeIDBlueDispenserRight);
+	
+	MapConnectNodesAutomatically(NodeIDBluePitCenter, NodeIDRedDispenserLeft);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//	trash	//////////////////////////////////
+	
+	MapConnectNodesAutomatically(NodeIDBlueDispenserCenter, NodeIDMountainCenterBottomEdge);
+	MapConnectNodesAutomatically(NodeIDRedDispenserCenter, NodeIDMountainCenterTopEdge);
+	
+	
+	
+	//	FIXME: finish implementation
 }
-
-
-
-
-
-
 

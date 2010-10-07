@@ -58,6 +58,16 @@ typedef enum {
 	NodeIDZero = 0,
 	
 	
+	
+	//	start squares	//
+	NodeIDRedStartSquareLeft,
+	NodeIDRedStartSquareRight,
+	
+	NodeIDBlueStartSquareLeft,
+	NodeIDBlueStartSquareRight,
+	
+	
+	
 	//	dispensers	//
 	NodeIDBlueDispenserLeft,
 	NodeIDBlueDispenserCenter,
@@ -66,6 +76,7 @@ typedef enum {
 	NodeIDRedDispenserLeft,
 	NodeIDRedDispenserCenter,
 	NodeIDRedDispenserRight,
+	
 	
 	
 	//	bridges	//
@@ -78,10 +89,12 @@ typedef enum {
 	NodeIDRedBridgeBottom,
 	
 	
+	
 	//	mountain	//
 	NodeIDMountainCenterTopEdge,
 	NodeIDMountainCenterPeak,
 	NodeIDMountainCenterBottomEdge,
+	
 	
 	
 	//	pit goals	//
@@ -89,12 +102,8 @@ typedef enum {
 	NodeIDBluePitCenter,
 	
 	
-	//	start squares	//
-	NodeIDRedStartSquareLeft,
-	NodeIDRedStartSquareRight,
 	
-	NodeIDBlueStartSquareLeft,
-	NodeIDBlueStartSquareRight,
+	
 	
 	
 	
@@ -107,16 +116,35 @@ typedef enum {
 	
 	
 	
-	NodeIDHillBase,
-	
-	NodeIDFieldCorner
 	
 	
+	
+	
+	
+	
+	//	white lines	//
+	NodeIDLine1Top,
+	NodeIDLine1Bottom,
+	
+	NodeIDLine2Top,
+	NodeIDLine2Bottom,
+	
+	NodeIDLine3Top,
+	NodeIDLine3Bottom,
+	
+	NodeIDLine4Top,
+	NodeIDLine4Bottom,
+	
+	NodeIDLine5Top,
+	NodeIDLine5Bottom,
+	
+	NodeIDLine6Top,
+	NodeIDLine6Bottom
 	
 } NodeID;
 
 
-#define kNodeCount 30	//	FIXME: set legit value
+#define kNodeCount NodeIDLine6Bottom
 
 
 
@@ -168,6 +196,7 @@ void MapInit();		//	sets values specific to our field. (i.e. locations of nodes 
 
 void MapSetNodeNameForID(NodeID nodeID, string name);
 void MapSetNodeLocationForID(NodeID nodeID, Vector location);
+void MapSetNodeInfoForID(NodeID nodeID, string name, Vector location);
 
 void MapSetNodeForID(NodeID nodeID, Node node);			//	give it the node info for a given node id
 Node MapGetNode(NodeID nodeID);							//	get the node info for a given node id

@@ -17,6 +17,7 @@
  *	bridge?
  *	mobile goal?
  *	other robot?
+ *	pit?
  */
  
  
