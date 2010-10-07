@@ -19,7 +19,7 @@ float VectorGetMagnitude(Vector v)
 float VectorGetAngle(Vector v)	//	note: ignores the z component
 {
 	float angle = atanf(v.y / v.x);
-	if ( v.x > 0 && v.y > 0 ) angle += M_PI;
+	if ( v.x < 0 ) angle += M_PI;	//	FIXME: is this right
 	return angle;
 }
 
