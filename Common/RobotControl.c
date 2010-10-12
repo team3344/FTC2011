@@ -1,6 +1,6 @@
 
-#include "RobotControl.h"
-#include "Sensors.h"
+//#include "RobotControl.h"
+//#include "Sensors.h"
 
 
 
@@ -50,7 +50,7 @@ task RobotFollowIR()
 
 task RobotRotate(float angle)
 {
-	printf("rotating angle: %f\n", angle);
+	//printf("rotating angle: %f\n", angle);
 	
 	
 	
@@ -60,7 +60,7 @@ task RobotRotate(float angle)
 task RobotMove(float distance)
 {
 	
-	printf("moving distance: %f\n", distance);
+	//printf("moving distance: %f\n", distance);
 	
 	
 }

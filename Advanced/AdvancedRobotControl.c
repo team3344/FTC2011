@@ -1,20 +1,20 @@
 
-#import "AdvancedRobotControl.h"
+//#import "AdvancedRobotControl.h"
 
 
 task _RobotGoFromCurrentNodeToNode(Node current, Node target)
 {
 	Vector displacement = VectorSubtract(target.location, current.location);
 	
-	printf("\ncurrentLocation = ");
-	PrintVector(current.location);
+	//printf("\ncurrentLocation = ");
+	//PrintVector(current.location);
 	
-	printf("\ntarget.location = ");
-	PrintVector(target.location);
+	//printf("\ntarget.location = ");
+	//PrintVector(target.location);
 	
-	printf("\nrobot move w/vector: ");
-	PrintVector(displacement);
-	printf("\n");
+	//printf("\nrobot move w/vector: ");
+	//PrintVector(displacement);
+	//printf("\n");
 	
 	
 	RobotMoveWithVector(displacement);	//	FIXME: only do this for things without landmarks or beacons???
@@ -54,9 +54,9 @@ task RobotMoveWithVector(Vector displacement)
 {
 	RobotPosition currentPosition = TrackerGetCurrentPosition();
 	
-	printf("currentPosition.orientation = %f\n", currentPosition.orientation);
+	//printf("currentPosition.orientation = %f\n", currentPosition.orientation);
 	
-	printf("displacement angle = %f\n", VectorGetAngle(displacement));
+	//printf("displacement angle = %f\n", VectorGetAngle(displacement));
 	
 	RobotRotate(VectorGetAngle(displacement) - currentPosition.orientation);	//	turn towards the destination
 	RobotMove(VectorGetMagnitude(displacement));								//	move the required distance to the destination

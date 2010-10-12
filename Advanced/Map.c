@@ -7,7 +7,7 @@
  *
  */
 
-#include "Map.h"
+//#include "Map.h"
 
 
 //	caches used for dijkstra's algorithm
@@ -85,18 +85,18 @@ void _MapTravelNode(NodeID nodeID)
 
 void _MapPrintPath()
 {
-	printf("\n\npath:\n");
+	//printf("\n\npath:\n");
 	
 	for ( NodeID n = 0; n < kNodeCount; n++ )
 	{
 		NodeID id = globalMap.cachedPath[n];
 		if ( id == NodeIDZero ) break;	//	stop if we hit the end
 		
-		printf("%s", globalMap.nodes[id].name);
-		printf("\n");
+		//printf("%s", globalMap.nodes[id].name);
+		//printf("\n");
 	}
 	
-	printf("\n");
+	//printf("\n");
 }
 
 

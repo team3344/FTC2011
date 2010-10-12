@@ -14,26 +14,16 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+#include "JoystickDriver.c"
+#include "../include.c"
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                    initializeRobot
-//
-// Prior to the start of tele-op mode, you may want to perform some initialization on your robot
-// and the variables within your program.
-//
-// In most cases, you may not have to add any code to this function and it will remain "empty".
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void initializeRobot()
 {
-  // Place code here to sinitialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-
-  return;
+	//	FIXME: implement
+	
+	
+	return;
 }
 
 
@@ -69,26 +59,15 @@ void initializeRobot()
 
 task main()
 {
-  initializeRobot();
-
-  waitForStart();   // wait for start of tele-op phase
-
-  while (true)
-  {
-	  ///////////////////////////////////////////////////////////
-	  ///////////////////////////////////////////////////////////
-	  ////                                                   ////
-	  ////      Add your robot specific tele-op code here.   ////
-	  ////                                                   ////
-	  ///////////////////////////////////////////////////////////
-	  ///////////////////////////////////////////////////////////
-
-    // Insert code to have servos and motors respond to joystick and button values.
-
-    // Look in the ROBOTC samples folder for programs that may be similar to what you want to perform.
-    // You may be able to find "snippets" of code that are similar to the functions that you want to
-    // perform.
-  }
+	initializeRobot();
+	
+	waitForStart();   // wait for start of tele-op phase
+	
+	while (true)
+	{
+		//	FIXME: implement
+		// Insert code to have servos and motors respond to joystick and button values.
+	}
 }
 
 
