@@ -9,8 +9,11 @@ static int previousLeftEncoder;
 static RobotPosition currentRobotPosition;
 
 
-RobotPosition TrackerGetCurrentPosition()
+RobotPosition TrackerGetCurrentPosition(RobotPosition& positionOut)
 {
+	//	FIXME: implement
+	
+	
 	return currentRobotPosition;
 }
 
@@ -22,10 +25,8 @@ void TrackerSetCurrentPosition(RobotPosition position)
 
 
 
-PositionChange TrackerCalculateChange(int dl, int dr)
+void TrackerCalculateChange(int dl, int dr, PositionChange& posChange)
 {
-	PositionChange delta;
-	
 	if ( dl * dr < 0 )	//	one of the values is negative
 	{
 		
@@ -38,10 +39,10 @@ PositionChange TrackerCalculateChange(int dl, int dr)
 		float arcAngle = dl / leftRadius;
 		float robotRadius = leftRadius + (kRobotWidth / 2);
 		
-		delta.displacement.x = robotRadius * cos(arcAngle);
-		delta.displacement.y = robotRadius * sin(arcAngle);
+		posChange.displacement.x = robotRadius * cos(arcAngle);
+		posChange.displacement.y = robotRadius * sin(arcAngle);
 		float dx = delta.displacement.x;
-		delta.angleChange = atanf( -dx / sqrt(powf(robotRadius, 2.0) - powf(dx, 2.0)) );
+		posChange.angleChange = atanf( -dx / sqrt(powf(robotRadius, 2.0) - powf(dx, 2.0)) );
 	}
 	
 	

@@ -12,7 +12,7 @@
 void RobotGoToNode(NodeID target);
 
 
-void RobotMoveWithVector(Vector displacement);	// go in the direction of 'displacement' and travel its magnitude
+void RobotMoveWithVector(Vector& displacement);	// go in the direction of 'displacement' and travel its magnitude
 
 
 

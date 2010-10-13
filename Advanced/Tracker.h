@@ -24,12 +24,12 @@ task TrackAllMotion();	//	FIXME: is this a necessary function???
 
 
 
-PositionChange TrackerCalculateChange(int dl, int dr);
+void TrackerCalculateChange(int dl, int dr, PositionChange& posChange);
 
 
 
 
-RobotPosition TrackerGetCurrentPosition();
+void TrackerGetCurrentPosition(RobotPosition& positionOut);
 void TrackerSetCurrentPosition(RobotPosition position);
 
 

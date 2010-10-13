@@ -242,9 +242,12 @@ void MapSetNodeForID(NodeID nodeID, Node node)
 }
 
 
-Node MapGetNode(NodeID nodeID)
+void MapGetNode(NodeID nodeID, Node& nodeOut)
 {
-	return globalMap.nodes[nodeID];
+	memcpy(nodeOut, &globalMap.nodes[nodeID], sizeof(Node));	//	FIXME: do this work???????????????????????????????????
+	
+	
+	
 }
 
 NodeID MapGetGoalNodeID()
@@ -254,7 +257,7 @@ NodeID MapGetGoalNodeID()
 
 
 
-void MapSetNodeInfoForID(NodeID nodeID, string name, Vector location)
+void MapSetNodeInfoForID(NodeID nodeID, string name, Vector& location)
 {
 	strcpy(globalMap.nodes[nodeID].name, name);
 	globalMap.nodes[nodeID].location = location;

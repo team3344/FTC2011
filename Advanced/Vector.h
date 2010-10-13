@@ -21,28 +21,26 @@ typedef struct {
 } Vector;
 
 
-static inline Vector VectorMake(float x, float y, float z)
+static inline Vector VectorMake(float x, float y, float z, Vector& v)
 {
-	Vector v;
 	v.x = x;
 	v.y = y;
 	v.z = z;
-	return v;
 }
 
-static inline Vector Vector2DMake(float x, float y)
+static inline Vector Vector2DMake(float x, float y, Vector& v)
 {
-	return VectorMake(x, y, 0);
+	VectorMake(x, y, 0, v);
 }
 
 
 
 
-float VectorGetMagnitude(Vector v);
-float VectorGetAngle(Vector v);		//	angle is in radians.  note: this ignores the z component
+float VectorGetMagnitude(Vector& v);
+float VectorGetAngle(Vector& v);		//	angle is in radians.  note: this ignores the z component
 
-Vector VectorAdd(Vector v1, Vector v2);
-Vector VectorSubtract(Vector v1, Vector v2);	//	returns v1 - v2
+void VectorAdd(Vector& v1, Vector& v2, Vector& result);
+void VectorSubtract(Vector& v1, Vector& v2, Vector& result);	//	returns v1 - v2
 
 
 
