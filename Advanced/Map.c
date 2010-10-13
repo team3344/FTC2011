@@ -321,82 +321,82 @@ void MapSetNodeNameForID(NodeID nodeID, string name)
 void MapInit()		//	sets values specific to our field.
 {
 	MapReset();	//	clear old values
-
+	
+	Vector location;
+	
 
 	/**********		Start Squares		**********/
-	MapSetNodeInfoForID(NodeIDRedStartSquareLeft, "R left start sqr",
-						Vector2DMake(kStartSquareWidth / 2, kStartSquareWidth / 2) );
+	Vector2DMake(kStartSquareWidth / 2, kStartSquareWidth / 2, &location);
+	MapSetNodeInfoForID(NodeIDRedStartSquareLeft, "R left start sqr", &location);
 
-	MapSetNodeInfoForID(NodeIDRedStartSquareRight, "R right start sqr",
-						Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kStartSquareWidth / 2) );
-
-	MapSetNodeInfoForID(NodeIDBlueStartSquareLeft, "B left start sqr",
-						Vector2DMake(kStartSquareWidth / 2, kFieldLength - (kStartSquareWidth / 2)) );
-
-	MapSetNodeInfoForID(NodeIDBlueStartSquareRight, "B right start sqr",
-						Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kFieldLength - (kStartSquareWidth / 2)) );
-
+	Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kStartSquareWidth / 2, &location);
+	MapSetNodeInfoForID(NodeIDRedStartSquareRight, "R right start sqr", &location);
+	
+	Vector2DMake(kStartSquareWidth / 2, kFieldLength - (kStartSquareWidth / 2), &location);
+	MapSetNodeInfoForID(NodeIDBlueStartSquareLeft, "B left start sqr", &location);
+	
+	Vector2DMake(kFieldWidth - (kStartSquareWidth / 2), kFieldLength - (kStartSquareWidth / 2), &location);
+	MapSetNodeInfoForID(NodeIDBlueStartSquareRight, "B right start sqr", &location);
+	
 
 	/**********		Dispensers		**********/
-	MapSetNodeInfoForID(NodeIDRedDispenserLeft, "R left dispenser",
-						Vector2DMake(kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd) );
+	Vector2DMake(kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd, &location);
+	MapSetNodeInfoForID(NodeIDRedDispenserLeft, "R left dispenser", &location);
+	
+	Vector2DMake(kFieldWidth / 2, kFieldLength - kDispenserPerpendicularDistance, &location);
+	MapSetNodeInfoForID(NodeIDRedDispenserCenter, "R cntr dispenser", &location);
+	
+	Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd, &location);
+	MapSetNodeInfoForID(NodeIDRedDispenserRight, "R right dispenser", &location);
 
-	MapSetNodeInfoForID(NodeIDRedDispenserCenter, "R cntr dispenser",
-						Vector2DMake(kFieldWidth / 2, kFieldLength - kDispenserPerpendicularDistance) );
-
-	MapSetNodeInfoForID(NodeIDRedDispenserRight, "R right dispenser",
-						Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd) );
-
-
-	MapSetNodeInfoForID(NodeIDBlueDispenserLeft, "B left dispenser",
-						Vector2DMake(kDispenserPerpendicularDistance, kFieldLength - kSideDispenserDistanceFromFieldEnd) );
-
-	MapSetNodeInfoForID(NodeIDBlueDispenserCenter, "B cntr dispenser",
-						Vector2DMake(kFieldWidth / 2, kDispenserPerpendicularDistance) );
-
-	MapSetNodeInfoForID(NodeIDBlueDispenserRight, "B right dispenser",
-						Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kFieldLength - kSideDispenserDistanceFromFieldEnd) );
-
-
+	Vector2DMake(kDispenserPerpendicularDistance, kFieldLength - kSideDispenserDistanceFromFieldEnd, &location);
+	MapSetNodeInfoForID(NodeIDBlueDispenserLeft, "B left dispenser", &location);
+	
+	Vector2DMake(kFieldWidth / 2, kDispenserPerpendicularDistance, &location);
+	MapSetNodeInfoForID(NodeIDBlueDispenserCenter, "B cntr dispenser", &location);
+	
+	Vector2DMake(kFieldWidth - kDispenserPerpendicularDistance, kFieldLength - kSideDispenserDistanceFromFieldEnd, &location);
+	MapSetNodeInfoForID(NodeIDBlueDispenserRight, "B right dispenser", &location);
+	
+	
 	/**********		Bridges		**********/
+	Vector2DMake(kFieldWidth - kBridgeDistanceFromSide, (kFieldLength / 2) + (kBridgeLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDRedBridgeTop, "R bridge top", &location);
+	
+	VectorMake(kFieldWidth - kBridgeDistanceFromSide, kFieldLength / 2, kBridgeHeight, &location);
+	MapSetNodeInfoForID(NodeIDRedBridgeCenter, "R bridge cntr", &location);
+	
+	Vector2DMake(kFieldWidth - kBridgeDistanceFromSide, (kFieldLength / 2) - (kBridgeLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDRedBridgeBottom, "R bridge btm", &location);
 
-	MapSetNodeInfoForID(NodeIDRedBridgeTop, "R bridge top",
-						Vector2DMake(kFieldWidth - kBridgeDistanceFromSide, (kFieldLength / 2) + (kBridgeLength / 2)) );
+	Vector2DMake(kBridgeDistanceFromSide, (kFieldLength / 2) + (kBridgeLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDBlueBridgeTop, "B bridge top", &location);
+	
+	
+	VectorMake(kBridgeDistanceFromSide, kFieldLength / 2, kBridgeHeight, &location);
+	MapSetNodeInfoForID(NodeIDBlueBridgeCenter, "B bridge cntr", &location);
 
-	MapSetNodeInfoForID(NodeIDRedBridgeCenter, "R bridge cntr",
-						VectorMake(kFieldWidth - kBridgeDistanceFromSide, kFieldLength / 2, kBridgeHeight) );
-
-	MapSetNodeInfoForID(NodeIDRedBridgeBottom, "R bridge btm",
-						Vector2DMake(kFieldWidth - kBridgeDistanceFromSide, (kFieldLength / 2) - (kBridgeLength / 2)) );
-
-
-	MapSetNodeInfoForID(NodeIDBlueBridgeTop, "B bridge top",
-						Vector2DMake(kBridgeDistanceFromSide, (kFieldLength / 2) + (kBridgeLength / 2)) );
-
-	MapSetNodeInfoForID(NodeIDBlueBridgeCenter, "B bridge cntr",
-						VectorMake(kBridgeDistanceFromSide, kFieldLength / 2, kBridgeHeight) );
-
-	MapSetNodeInfoForID(NodeIDBlueBridgeBottom, "B bridge btm",
-						Vector2DMake(kBridgeDistanceFromSide, (kFieldLength / 2) - (kBridgeLength / 2)) );
+	Vector2DMake(kBridgeDistanceFromSide, (kFieldLength / 2) - (kBridgeLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDBlueBridgeBottom, "B bridge btm", &location);
 
 
 	/**********		Pit Goals		**********/
-	MapSetNodeInfoForID(NodeIDRedPitCenter, "R pit goal cntr",
-						Vector2DMake(kFieldWidth - (kPitWidth / 2), (kFieldLength / 2) - (kPitLength / 2)) );
-
-	MapSetNodeInfoForID(NodeIDBluePitCenter, "B pit goal cntr",
-						Vector2DMake(kPitWidth / 2, (kFieldLength / 2) + (kPitLength / 2)) );
+	Vector2DMake(kFieldWidth - (kPitWidth / 2), (kFieldLength / 2) - (kPitLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDRedPitCenter, "R pit goal cntr", &location);
+	
+	Vector2DMake(kPitWidth / 2, (kFieldLength / 2) + (kPitLength / 2) &location);
+	MapSetNodeInfoForID(NodeIDBluePitCenter, "B pit goal cntr", &location);
 
 
 	/**********		Mountain		**********/
-	MapSetNodeInfoForID(NodeIDMountainCenterTopEdge, "mntn cntr top edge",
-						Vector2DMake(kFieldWidth / 2, (kFieldLength / 2) + (kMountainLength / 2)) );
-
-	MapSetNodeInfoForID(NodeIDMountainCenterPeak, "mntn cntr peak",
-						VectorMake(kFieldWidth / 2, kFieldLength / 2, kMountainHeight) );
-
-	MapSetNodeInfoForID(NodeIDMountainCenterBottomEdge, "mntn cntr btm edge",
-						Vector2DMake(kFieldWidth / 2, (kFieldLength / 2) - (kMountainLength / 2)) );
+	Vector2DMake(kFieldWidth / 2, (kFieldLength / 2) + (kMountainLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDMountainCenterTopEdge, "mntn cntr top edge", &location);
+	
+	VectorMake(kFieldWidth / 2, kFieldLength / 2, kMountainHeight, &location);
+	MapSetNodeInfoForID(NodeIDMountainCenterPeak, "mntn cntr peak", &location);
+	
+	Vector2DMake(kFieldWidth / 2, (kFieldLength / 2) - (kMountainLength / 2), &location);
+	MapSetNodeInfoForID(NodeIDMountainCenterBottomEdge, "mntn cntr btm edge", &location);
 
 
 
