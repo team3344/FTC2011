@@ -1,9 +1,14 @@
 
-//#import "Vector.h"
-//#import "Constants.h"
-//#import "RobotControl.h"
 
-//#import "RobotC_Defines.h"	//	FIXME: remove this!!!
+#ifndef _Tracker_
+#define _Tracker_
+
+#include "Constants.h"
+#include "Vector.h"
+#include "../Common/RobotControl.h"
+
+
+
 
 
 
@@ -29,3 +34,4 @@ void TrackerSetCurrentPosition(RobotPosition position);
 
 
 
+#endif

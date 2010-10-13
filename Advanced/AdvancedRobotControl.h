@@ -1,14 +1,20 @@
 
-//#import "RobotControl.h"
-//#import "Tracker.h"
-//#import "Map.h"
+
+#ifndef _AdvancedRobotControl_
+#define _AdvancedRobotControl_
+
+#include "../Common/RobotControl.h"
+#include "Tracker.h"
+#include "Map.h"
+
+
+
+void RobotGoToNode(NodeID target);
+
+
+void RobotMoveWithVector(Vector displacement);	// go in the direction of 'displacement' and travel its magnitude
 
 
 
 
-
-task RobotGoToNode(NodeID target);
-
-
-task RobotMoveWithVector(Vector displacement);	// go in the direction of 'displacement' and travel its magnitude
-
+#endif

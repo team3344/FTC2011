@@ -8,6 +8,13 @@
  */
 
 
+
+#ifndef _Sensors_
+#define _Sensors_
+
+
+
+
 /*
  *	Sensor Names:
  *	FloorLightSensor
@@ -33,4 +40,4 @@ float IRSeekerGetAngleToBeacon(SensorPort);	//	returns value in radians represen
 
 
 
-
+#endif

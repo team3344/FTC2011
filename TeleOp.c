@@ -57,6 +57,57 @@ void initializeRobot()
 
 
 
+
+
+
+/*	Discrete buttons are those that turn things on or off at each press.  They differ from momentary buttons which
+ *	only keep something on or off while they are held down.
+ */
+
+#define kButtonCount 12
+
+static bool previousDiscreteButtonValues[kButtonCount];
+
+bool UpdateDiscreteButtonValue(short button, bool value)	//	returns yes if the button value changed
+{
+	if ( previousButtonValues[button] != value;
+	{
+		previousButtonValues[button] = value;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+
+#define kBoostButton 3
+
+#define kSpeedNormal 50
+#define kSpeedFast 100
+
+static int speed;
+
+
+void TankDrive()
+{
+	motors[Left] = joystick.joy1_y1 / 128 * speed;
+	motors[Right] = joystick.joy1_y2 / 128 * speed;
+}
+
+void ArcadeDrive()
+{
+	//	FIXME: implement
+}
+
+
+
+
+
+
+
 task main()
 {
 	initializeRobot();
@@ -65,6 +116,23 @@ task main()
 	
 	while (true)
 	{
+		//	see if the boost button changed
+		if ( UpdateDiscreteButtonValue(joystick.joy1_buttons | kBoostButton )
+		{
+			speed = (speed == kSpeedNormal) ? kSpeedFast : kSpeedNormal;	//	toggle speed
+		}
+		
+		
+		
+		TankDrive();
+		
+		
+		
+		
+		
+		
+		
+		
 		//	FIXME: implement
 		// Insert code to have servos and motors respond to joystick and button values.
 	}

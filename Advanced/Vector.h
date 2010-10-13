@@ -1,5 +1,5 @@
 /*
- *  Geometry.h
+ *  Vector.h
  *  Get Over It
  *
  *  Created by Justin Buchanan on 9/11/10.
@@ -7,7 +7,11 @@
  *
  */
 
-//#import <math.h>
+
+#ifndef _Vector_
+#define _Vector_
+
+
 
 
 
@@ -40,3 +44,9 @@ float VectorGetAngle(Vector v);		//	angle is in radians.  note: this ignores the
 Vector VectorAdd(Vector v1, Vector v2);
 Vector VectorSubtract(Vector v1, Vector v2);	//	returns v1 - v2
 
+
+
+
+
+
+#endif
