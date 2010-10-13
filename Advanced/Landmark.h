@@ -7,6 +7,13 @@
  *
  */
 
+
+#ifndef _Landmark_
+#define _Landmark_
+
+
+
+
 /*
  *	Types of landmarks:
  *	White lines
@@ -22,6 +29,12 @@
  
  
  
+ 
+ 
+ 
+ 
+ 
+ #endif
  
  
  

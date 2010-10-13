@@ -7,8 +7,11 @@
  *
  */
 
+#ifndef _Map_
+#define _Map_
 
-//#import "Vector.h"
+
+#include "Vector.h"
 
 
 //#import "RobotC_Defines.h"	//	FIXME: remove this
@@ -56,91 +59,91 @@
 
 typedef enum {
 	NodeIDZero = 0,
-	
-	
-	
+
+
+
 	//	start squares	//
 	NodeIDRedStartSquareLeft,
 	NodeIDRedStartSquareRight,
-	
+
 	NodeIDBlueStartSquareLeft,
 	NodeIDBlueStartSquareRight,
-	
-	
-	
+
+
+
 	//	dispensers	//
 	NodeIDBlueDispenserLeft,
 	NodeIDBlueDispenserCenter,
 	NodeIDBlueDispenserRight,
-	
+
 	NodeIDRedDispenserLeft,
 	NodeIDRedDispenserCenter,
 	NodeIDRedDispenserRight,
-	
-	
-	
+
+
+
 	//	bridges	//
 	NodeIDBlueBridgeTop,
 	NodeIDBlueBridgeCenter,
 	NodeIDBlueBridgeBottom,
-	
+
 	NodeIDRedBridgeTop,
 	NodeIDRedBridgeCenter,
 	NodeIDRedBridgeBottom,
-	
-	
-	
+
+
+
 	//	mountain	//
 	NodeIDMountainCenterTopEdge,
 	NodeIDMountainCenterPeak,
 	NodeIDMountainCenterBottomEdge,
-	
-	
-	
+
+
+
 	//	pit goals	//
 	NodeIDRedPitCenter,
 	NodeIDBluePitCenter,
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 	//	white lines???
-	
+
 	//	ramps????
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 	//	white lines	//
 	NodeIDLine1Top,
 	NodeIDLine1Bottom,
-	
+
 	NodeIDLine2Top,
 	NodeIDLine2Bottom,
-	
+
 	NodeIDLine3Top,
 	NodeIDLine3Bottom,
-	
+
 	NodeIDLine4Top,
 	NodeIDLine4Bottom,
-	
+
 	NodeIDLine5Top,
 	NodeIDLine5Bottom,
-	
+
 	NodeIDLine6Top,
 	NodeIDLine6Bottom
-	
+
 } NodeID;
 
 
@@ -160,7 +163,7 @@ typedef struct {
 } Node;
 
 
-extern const Node NodeZero;
+//extern const Node NodeZero;
 
 
 
@@ -195,13 +198,11 @@ void MapInit();		//	sets values specific to our field. (i.e. locations of nodes 
 
 
 void MapSetNodeNameForID(NodeID nodeID, string name);
-void MapSetNodeLocationForID(NodeID nodeID, Vector location);
-void MapSetNodeInfoForID(NodeID nodeID, string name, Vector location);
+void MapSetNodeLocationForID(NodeID nodeID, Vector& location);
+void MapSetNodeInfoForID(NodeID nodeID, string name, Vector& location);
 
-void MapSetNodeForID(NodeID nodeID, Node node);			//	give it the node info for a given node id
-Node MapGetNode(NodeID nodeID);							//	get the node info for a given node id
-
-
+void MapSetNodeForID(NodeID nodeID, Node& node);			//	give it the node info for a given node id
+void MapGetNode(NodeID nodeID, Node& nodeOut);							//	get the node info for a given node id
 
 
 
@@ -213,12 +214,4 @@ Node MapGetNode(NodeID nodeID);							//	get the node info for a given node id
 
 
 
-
-
-
-
-
-
-
-
-
+#endif

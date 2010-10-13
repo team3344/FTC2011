@@ -8,6 +8,9 @@
  */
 
 
+#ifndef _Baton_
+#define _Baton_
+
 
 
 typedef enum {
@@ -19,4 +22,6 @@ typedef enum {
 
 
 
+
+#endif
 

@@ -1,7 +1,8 @@
 
 
 
-
+#ifndef _Constants_
+#define _Constants_
 
 
 //	All measurements are in inches
@@ -23,4 +24,4 @@
 
 
 
-
+#endif

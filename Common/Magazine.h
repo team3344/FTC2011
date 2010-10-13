@@ -7,11 +7,11 @@
  *
  */
 
+#ifndef _Magazine_
+#define _Magazine_
 
+#import "Baton.h"
 
-//#import "Baton.h"
-
-//#import "RobotC_Defines.h"	//	FIXME: remove this!!!
 
 
 
@@ -32,4 +32,8 @@ task MagazinePack();			//	pushes the batons back tight
 
 task MagazineSaveContents();	//	saves magine contents to a file.  where??????????????
 
+
+
+
+#endif
 

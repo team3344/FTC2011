@@ -1,6 +1,12 @@
 
-#import "Vector.h"
-#import "RobotC_Defines.h"	//	FIXME: remove this
+
+#ifndef _RobotControl_
+#define _RobotControl_
+
+
+
+
+#include "Vector.h"
 
 
 
@@ -18,20 +24,17 @@ typedef struct {
 
 
 
-task RobotFollowWhiteLine();
+void RobotFollowWhiteLine();
 
 
-task RobotFollowIR();
-
-
-
-
-task RobotRotate(float angle);	//	0 = straight ahead, pi/2 = left, -pi/2 = right
-
-task RobotMove(float dist);	//	distance in inches???.  Can be negative.
+void RobotFollowIR();
 
 
 
+
+void RobotRotate(float angle);	//	0 = straight ahead, pi/2 = left, -pi/2 = right
+
+void RobotMove(float dist);	//	distance in inches???.  Can be negative.
 
 
 
@@ -41,5 +44,8 @@ task RobotMove(float dist);	//	distance in inches???.  Can be negative.
 
 
 
+
+
+#endif
 
 
