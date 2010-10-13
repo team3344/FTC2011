@@ -3,7 +3,7 @@
 #ifndef _Tracker_
 #define _Tracker_
 
-#include "Constants.h"
+#include "../Defines.h"
 #include "Vector.h"
 #include "../Common/RobotControl.h"
 
@@ -30,7 +30,7 @@ void TrackerCalculateChange(int dl, int dr, PositionChange& posChange);
 
 
 void TrackerGetCurrentPosition(RobotPosition& positionOut);
-void TrackerSetCurrentPosition(RobotPosition position);
+void TrackerSetCurrentPosition(RobotPosition& position);
 
 
 

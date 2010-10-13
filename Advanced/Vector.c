@@ -13,13 +13,13 @@
 
 float VectorGetMagnitude(Vector& v)
 {
-	return sqrt( powf(v.x, 2) + powf(v.y, 2) + powf(v.z, 2) );
+	return sqrt( pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2) );
 }
 
 float VectorGetAngle(Vector& v)	//	note: ignores the z component
 {
-	float angle = atanf(v.y / v.x);
-	if ( v.x < 0 ) angle += M_PI;	//	FIXME: is this right
+	float angle = atan(v.y / v.x);
+	if ( v.x < 0 ) angle += PI;	//	FIXME: is this right
 	return angle;
 }
 
@@ -51,4 +51,3 @@ float VectorDotProduct(Vector v1, Vector v2)
 	return (v1.x * v2.x) + (v1.y * v2.y);
 }
 */
-

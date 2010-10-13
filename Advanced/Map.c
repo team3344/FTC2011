@@ -25,7 +25,7 @@ static Map globalMap;	//	this is the map that everything works from
 
 
 
-#pragma mark Dijkstra's Algorithm
+//  Dijkstra's Algorithm
 //=========================================================================================================
 
 
@@ -36,7 +36,7 @@ static Map globalMap;	//	this is the map that everything works from
 
 
 
-#pragma mark Map Private
+// mark Map Private
 
 void _MapResetDijkstraAlgorithmCache()
 {
@@ -47,6 +47,7 @@ void _MapResetDijkstraAlgorithmCache()
 		traveled[n] = false;
 	}
 }
+
 
 void _MapTravelNode(NodeID nodeID)
 {
@@ -153,11 +154,13 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 
 
 
-#pragma mark Map
+//  Map
 
 void MapConnectNodesAutomatically(NodeID n1, NodeID n2)
 {
-	float distance = VectorGetMagnitude(VectorSubtract( globalMap.nodes[n2].location, globalMap.nodes[n1].location));
+  Vector difference;
+  VectorSubtract(&globalMap.nodes[n2].location, &globalMap.nodes[n1].location, &difference);
+  float distance = VectorGetMagnitude(&difference);
 	MapConnectNodes(n1, n2, distance);
 	MapConnectNodes(n2, n1, distance);
 }
@@ -232,11 +235,12 @@ void MapReset()	//	sets cost from each node to itself to zero, and the rest to i
 		}
 
 		globalMap.cachedPath[i] = NodeIDZero;	//	clear each node id in the cached path
-		globalMap.nodes[i] = NodeZero;			//	clear each node
 	}
 }
 
-void MapSetNodeForID(NodeID nodeID, Node node)
+
+
+void MapSetNodeForID(NodeID nodeID, Node& node)
 {
 	globalMap.nodes[nodeID] = node;
 }
@@ -245,9 +249,9 @@ void MapSetNodeForID(NodeID nodeID, Node node)
 void MapGetNode(NodeID nodeID, Node& nodeOut)
 {
 	memcpy(nodeOut, &globalMap.nodes[nodeID], sizeof(Node));	//	FIXME: do this work???????????????????????????????????
-	
-	
-	
+
+
+
 }
 
 NodeID MapGetGoalNodeID()
@@ -274,7 +278,7 @@ void MapSetNodeNameForID(NodeID nodeID, string name)
 
 
 
-#pragma mark Field-specific details
+//    Field-specific details
 //========================================================================================================================
 
 

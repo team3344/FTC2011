@@ -10,7 +10,7 @@
 #ifndef _Magazine_
 #define _Magazine_
 
-#import "Baton.h"
+#include "Baton.h"
 
 
 
@@ -36,4 +36,3 @@ task MagazineSaveContents();	//	saves magine contents to a file.  where?????????
 
 
 #endif
-
