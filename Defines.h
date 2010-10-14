@@ -13,7 +13,7 @@
 
 
 #define ln(x) log(x)
-#define pow(a, x) exp(x * ln(a))
+#define powf(a, x) exp(x * ln(a))
 
 
 

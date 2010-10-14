@@ -10,8 +10,9 @@
 #ifndef _Magazine_
 #define _Magazine_
 
+#ifndef _Baton_
 #include "Baton.h"
-
+#endif
 
 
 
@@ -25,8 +26,8 @@ typedef Baton MagazineContents[kMagazineCapacity];
 
 
 
-task MagazineEat(float time);	//	time is in ms????? distance??? # of batons???
-task MagazineEject(int count);
+void MagazineEat(float time);	//	time is in ms????? distance??? # of batons???
+void MagazineEject(int count);
 task MagazinePack();			//	pushes the batons back tight
 
 

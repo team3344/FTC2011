@@ -1,6 +1,7 @@
 
+#ifndef _Tracker_
 #include "Tracker.h"
-
+#endif
 
 
 static int previousRightEncoder;
@@ -11,16 +12,13 @@ static RobotPosition currentRobotPosition;
 
 void TrackerGetCurrentPosition(RobotPosition& positionOut)
 {
-	//	FIXME: implement
-
-
-	positionOut = currentRobotPosition;
+	memcpy(positionOut, currentRobotPosition, sizeof(RobotPosition));
 }
 
 
 void TrackerSetCurrentPosition(RobotPosition& position)
 {
-	currentRobotPosition = position;
+  memcpy(currentRobotPosition, position, sizeof(RobotPosition));
 }
 
 
@@ -42,6 +40,6 @@ void TrackerCalculateChange(int dl, int dr, PositionChange& posChange)
 		posChange.displacement.x = robotRadius * cos(arcAngle);
 		posChange.displacement.y = robotRadius * sin(arcAngle);
 		float dx = posChange.displacement.x;
-		posChange.angleChange = atan( -dx / sqrt(pow(robotRadius, 2.0) - pow(dx, 2.0)) );
+		posChange.angleChange = atan( -dx / sqrt(powf(robotRadius, 2.0) - powf(dx, 2.0)) );
 	}
 }

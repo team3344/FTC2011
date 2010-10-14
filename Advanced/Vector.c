@@ -7,13 +7,41 @@
  *
  */
 
+#ifndef _Vector_
 #include "Vector.h"
+#endif
+
+//#include "RobotCIntrinsics.h"
+
+
+
+
+
+void VectorMake(float x, float y, float z, Vector& v)
+{
+	v.x = x;
+	v.y = y;
+	v.z = z;
+}
+
+void Vector2DMake(float x, float y, Vector& v)
+{
+	VectorMake(x, y, 0, v);
+}
+
+
+
+
+
+
+
+
 
 
 
 float VectorGetMagnitude(Vector& v)
 {
-	return sqrt( pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2) );
+	return sqrt( powf(abs(v.x), 2) + powf(abs(v.y), 2) + powf(abs(v.z), 2) );
 }
 
 float VectorGetAngle(Vector& v)	//	note: ignores the z component
@@ -37,17 +65,12 @@ void VectorSubtract(Vector& v1, Vector& v2, Vector& result)	//	returns v1 - v2
 	result.z = v1.z - v2.z;
 }
 
-/*
-Vector VectorScalarMultiply(Vector v, float value)
-{
-	Vector result;
-	result.x = v.x * value;
-	result.y = v.y * value;
-	return result;
-}
 
-float VectorDotProduct(Vector v1, Vector v2)
+
+
+void VectorScalarMultiply(Vector& vector, float factor, Vector& vOut)
 {
-	return (v1.x * v2.x) + (v1.y * v2.y);
+	vOut.x = vector.x * factor;
+	vOut.y = vector.y * factor;
+	vOut.z = vector.z * factor;
 }
-*/

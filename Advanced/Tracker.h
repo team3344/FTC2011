@@ -3,10 +3,18 @@
 #ifndef _Tracker_
 #define _Tracker_
 
+#ifndef _Defines_
 #include "../Defines.h"
-#include "Vector.h"
-#include "../Common/RobotControl.h"
+#endif
 
+
+#ifndef _Vector_
+#include "Vector.h"
+#endif
+
+#ifndef _RobotControl_
+#include "../Common/RobotControl.h"
+#endif
 
 
 

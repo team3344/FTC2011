@@ -10,11 +10,10 @@
 #ifndef _Map_
 #define _Map_
 
-
+#ifndef _Vector_
 #include "Vector.h"
+#endif
 
-
-//#import "RobotC_Defines.h"	//	FIXME: remove this
 
 
 
@@ -205,8 +204,8 @@ void MapSetNodeForID(NodeID nodeID, Node& node);			//	give it the node info for 
 void MapGetNode(NodeID nodeID, Node& nodeOut);							//	get the node info for a given node id
 
 
-
-
+void MapDraw();
+task MapContinuouslyRedraw();
 
 
 

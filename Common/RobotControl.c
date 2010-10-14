@@ -1,9 +1,14 @@
 
 
 
-#include "RobotControl.h"
-#include "Sensors.h"
 
+#ifndef _RobotControl_
+#include "RobotControl.h"
+#endif
+
+#ifndef _Sensors_
+#include "Sensors.h"
+#endif
 
 
 
