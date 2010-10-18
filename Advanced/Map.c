@@ -51,25 +51,6 @@ void _MapDrawLine(Vector& from, Vector& to)
 
 
 	nxtDrawLine(from.x, from.y, to.x, to.y);
-
-	/*
-	while ( true )
-	{
-		VectorAdd(start, dl, finish);
-		if ( (dl.x * (finish.x - to.x)) < 0 || (dl.y * (to.y - finish.y)) < 0 ) //	if they're the same sign, we're good.	 otherwise, we overshot
-		{
-			nxtDrawLine(start.x, start.y, to.x, to.y);
-			PlaySound(soundBeepBeep);
-			break;
-		}
-		else
-		{
-			nxtDrawLine(start.x, start.y, finish.x, finish.y);
-		}
-
-		memcpy(start, finish, sizeof(Vector));
-		wait10Msec(10); //  delay so it animates
-	}*/
 }
 
 
@@ -103,8 +84,8 @@ void _MapDrawLines()
 
 void _MapDrawNodes()
 {
-    float radius = 2;
-    float diameter = 2 * radius;
+    float radius = 2.0;
+    float diameter = 2.0 * radius;
 		for ( NodeID node = 0; node < kNodeCount; node++ )
 		{
 				Vector location;
@@ -128,6 +109,10 @@ void MapDraw()
 
 		_MapDrawNodes();
 		_MapDrawLines();
+
+		nxtDisplayStringAt(kDisplaySize + 10, kDisplaySize * .8, "B");
+		nxtDisplayStringAt(kDisplaySize + 10, kDisplaySize * .4, "R");
+
 }
 
 
