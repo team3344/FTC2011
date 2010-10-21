@@ -14,21 +14,39 @@
 
 
 
-bool boost;
+static bool boost;
+
+#define kPowerNormal .6
+#define kPoweBoost 1
 
 
-bool BoostOn()
+void SetBoost(bool state)
+{
+	boost = state;
+}
+
+
+bool BoostIsOn()
 {
 	return boost;
 }
 
 
 //	motor names: Left, Right, Front, Back
-void SetMotorSpeed(short motor, float speed)
+void SetMotorPower(short motor, float power)	//	power is from 1 to 100
 {
-	//	FIXME: adjust for boost
-	motors[motor] = speed;
+	motors[motor] = power * (( BoostIsOn() ) ? kPowerBoost : kPowerNormal);
 }
+
+
+
+
+void SetMotorVelocity(short motor, float velocity)
+{
+	//	FIXME this is completely wrong.  take into account power to rotation rate and circumference of wheels
+	motors[motor] = velocity;
+}
+
 
 
 
@@ -57,13 +75,122 @@ void Drive2(Vector& strafe, Vector& rotate)
 
 
 
-SetMotorSpeedsForVelocities(float dxdt, float dydt, float dthetadt, float angle)
+void SetMotorSpeedsForVelocities(float dx_dt, float dy_dt, float dtheta_dt, float angle)
 {
-	float fr, br;	//	velocities of the front and back wheels for rotation
-	fr = kRobotHalfLength * dthetadt;
-	br = -fr;
+	float Fr, Br;	//	velocities of the front and back wheels for rotation
+	Fr = kRobotHalfLength * dtheta_dt;
+	Br = -Fr;
 	
-	//////////////////////////
+	float Ft, Bt;	//	velocities of the front and back wheels for translation
+	Ft = dx_dt / cos(angle);
+	Bt = Ft;
+	
+	float F, B;
+	F = Fr + Ft;
+	B = Br + Bt;
+	
+	float L, R;
+	L = dy_dt / cos(angle);
+	R = L;
+	
+	
+	motor[Left] = L;
+	motor[Right] = R;
+	motor[Front] = F;
+	motor[Back] = B;
+}
+
+
+
+
+
+
+#define kMaxTranslationalAcceleration 2	//	acceleration is in inches per second^2
+#define kMaxRotationalAcceleration 2	//	radians per second^2
+
+#define kMaxWheelVelocity 20			//	inches per second
+
+
+
+
+
+typedef struct {
+	float initialVelocity;	//	FIXME: necessario???
+	float acceleration;
+	float acceleration_duration;
+	float constant_velocity_duration;
+} VelocityCurve;
+
+
+
+float VelocityCurveGetVelocityAtTime(float time, VelocityCurve& vCurve)
+{
+	return 2;	//	FIXME: implement
+}
+
+
+
+float OmniTimeRequiredForTranslation(Vector translation)
+{
+	/*
+	 *		|	constant acceleration until max velocity, then
+	 *		|	constant velocity until it's time to slow down
+	 *		|
+	 *	  v	|	--------------------
+	 *		|  /					\
+	 *		| /						 \
+	 *		|/________________________\____
+	 *				      t
+	 */
+	
+	float distance = VectorGetMagnitude(translation);
+	
+	float timeIfPeak = kMaxWheelVelocity / kMaxTranslationalAcceleration * 2;	//	time to accelerate to max velocity, then decelerate to zero
+	float distanceIfPeak = .5 * kMaxWheelVelocity * timeIfPeak;					//	distance we go if we just peak then go back down
+	
+	if ( distance > distanceIfPeak )
+	{
+		float timeAtMaxVelocity = kMaxWheelVelocity / (distance - distanceIfPeak );
+		return timeAtMaxVelocity + timeIfPeak;
+	}
+	else
+	{
+		//	dist = peak * time * .5
+		//	time * .5 * acc = peak
+		
+		//	dist = (time * .5 * acc) * time * .5
+		//	dist = time^2 * .25 * acc
+		//	time^2 = dist / (.25 * acc)
+		return sqrt(distance / (.25 * kMaxTranslationalAcceleration));
+	}
+}
+
+
+
+//	FIXME: is it necessary to include an initial & final velocity here???????????????????????????????
+void OmniCreateVelocityCurve(float minDuration, float maxAcceleration, float maxVelocity, float initialVelocity, float finalVelocity, VelocityCurve& vCurve)
+{
+	float timeIfPeak = (maxVelocity / acceleration) * 2;
+	float distanceIfPeak
+	
+	
+	//	FIXME: implement
+	///
+	
+	//////////
+	//////////////
+	////////////////
+	//////////////////
+	////////////////////
+	
+	///////////////////////
+	/////////////////////////
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -75,7 +202,44 @@ SetMotorSpeedsForVelocities(float dxdt, float dydt, float dthetadt, float angle)
 
 
 
+void OmniTranslate(Vector translation)
+{
+	VelocityCurve xCurve, yCurve;
+	
+	//	FIXME:	get both curves & get them correctly
+	OmniCreateVelocityCurve(0, kMaxTranslationalAcceleration, kMaxWheelVelocity, 0, xCurve);	//	get the velocity curve
+	
+	
+	
+	float endTime = 3;	//	FIXME: fix this
+	float time;
+	
+	//	FIXME: set time here!!!!!!!!!!
+	while ( (time = 3) <= endTime )
+	{
+		float dx_dt = VelocityCurveGetVelocityAtTime(time, xCurve);
+		float dy_dt = VelocityCurveGetVelocityAtTime(time, yCurve);
+		SetMotorSpeedsForVelocities(VelocityCurveGetVelocityAtTime(dx_dt, dy_dt, 0, 0);
+	}
+}
 
+
+
+
+
+void OmniRotate(float angle)
+{
+	
+}
+
+
+
+
+
+void OmniTranslateAndRotate()
+{
+	
+}
 
 
 

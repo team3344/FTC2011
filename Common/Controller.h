@@ -30,7 +30,7 @@ typedef enum {
 typedef struct {
 	Vector leftJoystick;	//	components are percentages
 	Vector rightJoystick;
-	bool buttons[kControllerButtonCount];
+	bool buttons[kControllerButtonCount];	//	FIXME: should this be a bitmask instead??????????????????????????
 } Controller;
 
 
