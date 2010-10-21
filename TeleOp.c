@@ -87,21 +87,6 @@ bool UpdateDiscreteButtonValue(short button, bool value)	//	returns yes if the b
 #define kSpeedNormal 50
 #define kSpeedFast 100
 
-static int speed;
-
-
-void TankDrive()
-{
-	motor[Left] = joystick.joy1_y1 / 128 * speed;
-	motor[Right] = joystick.joy1_y2 / 128 * speed;
-}
-
-void ArcadeDrive()
-{
-	//	FIXME: implement
-}
-
-
 
 
 
@@ -118,21 +103,26 @@ task main()
 		//	see if the boost button changed
 		if ( UpdateDiscreteButtonValue(kBoostButton, joystick.joy1_Buttons & kBoostButton ) )
 		{
-			speed = (speed == kSpeedNormal) ? kSpeedFast : kSpeedNormal;	//	toggle speed
+			//////////////////////////////////
 		}
-
-
-
-		TankDrive();
-
-
-
-
-
-
-
-
+		
+		
+		
+		
+		Controller primary;
+		PrimaryController(primary);
+		
+		//Drive1(primary.rightJoystick, primary.leftJoystick);	//	right = arcade, left = sidewind
+		Drive2(primary.leftJoystick, primary.rightJoystick);	//	left = strafe, right = turn
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//	FIXME: implement
-		// Insert code to have servos and motors respond to joystick and button values.
 	}
 }

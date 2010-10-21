@@ -20,9 +20,15 @@ static bool boost;
 #define kPoweBoost 1
 
 
-void SetBoost(bool state)
+void SetBoostState(bool state)
 {
 	boost = state;
+}
+
+bool BoostToggle()
+{
+	boost = !boost;
+	return boost;
 }
 
 
@@ -56,9 +62,8 @@ void SetMotorVelocity(short motor, float velocity)
 */
 void Drive1(Vector& drive, Vector& omni)
 {
-	
+	//	FIXME: implement
 }
-
 
 
 /*	strafe - controls forward, backward, & side to side
@@ -66,7 +71,10 @@ void Drive1(Vector& drive, Vector& omni)
 */
 void Drive2(Vector& strafe, Vector& rotate)
 {
-	
+	SetMotorPower(Left, strafe.y);
+	SetMotorPower(Right, strafe.y);
+	SetMotorPower(Front, strafe.x + rotate.x);	//	FIXME: should rotate.x be scaled down????????????????
+	SetMotorPower(Front, strafe.x - rotate.x);
 }
 
 
@@ -130,6 +138,21 @@ float VelocityCurveGetVelocityAtTime(float time, VelocityCurve& vCurve)
 
 
 
+float VelocityCurveGetDistanceAtTime(float time, VelocityCurve& vCurve)
+{
+	//	FIXME: implement
+	
+	
+	
+	
+	
+	
+	
+	return 3;	//	FIXME: remove
+}
+
+
+
 float OmniTimeRequiredForTranslation(Vector translation)
 {
 	/*
@@ -164,6 +187,28 @@ float OmniTimeRequiredForTranslation(Vector translation)
 		return sqrt(distance / (.25 * kMaxTranslationalAcceleration));
 	}
 }
+
+
+float OmniTimeRequiredForRotation(float rotationAngle)
+{
+	//	FIXME: implement
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
 
 
 
@@ -229,15 +274,24 @@ void OmniTranslate(Vector translation)
 
 void OmniRotate(float angle)
 {
-	
+	//	FIXME: implement
 }
 
 
 
 
 
-void OmniTranslateAndRotate()
+void OmniTranslateAndRotate(Vector translation, float rotationAngle)
 {
+	float time = MAX( OmniTimeRequiredForTranslation(translation), OmniTimeRequiredForRotation(rotationAngle) );
+	
+	
+	//	FIXME: implement
+	
+	
+	
+	
+	
 	
 }
 

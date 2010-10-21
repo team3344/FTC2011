@@ -4,9 +4,6 @@
 #endif
 
 
-static int previousRightEncoder;
-static int previousLeftEncoder;
-
 static RobotPosition currentRobotPosition;
 
 
@@ -22,6 +19,9 @@ void TrackerSetCurrentPosition(RobotPosition& position)
 }
 
 
+/*
+
+This was for a non-omni robot
 
 void TrackerCalculateChange(int dl, int dr, PositionChange& posChange)
 {
@@ -43,3 +43,6 @@ void TrackerCalculateChange(int dl, int dr, PositionChange& posChange)
 		posChange.angleChange = atan( -dx / sqrt(powf(robotRadius, 2.0) - powf(dx, 2.0)) );
 	}
 }
+
+
+*/

@@ -27,16 +27,6 @@ typedef struct {
 
 
 
-
-task TrackAllMotion();	//	FIXME: is this a necessary function???
-
-
-
-void TrackerCalculateChange(int dl, int dr, PositionChange& posChange);
-
-
-
-
 void TrackerGetCurrentPosition(RobotPosition& positionOut);
 void TrackerSetCurrentPosition(RobotPosition& position);
 
