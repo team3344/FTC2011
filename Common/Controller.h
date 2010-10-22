@@ -6,7 +6,7 @@
 
 
 #ifndef _Vector_
-#include "Vector.h"
+#include "../Vector.h"
 #endif
 
 
@@ -30,7 +30,9 @@ typedef enum {
 typedef struct {
 	Vector leftJoystick;	//	components are percentages
 	Vector rightJoystick;
-	bool buttons[kControllerButtonCount];	//	FIXME: should this be a bitmask instead??????????????????????????
+	short buttons;			// Bit map for 12-buttons
+	short buttonsPrevious;
+	short toggleButtons;	//	
 } Controller;
 
 
@@ -38,8 +40,8 @@ typedef struct {
 
 
 
-void PrimaryController(Controller& c);
-void SecondaryController(Controller& c);
+void UpdatePrimaryController(Controller& c);
+void UpdateSecondaryController(Controller& c);
 
 
 
