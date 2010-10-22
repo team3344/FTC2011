@@ -3,10 +3,18 @@
 #ifndef _AdvancedRobotControl_
 #define _AdvancedRobotControl_
 
-#include "../Common/RobotControl.h"
-#include "Tracker.h"
-#include "Map.h"
 
+#ifndef _RobotControl_
+#include "../Common/RobotControl.h"
+#endif
+
+#ifndef _Tracker_
+#include "Tracker.h"
+#endif
+
+#ifndef _Map_
+#include "Map.h"
+#endif
 
 
 void RobotGoToNode(NodeID target);

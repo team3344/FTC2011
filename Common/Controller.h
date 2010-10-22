@@ -6,21 +6,25 @@
 
 
 #ifndef _Vector_
-#include "../Vector.h"
+#include "../Advanced/Vector.h"
 #endif
 
 
 
 
 typedef enum {
-	ControllerButton1,
-	ControllerButton2,
-	ControllerButton3,
-	ControllerButton4,
-	ControllerButtonR1,
-	ControllerButtonR2,
-	ControllerButtonL1,
-	ControllerButtonL2
+	ControllerButton1                   = 0,
+	ControllerButton2                   = 1,
+	ControllerButton3                   = 2,
+	ControllerButton4                   = 3,
+	ControllerButtonR1                  = 5,
+	ControllerButtonR2                  = 7,
+	ControllerButtonL1                  = 4,
+	ControllerButtonL2                  = 6,
+	ControllerButtonLeftMiddle          = 8,
+	ControllerButtonRightMiddle         = 9,
+	ControllerButtonRightJoystickPress  = 11,
+	ControllerButtonLeftJoystickPress   = 10
 } ControllerButton;
 
 #define kControllerButtonCount ControllerButtonL2 + 1
@@ -32,7 +36,7 @@ typedef struct {
 	Vector rightJoystick;
 	short buttons;			// Bit map for 12-buttons
 	short buttonsPrevious;
-	short toggleButtons;	//	
+	short toggleButtons;	//
 } Controller;
 
 

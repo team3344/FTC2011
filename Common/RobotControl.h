@@ -5,9 +5,9 @@
 
 
 
-
-#include "Vector.h"
-
+#ifndef _Vector_
+#include "../Advanced/Vector.h"
+#endif
 
 
 typedef struct {

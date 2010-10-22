@@ -13,9 +13,9 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "JoystickDriver.c"
-//#include "../include.c"
 
+#include "Common/include.c"
+#include "Advanced/include.c"
 
 void initializeRobot()
 {
@@ -63,66 +63,41 @@ void initializeRobot()
  *	only keep something on or off while they are held down.
  */
 
-#define kButtonCount 12
-
-static bool previousDiscreteButtonValues[kButtonCount];
-
-bool UpdateDiscreteButtonValue(short button, bool value)	//	returns yes if the button value changed
-{
-	if ( previousDiscreteButtonValues[button] != value )
-	{
-		previousDiscreteButtonValues[button] = value;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-
-
-#define kBoostButton 3
-
-#define kSpeedNormal 50
-#define kSpeedFast 100
-
-
-
-
 
 
 task main()
 {
 	initializeRobot();
 
-	//waitForStart();   // wait for start of tele-op phase
+	waitForStart();   // wait for start of tele-op phase
 
 	while (true)
 	{
 		//	see if the boost button changed
-		if ( UpdateDiscreteButtonValue(kBoostButton, joystick.joy1_Buttons & kBoostButton ) )
-		{
-			//////////////////////////////////
-		}
-		
-		
-		
-		
+
+
+
+
+
 		Controller primary;
-		PrimaryController(primary);
-		
+		UpdatePrimaryController(primary);
+
+
+
+		motor[Left] = joystick.joy1_y1;
+
+
 		//Drive1(primary.rightJoystick, primary.leftJoystick);	//	right = arcade, left = sidewind
-		Drive2(primary.leftJoystick, primary.rightJoystick);	//	left = strafe, right = turn
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		//Drive2(primary.leftJoystick, primary.rightJoystick);	//	left = strafe, right = turn
+
+
+
+
+
+
+
+
+
 		//	FIXME: implement
 	}
 }
