@@ -14,9 +14,11 @@ task main()
   {
     UpdatePrimaryController(c);
 
-    for ( int i = 0; i < 10; i++ )
+    for ( short i = 0; i < 10; i++ )
     {
-     nxtDisplayCenteredTextLine(i, (string)(i & c.toggleButtons));
+      string str = (string)(i & c.toggleButtons);
+     nxtDisplayCenteredTextLine( 3, str);
+     wait10Msec(20);
     }
   }
 
