@@ -12,21 +12,15 @@
 task main()
 {
 	LogShow();
-	
-	
+
+	eraseDisplay();
+
 	for ( int i = 0; i < 2000; i++ )
 	{
 		string str;
 		StringFormat(str, "Log line %d", i);
 		LogString(str);
-		wait10MSec(175);
+		wait10Msec(175);
 	}
-	
-	
-	
-	
-	
-	
-	
-}
 
+}

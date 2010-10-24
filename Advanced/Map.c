@@ -348,15 +348,7 @@ void MapConnectNodesAutomatically(NodeID n1, NodeID n2)
 	Vector diff;
 	VectorSubtract(v1, v2, diff);
 
-
-	nxtDisplayCenteredTextLine(0, "connect");
-	nxtDisplayCenteredTextLine(1, (string)v1.x);
-	nxtDisplayCenteredTextLine(2, (string)v1.y);
-	nxtDisplayCenteredTextLine(3, (string)v2.x);
-	nxtDisplayCenteredTextLine(4, (string)v2.y);
-	nxtDisplayCenteredTextLine(6, (string)distance);
-	//wait10Msec(400);
-
+	float distance = VectorGetMagnitude(diff);
 
 	MapConnectNodes(n1, n2, distance);
 	MapConnectNodes(n2, n1, distance);
@@ -406,7 +398,7 @@ NodeID MapGetNextNodeID()
 
 NodeID MapGetPreviousNodeID()
 {
-	if ( globalMap.currentNode = 0 ) return NodeIDZero;
+	if ( globalMap.currentNode == 0 ) return NodeIDZero;
 	return globalMap.cachedPath[globalMap.currentNode - 1];
 }
 
@@ -414,7 +406,7 @@ NodeID MapGetPreviousNodeID()
 NodeID MapRetract()
 {
 	globalMap.currentNode = MAX(globalMap.currentNode, 0);	//	don't let it go before zero
-	if ( currentNode = 0 ) return NodeIDZero;	//	there's not a node before the first one
+	if ( globalMap.currentNode == 0 ) return NodeIDZero;	//	there's not a node before the first one
 	return globalMap.cachedPath[globalMap.currentNode - 1];
 }
 
@@ -422,9 +414,9 @@ NodeID MapRetract()
 NodeID MapAdvance() //	Sets current node to next node and returns the next node after that
 {
 	if ( !globalMap.cached ) _MapFindShortestPath(globalMap.cachedPath[0], globalMap.goalNodeID);
-	
+
 	++globalMap.currentNode;	//	set the index to the next node
-	
+
 	return globalMap.cachedPath[globalMap.currentNode];
 }
 
@@ -447,7 +439,7 @@ void MapReset() //	sets cost from each node to itself to zero, and the rest to i
 
 		globalMap.cachedPath[i] = NodeIDZero; //	clear each node id in the cached path
 	}
-	
+
 	globalMap.currentNode = 0;	//	we're at the first node in the path
 }
 

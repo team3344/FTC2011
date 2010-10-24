@@ -14,7 +14,7 @@
 
 #define ln(x) log(x)
 #define powf(a, x) exp(x * ln(a))
-
+#define MAX(a, b) ((a > b) ? a : b)
 
 
 

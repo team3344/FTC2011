@@ -29,16 +29,31 @@ int _LogGetRealIndexForVirtualIndex(int virtualIndex)
 	return real;
 }
 
-void _LogDrawString(int screenIndex, int logIndex)
-{
-	int realIndex = _LogGetRealIndexForVirtualIndex(logIndex);
-	nxtDrawCenteredTextLine(screenIndex, _log[realIndex]);
-}
 
 int _LogEntryCount()
 {
 	return _logEntryIndex - _logStartIndex;
 }
+
+int _LogLastPossibleDisplayIndex()
+{
+	int entryCount = _LogEntryCount();
+	if ( entryCount > kDisplayLineCount )	//	we have more entries than screen space
+	{
+		return _logEntryIndex - entryCount;	//	display the last page
+	}
+	else
+	{
+		return _logStartIndex;	//	we have less than a page to show, so show as much as we can
+	}
+}
+
+void _LogDrawString(int screenIndex, int logIndex)
+{
+	int realIndex = _LogGetRealIndexForVirtualIndex(logIndex);
+	nxtDisplayCenteredTextLine(screenIndex, _log[realIndex]);
+}
+
 
 
 void _DrawLog()
@@ -62,7 +77,7 @@ void LogClear()
 	{
 		strcpy(_log[i], "");	//	blank out all the strings
 	}
-	
+
 	_logDisplayIndex = 0;
 	_logEntryIndex = 0;
 	_logStartIndex = 0;
@@ -71,7 +86,7 @@ void LogClear()
 void LogHide()
 {
 	_logDisplaying = false;
-	nxtEraseDisplay();
+	eraseDisplay();
 }
 
 void LogShow()
@@ -86,28 +101,14 @@ void LogString(string str)
 {
 	int realIndex = _LogGetRealIndexForVirtualIndex(_logEntryIndex);
 	strcpy(_log[realIndex], str);
-	
+
 	bool displayLatest = (_logDisplayIndex == _LogLastPossibleDisplayIndex());
-	
+
 	++_logEntryIndex;
 	if ( _logEntryIndex >= kLogLineCount ) ++_logStartIndex;
 	if ( displayLatest ) _logDisplayIndex = _LogLastPossibleDisplayIndex();
-	
+
 	_DrawLogIfNecessary();
-}
-
-
-int _LogLastPossibleDisplayIndex()
-{
-	int entryCount = _LogEntryCount();
-	if ( entryCount > kDisplayLineCount )	//	we have more entries than screen space
-	{
-		return _logEntryIndex - entryCount;	//	display the last page
-	}
-	else
-	{
-		return _logStartIndex;	//	we have less than a page to show, so show as much as we can
-	}
 }
 
 
@@ -120,18 +121,10 @@ void LogScrollDown()
 {
 	if ( _logDisplayIndex < _LogLastPossibleDisplayIndex() ) ++_logDisplayIndex;
 }
-		
-		
+
+
 void LogScrollToBottom()
 {
 	_logDisplayIndex = _LogLastPossibleDisplayIndex();
 	_DrawLogIfNecessary();
 }
-
-
-
-
-
-
-
-
