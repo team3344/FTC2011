@@ -16,16 +16,16 @@ typedef enum {
 	ControllerButton2                   = 1,
 	ControllerButton3                   = 2,
 	ControllerButton4                   = 3,
-	
+
 	ControllerButtonR1                  = 5,
 	ControllerButtonR2                  = 7,
-	
+
 	ControllerButtonL1                  = 4,
 	ControllerButtonL2                  = 6,
-	
+
 	ControllerButtonLeftMiddle          = 8,
 	ControllerButtonRightMiddle         = 9,
-	
+
 	ControllerButtonRightJoystickPress  = 11,
 	ControllerButtonLeftJoystickPress   = 10
 } ControllerButton;
@@ -38,7 +38,7 @@ typedef struct {
 	Vector rightJoystick;	//	components are from 0 to 1
 	Vector dPad;			//	components are either 0 or 1
 	short buttons;			//	Bit map for 12-buttons
-	short buttonsPrevious;
+	short previousButtons;
 	short toggleButtons;
 } Controller;
 
@@ -47,7 +47,7 @@ typedef struct {
 
 /*
  Axis for all directional values (Vectors)
- 
+
         *
         *
  (-,+)	*	(+,+)
@@ -57,7 +57,7 @@ typedef struct {
  (-,-)	*	(+,-)
         *
         *
- 
+
  */
 
 
