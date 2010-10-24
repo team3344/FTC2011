@@ -17,7 +17,6 @@ float tentativeCosts[kNodeCount];
 bool traveled[kNodeCount];
 
 
-//const Node NodeZero;//FIXME: set this correctly = { PointZero, NodeTypeNone, stringZero };
 
 static Map globalMap; //	this is the map that everything works from
 
@@ -328,8 +327,6 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 
 
 	globalMap.cached = true;	//	we just cached the results
-
-	_MapPrintPath();	//	FIXME: remove this
 }
 
 
@@ -349,10 +346,7 @@ void MapConnectNodesAutomatically(NodeID n1, NodeID n2)
 
 
 	Vector diff;
-	VectorSubtract(v1, v2, diff); //	this line is no bueno!!!!!
-
-	float distance = VectorGetMagnitude(diff);	//	FIXME: this says distance is zero
-
+	VectorSubtract(v1, v2, diff);
 
 
 	nxtDisplayCenteredTextLine(0, "connect");
@@ -404,20 +398,34 @@ void MapSetGoalNodeID(NodeID goal)
 }
 
 
+NodeID MapGetNextNodeID()
+{
+	return globalMap.cachedPath[globalMap.currentNode + 1];
+}
+
+
+NodeID MapGetPreviousNodeID()
+{
+	if ( globalMap.currentNode = 0 ) return NodeIDZero;
+	return globalMap.cachedPath[globalMap.currentNode - 1];
+}
+
+
+NodeID MapRetract()
+{
+	globalMap.currentNode = MAX(globalMap.currentNode, 0);	//	don't let it go before zero
+	if ( currentNode = 0 ) return NodeIDZero;	//	there's not a node before the first one
+	return globalMap.cachedPath[globalMap.currentNode - 1];
+}
+
+
 NodeID MapAdvance() //	Sets current node to next node and returns the next node after that
 {
 	if ( !globalMap.cached ) _MapFindShortestPath(globalMap.cachedPath[0], globalMap.goalNodeID);
-
-	for ( NodeID n = 1; n < kNodeCount; n++ )
-	{
-		NodeID id = globalMap.cachedPath[n];
-		globalMap.cachedPath[n - 1] = id; //	shift nodes in array over 1 slot
-
-		if ( id == NodeIDZero ) break;	//	we hit the end
-	}
-
-
-	return globalMap.cachedPath[0];
+	
+	++globalMap.currentNode;	//	set the index to the next node
+	
+	return globalMap.cachedPath[globalMap.currentNode];
 }
 
 
@@ -439,6 +447,8 @@ void MapReset() //	sets cost from each node to itself to zero, and the rest to i
 
 		globalMap.cachedPath[i] = NodeIDZero; //	clear each node id in the cached path
 	}
+	
+	globalMap.currentNode = 0;	//	we're at the first node in the path
 }
 
 
@@ -605,7 +615,7 @@ void MapInit()		//	sets values specific to our field.
 
 	/**********		Start Squares **********/
 
-	MapConnectNodesAutomatically(NodeIDRedStartSquareLeft, NodeIDBlueDispenserLeft);	//	FIXME: this line is causing a freeze
+	MapConnectNodesAutomatically(NodeIDRedStartSquareLeft, NodeIDBlueDispenserLeft);
 	MapConnectNodesAutomatically(NodeIDRedStartSquareLeft, NodeIDBlueDispenserCenter);
 
 	MapConnectNodesAutomatically(NodeIDRedStartSquareRight, NodeIDBlueDispenserCenter);
@@ -642,8 +652,6 @@ void MapInit()		//	sets values specific to our field.
 
 	//	trash //////////////////////////////////
 
-	MapConnectNodesAutomatically(NodeIDBlueDispenserCenter, NodeIDMountainCenterBottomEdge);
-	MapConnectNodesAutomatically(NodeIDRedDispenserCenter, NodeIDMountainCenterTopEdge);
 
 
 

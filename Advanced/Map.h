@@ -20,38 +20,6 @@
 
 
 
-//	field coordinates are in inches
-//	the origin is at the corner on the red side
-
-/************************************************
- *			*						 *(144, 144)*
- *			*						 *			*
- *	 BLUE	*						 *	 BLUE	*
- *			*						 *			*
- *			*						 *			*
- ************						 ************
- *												*
- *												*
- *												*
- *												*
- *												*
- ************************************************
- *												*
- *												*
- *												*
- *												*
- ************						*************
- *			*						*			*
- *			*						*			*
- *	 RED	*						*	 RED	*
- *			*						*			*
- * (0,0)	*						*			*
- ************************************************/
-
-
-
-
-
 
 
 
@@ -105,25 +73,6 @@ typedef enum {
 
 
 
-
-
-
-
-
-
-	//	white lines???
-
-	//	ramps????
-
-
-
-
-
-
-
-
-
-
 	//	white lines	//
 	NodeIDLine1Top,
 	NodeIDLine1Bottom,
@@ -154,15 +103,11 @@ typedef enum {
 
 
 
-
-
 typedef struct {
 	Vector location;
 	string name;
 } Node;
 
-
-//extern const Node NodeZero;
 
 
 
@@ -173,6 +118,7 @@ typedef struct {
 	NodeID cachedPath[kNodeCount];
 	NodeID goalNodeID;
 	bool cached;
+	int currentNode;
 	float pathCosts[kNodeCount][kNodeCount];
 } Map;
 
@@ -188,6 +134,11 @@ NodeID MapGetCurrentNodeID();							//	ask the map where it thinks we are
 
 void MapSetGoalNodeID(NodeID goal);						//	tell it where we want to go
 NodeID MapGetGoalNodeID();
+
+NodeID MapGetNextNodeID();
+NodeID MapGetPreviousNodeID();
+
+NodeID MapRetract();									//	sets current node to previous node and returns the node before that
 NodeID MapAdvance();									//	sets current node to next node and returns the next node after that
 
 
