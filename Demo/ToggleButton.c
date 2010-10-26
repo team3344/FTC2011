@@ -15,9 +15,6 @@ task main()
 		UpdatePrimaryController(c);
 		float speed = (ControllerButtonIsToggledOn(c, ControllerButton2)) ? 100 : 50;
 
-
-		nxtDisplayTextLine(0, (string)c.dPad.y);
-
 		motor[Left] = speed * c.leftJoystick.y;
 		motor[Right] = speed * c.rightJoystick.y;
 	}

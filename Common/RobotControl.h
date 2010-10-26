@@ -18,14 +18,7 @@ typedef struct {
 
 
 
-
-
-
-
-
-
 void RobotFollowWhiteLine();
-
 
 void RobotFollowIR();
 
@@ -33,9 +26,15 @@ void RobotFollowIR();
 
 
 void RobotRotate(float angle);	//	0 = straight ahead, pi/2 = left, -pi/2 = right
-
 void RobotMove(float distance);	//	distance in inches???.  Can be negative.
 
+
+
+
+
+
+void MotorRotateToEncoderValue(int m, int encoderValue, int speed);
+void MotorRotateTurns(int m, int turns, int speed);
 
 
 

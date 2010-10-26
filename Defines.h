@@ -5,7 +5,7 @@
 
 //	All measurements are in inches
 
-
+#define kMotorEncoderPointsPerRotation 4 * 360
 
 #define kRobotWidth 10
 
