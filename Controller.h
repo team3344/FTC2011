@@ -5,7 +5,7 @@
 
 
 #ifndef _Vector_
-#include "../Advanced/Vector.h"
+#include "Vector.h"
 #endif
 
 

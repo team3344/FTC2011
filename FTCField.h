@@ -56,12 +56,14 @@
 
 
 
-
 typedef struct {
 	bool hasTunnel;
 	float tunnelAngle;
-	//	white line?????????????????
-	//	bridge entrance?????????????????????????????????????????
+	bool atBridgeEntrance;
+	//	float angleToBridge;	//	0 or pi
+	
+	
+	//	FIXME: white line???????????????????????????????????????????????????????
 } KeyPointInfo;
 
 
@@ -71,8 +73,77 @@ typedef struct {
 
 
 
-bool WhiteLineConnectsNodes(NodeID n1, NodeID n2);
-bool TunnelExistsAtNode(NodeID n);
+
+
+
+typedef enum {
+	KeyPointIDZero = 0,
+	
+	
+	//	start squares	//
+	KeyPointIDRedStartSquareLeft,
+	KeyPointIDRedStartSquareRight,
+	
+	KeyPointIDBlueStartSquareLeft,
+	KeyPointIDBlueStartSquareRight,
+	
+	
+	
+	//	dispensers	//
+	KeyPointIDBlueDispenserLeft,
+	KeyPointIDBlueDispenserCenter,
+	KeyPointIDBlueDispenserRight,
+	
+	KeyPointIDRedDispenserLeft,
+	KeyPointIDRedDispenserCenter,
+	KeyPointIDRedDispenserRight,
+	
+	
+	
+	//	bridges	//
+	KeyPointIDBlueBridgeTop,
+	KeyPointIDBlueBridgeCenter,
+	KeyPointIDBlueBridgeBottom,
+	
+	KeyPointIDRedBridgeTop,
+	KeyPointIDRedBridgeCenter,
+	KeyPointIDRedBridgeBottom,
+	
+	
+	
+	//	mountain	//
+	KeyPointIDMountainCenterTopEdge,
+	KeyPointIDMountainCenterPeak,
+	KeyPointIDMountainCenterBottomEdge,
+	
+	
+	
+	//	pit goals	//
+	KeyPointIDRedPitCenter,
+	KeyPointIDBluePitCenter,
+	
+	
+	
+	//	white lines	//
+	KeyPointIDLine1Top,
+	KeyPointIDLine1Bottom,
+	
+	KeyPointIDLine2Top,
+	KeyPointIDLine2Bottom,
+	
+	KeyPointIDLine3Top,
+	KeyPointIDLine3Bottom,
+	
+	KeyPointIDLine4Top,
+	KeyPointIDLine4Bottom,
+	
+	KeyPointIDLine5Top,
+	KeyPointIDLine5Bottom,
+	
+	KeyPointIDLine6Top,
+	KeyPointIDLine6Bottom
+	
+} KeyPointID;
 
 
 
@@ -84,13 +155,32 @@ bool TunnelExistsAtNode(NodeID n);
 
 
 
+bool WhiteLineConnectsKeyPoints(KeyPointID kp1, KeyPointID kp2);
+
+bool TunnelExistsAtKeyPoint(KeyPointID kp);
+float TunnelAngleAtKeyPoint(KeyPointID kp);
 
 
 
 
+void FTCFieldInit();
+
+void FTCFieldSetTargetKeyPoint(KeyPointID kp);
+KeyPointID FTCFieldGetTargetKeyPoint();
+
+void FTCFieldSetCurrentKeyPoint(KeyPointID kp);
+
+void FTCFieldGetLocationOfKeyPoint(KeyPointID, Vector& locOut);
+void FTCFieldGetNameOfKeyPoint(KeyPointID, string& nameOut);
 
 
 
+KeyPointID FTCFieldGetNextKeyPoint();
+KeyPointID FTCFieldGetPreviousKeyPoint();
+
+
+KeyPointID FTCFieldAdvance();	//	says "hey we got to our segment goal key point, where's the next one
+KeyPointID FTCFieldRetract();	//	same thing as above, but for going backwards
 
 
 

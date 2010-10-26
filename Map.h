@@ -1,11 +1,4 @@
-/*
- *  Map.h
- *  Get Over It
- *
- *  Created by Justin Buchanan on 9/11/10.
- *  Copyright 2010 JustBuchanan Software. All rights reserved.
- *
- */
+
 
 #ifndef _Map_
 #define _Map_
@@ -17,88 +10,7 @@
 
 
 
-
-
-
-
-
-
-
-typedef enum {
-	NodeIDZero = 0,
-
-
-
-	//	start squares	//
-	NodeIDRedStartSquareLeft,
-	NodeIDRedStartSquareRight,
-
-	NodeIDBlueStartSquareLeft,
-	NodeIDBlueStartSquareRight,
-
-
-
-	//	dispensers	//
-	NodeIDBlueDispenserLeft,
-	NodeIDBlueDispenserCenter,
-	NodeIDBlueDispenserRight,
-
-	NodeIDRedDispenserLeft,
-	NodeIDRedDispenserCenter,
-	NodeIDRedDispenserRight,
-
-
-
-	//	bridges	//
-	NodeIDBlueBridgeTop,
-	NodeIDBlueBridgeCenter,
-	NodeIDBlueBridgeBottom,
-
-	NodeIDRedBridgeTop,
-	NodeIDRedBridgeCenter,
-	NodeIDRedBridgeBottom,
-
-
-
-	//	mountain	//
-	NodeIDMountainCenterTopEdge,
-	NodeIDMountainCenterPeak,
-	NodeIDMountainCenterBottomEdge,
-
-
-
-	//	pit goals	//
-	NodeIDRedPitCenter,
-	NodeIDBluePitCenter,
-
-
-
-	//	white lines	//
-	NodeIDLine1Top,
-	NodeIDLine1Bottom,
-
-	NodeIDLine2Top,
-	NodeIDLine2Bottom,
-
-	NodeIDLine3Top,
-	NodeIDLine3Bottom,
-
-	NodeIDLine4Top,
-	NodeIDLine4Bottom,
-
-	NodeIDLine5Top,
-	NodeIDLine5Bottom,
-
-	NodeIDLine6Top,
-	NodeIDLine6Bottom
-
-} NodeID;
-
-
-#define kNodeCount NodeIDLine6Bottom
-
-
-
+#define kNodeCount 40
 
 
 
@@ -109,6 +21,7 @@ typedef struct {
 } Node;
 
 
+typedef int NodeID;
 
 
 
@@ -144,8 +57,6 @@ NodeID MapAdvance();									//	sets current node to next node and returns the n
 
 void MapReset();	//	sets cost from each node to itself to zero, and the rest to infinity.  clears all Nodes from nodes array.  clears cachedPath.
 
-void MapInit();		//	sets values specific to our field. (i.e. locations of nodes and costs between them)
-
 
 void MapSetNodeNameForID(NodeID nodeID, string name);
 void MapSetNodeLocationForID(NodeID nodeID, Vector& location);
@@ -155,10 +66,8 @@ void MapSetNodeForID(NodeID nodeID, Node& node);			//	give it the node info for 
 void MapGetNode(NodeID nodeID, Node& nodeOut);							//	get the node info for a given node id
 
 
-void MapDraw();
-task MapContinuouslyRedraw();
-
-
+//void MapDraw();
+//task MapContinuouslyRedraw();
 
 
 

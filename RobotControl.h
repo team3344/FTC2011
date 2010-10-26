@@ -6,7 +6,7 @@
 
 
 #ifndef _Vector_
-#include "../Advanced/Vector.h"
+#include "Vector.h"
 #endif
 
 
@@ -39,8 +39,8 @@ void RobotGetCurrentPosition(RobotPosition& posOut);
 
 
 
-void MotorRotateToEncoderValue(int m, int encoderValue, int speed);
-void MotorRotateTurns(int m, int turns, int speed);
+void MotorRotateToEncoderValueAtPower(int m, int encoderValue, int power);
+void MotorRotateTurnsAtPower(int m, int turns, int power);
 
 
 

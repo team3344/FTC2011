@@ -6,13 +6,9 @@
 #include "RobotControl.h"
 #endif
 
-#ifndef _Sensors_
-#include "Sensors.h"
-#endif
-
 
 #ifndef _Defines_
-#include "../Defines.h"
+#include "Defines.h"
 #endif
 
 
@@ -21,8 +17,8 @@
 
 #define kLineEdgeLightSensorValue 20	//	FIXME: can this value be calibrated during run????????????????
 
-#define kLineFollowerFastMotorSpeed 60
-#define kLineFollowerSlowMotorSpeed 0
+#define kLineFollowerFastMotorPower 60
+#define kLineFollowerSlowMotorPower 0
 
 task RobotFollowWhiteLine()
 {
@@ -30,13 +26,13 @@ task RobotFollowWhiteLine()
 	{
 		if ( SensorValue[FloorLightSensor] )
 		{
-			motor[RightMotor] = kLineFollowerFastMotorSpeed;
-			motor[LeftMotor] = kLineFollowerSlowMotorSpeed;
+			motor[RightMotor] = kLineFollowerFastMotorPower;
+			motor[LeftMotor] = kLineFollowerSlowMotorPower;
 		}
 		else
 		{
-			motor[RightMotor] = kLineFollowerSlowMotorSpeed;
-			motor[LeftMotor] = kLineFollowerFastMotorSpeed;
+			motor[RightMotor] = kLineFollowerSlowMotorPower;
+			motor[LeftMotor] = kLineFollowerFastMotorPower;
 		}
 
 		//	FIXME: how do we know we're at the end of the line???????????????????????????????
@@ -53,6 +49,14 @@ task RobotFollowWhiteLine()
 task RobotFollowIR()
 {
 	//	FIXME: implement
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 
@@ -85,12 +89,12 @@ void RobotMove(float distance)
 
 //==========================================================================
 
-void MotorRotateToEncoderValue(int m, int encoderValue, int speed)
+void MotorRotateToEncoderValueAtPower(int m, int encoderValue, int power)
 {
-  int s = (encoderValue > nMotorEncoder[m]) ? speed : -speed;
-  motor[m] = s;
+  int p = (encoderValue > nMotorEncoder[m]) ? power : -power;
+  motor[m] = p;
 
-  if ( s > 0 )
+  if ( p > 0 )
     while ( nMotorEncoder[m] < encoderValue ) {}
   else
     while ( nMotorEncoder[m] > encoderValue ) {}
@@ -98,10 +102,10 @@ void MotorRotateToEncoderValue(int m, int encoderValue, int speed)
    motor[m] = 0;  //  stop
 }
 
-void MotorRotateTurns(int m, int turns, int speed)
+void MotorRotateTurnsAtPower(int m, int turns, int power)
 {
-    int encoderValue = kMotorEncoderPointsPerRotation * turns;
-   MotorRotateToEncoderValue(m, encoderValue, speed);
+	int encoderValue = kMotorEncoderPointsPerRotation * turns;
+	MotorRotateToEncoderValue(m, encoderValue, power);
 }
 
 
@@ -119,8 +123,8 @@ void MotorRotateTurns(int m, int turns, int speed)
 
 
 
-
-
+//	Node Traveling
+//===================================================================================================================
 
 
 void _RobotGoFromCurrentNodeToNode(Node& current, Node& target)
@@ -173,6 +177,12 @@ void RobotGoToNode(NodeID target)
 }
 
 
+
+
+
+
+
+//	FIXME: below method is trash and may have been redone in OmniDrive.c
 
 void RobotMoveWithVector(Vector& displacement)
 {
