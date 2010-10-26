@@ -31,6 +31,11 @@ void RobotMove(float distance);	//	distance in inches???.  Can be negative.
 
 
 
+//	Position Tracking
+void RobotSetCurrentPosition(RobotPosition& pos);
+void RobotGetCurrentPosition(RobotPosition& posOut);
+
+
 
 
 void MotorRotateToEncoderValue(int m, int encoderValue, int speed);
@@ -39,7 +44,9 @@ void MotorRotateTurns(int m, int turns, int speed);
 
 
 
+void RobotGoToNode(NodeID target);
 
+void RobotMoveWithVector(Vector& displacement);	// go in the direction of 'displacement' and travel its magnitude
 
 
 

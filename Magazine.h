@@ -10,11 +10,16 @@
 #ifndef _Magazine_
 #define _Magazine_
 
-#ifndef _Baton_
-#include "Baton.h"
-#endif
 
 
+
+
+typedef enum {
+	BatonTypeUnknown,
+	BatonTypeRegular,
+	BatonTypeMagnet,
+	BatonTypePointDoubler
+} Baton;
 
 
 
