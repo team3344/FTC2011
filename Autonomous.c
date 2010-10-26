@@ -14,10 +14,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-#include "JoystickDriver.c"
 
-#include "Advanced/include.c"
-#include "Common/include.c"
+#include "include.c"
 
 
 
@@ -27,7 +25,7 @@ void initializeRobot()
 	// FIXME: implement
 
 
- MapInit();  //  initialize the map of the field
+	MapInit();  //  initialize the map of the field
 
 
 

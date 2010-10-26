@@ -21,6 +21,7 @@ typedef struct {
 void RobotFollowWhiteLine();
 
 void RobotFollowIR();
+void RobotIRVisible();
 
 
 
