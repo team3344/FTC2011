@@ -110,10 +110,11 @@ void MotorRotateTurnsAtPower(int m, int turns, int power)
 	MotorRotateToEncoderValue(m, encoderValue, power);
 }
 
-
+//	FIXME: is all this stuff shenannigans???
 
 typedef struct {
 	float speed;
+	int lastUpdateTime
 	int encoderValueStart;
 	int encoderValueTarget;
 	int m;
@@ -125,13 +126,21 @@ typedef struct {
 } RobotMotionInfo;
 
 
+task ContinuouslyUpdateMotorPower()
+{
+	while ( true )
+	{
+		UpdateMotorPower();
+		wait1Msec(kRobotMotorRefreshInterval);
+	}
+}
 
 
 void UpdateMotorPower()
 {
 	for ( int i = 0; i < kRobotMotorCount; i++ )
 	{
-		
+		//	FIXME: implement////////////////////////////
 	}
 }
 

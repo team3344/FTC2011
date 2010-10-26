@@ -15,6 +15,8 @@
 
 #define kRobotMotorCount 7
 
+#define kRobotMotorRefreshInterval 20	//	number of milliseconds to wait between motor refreshes
+
 
 #define ln(x) log(x)
 #define powf(a, x) exp(x * ln(a))
