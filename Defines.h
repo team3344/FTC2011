@@ -9,7 +9,11 @@
 
 #define kRobotWidth 10
 
-#define kRobotTravelConstant .01	//	multiply this # by an encoder value to get distance travelled
+
+#define kRobotWheelRadius 2			//	multiply this by a wheel's rotation in radians to get the distance travelled in inches
+
+
+#define kRobotMotorCount 7
 
 
 #define ln(x) log(x)

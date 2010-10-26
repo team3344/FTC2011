@@ -22,8 +22,8 @@ void _UpdateControllerButtons(Controller& c, short buttons)
 	c.previousButtons = c.buttons;
 	c.buttons = buttons;
 
-	short changedButtons = c.previousButtons ^ c.buttons;	//	XOR operation gives us all the buttons that changed
-	c.toggleButtons = c.toggleButtons ^ (changedButtons & buttons);	//	toggle the changed buttons that became 'true'
+	c.changedButtons = c.previousButtons ^ c.buttons;	//	XOR operation gives us all the buttons that changed
+	c.toggleButtons = c.toggleButtons ^ (c.changedButtons & buttons);	//	toggle the changed buttons that became 'true'
 }
 
 
@@ -44,7 +44,16 @@ void _UpdateControllerDPad(Controller& c, short dPadValue)
 	7  = (-1,1)
 
 	*/
-
+	
+	
+	//	the default value of a variable is zero, so
+	//	if the controller is not updated from the physical
+	//	controller, it will have a dPadValue of 0, which
+	//	actually specifies a position.  we change it
+	//	to -1 so we know nothing is going on
+	if ( joystick.StopPgm ) dPadValue = -1;
+	
+	
 
 
 	/*	the x & y values are in arrays so they can be looked up quickly	*/
@@ -71,7 +80,7 @@ bool ControllerButtonIsPressed(Controller& c, ControllerButton b)
 
 bool ControllerButtonChanged(Controller& c, ControllerButton b)
 {
-	return (c.buttons ^ c.previousButtons) & (1 << b);
+	return c.changedButtons & (1 << b);
 }
 
 bool ControllerButtonIsToggledOn(Controller& c, ControllerButton b)

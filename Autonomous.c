@@ -25,53 +25,23 @@ void initializeRobot()
 	// FIXME: implement
 
 
-	MapInit();  //  initialize the map of the field
+	FTCFieldInit();  //  initialize the map of the field
 
 
 
-  MapSetCurrentNodeID(NodeIDRedStartSquareLeft);  //  set starting position
+	//MapSetCurrentNodeID(NodeIDRedStartSquareLeft);  //  set starting position
 
 
 
-  RobotPosition position;
-  Vector2DMake(50, 50, position.location);
-  position.orientation = 0;
-  TrackerSetCurrentPosition(position);
-
-
-
-
-
- StartTask(MapContinuouslyRedraw);
-
-
-
-
- // BELOW IS SHENANNIGANS
- float increment = 3;
- while ( true )
- {
-  position.location.y += increment;
-  TrackerSetCurrentPosition(position);
-
-  if ( position.location.y > 144 || position.location.y < 0 )
-  {
-    increment *= -1;
-    position.orientation = (increment < 0) ? PI : 0;
-  }
-
-  wait10Msec(20);
- }
- // ABOVE IS SHENANNIGANS
-
-
-  //nxtDisplayCenteredTextLine(3, "map inited!");
-
-
-
-  PlaySound(soundUpwardTones);
-
-  while (true) {}
+	RobotPosition position;
+	Vector2DMake(50, 50, position.location);
+	position.orientation = 0;
+	//	TrackerSetCurrentPosition(position);
+	
+	
+	
+	
+	PlaySound(soundUpwardTones);
 
 
 	return;

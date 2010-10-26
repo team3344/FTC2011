@@ -30,13 +30,13 @@ bool BoostIsOn();
 /*	drive - controls bot arcade style
  *	omni - x component controls sidewinding
  */
-void Drive1(Vector& drive, Vector& omni);
+void OmniArcadeDrive(Vector& drive, Vector& omni);
 
 
 /*	strafe - controls forward, backward, & side to side
  *	rotate - x component controls the rotation of the bot around the center
  */
-void Drive2(Vector& strafe, Vector& rotate);
+void OmniStrafeDrive(Vector& strafe, Vector& rotate);
 
 
 

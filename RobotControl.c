@@ -86,10 +86,12 @@ void RobotMove(float distance)
 
 
 
-
+//	motor control
 //==========================================================================
 
-void MotorRotateToEncoderValueAtPower(int m, int encoderValue, int power)
+
+//	motor control by power
+void MotorRotateEncoderPointsAtPower(int m, int encoderValue, int power)
 {
   int p = (encoderValue > nMotorEncoder[m]) ? power : -power;
   motor[m] = p;
@@ -110,10 +112,57 @@ void MotorRotateTurnsAtPower(int m, int turns, int power)
 
 
 
+typedef struct {
+	float speed;
+	int encoderValueStart;
+	int encoderValueTarget;
+	int m;
+} MotorMotionInfo;
+
+typedef struct {
+	int timer;
+	MotorMotionInfo motors[kRobotMotorCount];
+} RobotMotionInfo;
 
 
 
 
+void UpdateMotorPower()
+{
+	for ( int i = 0; i < kRobotMotorCount; i++ )
+	{
+		
+	}
+}
+
+
+
+
+
+//	motor control by speed
+void MotorRotateEncoderPointsAtSpeed(int m, int encoderPoints, float speed)
+{
+	int start = nMotorEncoder[m];
+	
+	int target = start + encoderPoints;
+	
+	float dist = (encoderPoints / kMotorEncoderPointsPerRotation) * 2 * PI;	//	number of radians to rotate for
+	
+	int time = dist / speed;	//	time in seconds
+	
+	
+	time1[MotorTimer] = //	time in 1000ths of a second since the timer started
+	ClearTimer(MotorTimer);
+	//	time1 only works for 30 seconds
+	//	time10 works for 5 min and gives time in 100ths of a second
+	
+	
+}
+
+void MotorRotateTurnsAtSpeed(int m, float turns, int speed)
+{
+	
+}
 
 
 

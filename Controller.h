@@ -39,6 +39,7 @@ typedef struct {
 	Vector dPad;			//	components are either 0 or 1
 	short buttons;			//	Bit map for 12-buttons
 	short previousButtons;
+	short changedButtons;
 	short toggleButtons;
 } Controller;
 

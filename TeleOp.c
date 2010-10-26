@@ -73,31 +73,29 @@ task main()
 
 	while (true)
 	{
-		//	see if the boost button changed
-
-
-
-
-
-		Controller primary;
+		Controller primary, secondary;
 		UpdatePrimaryController(primary);
+		UpdateSecondaryController(secondary);
 
+		//	FIXME: boost mode??????
+		
 
-
-		motor[Left] = joystick.joy1_y1;
-
-
-		//Drive1(primary.rightJoystick, primary.leftJoystick);	//	right = arcade, left = sidewind
-		//Drive2(primary.leftJoystick, primary.rightJoystick);	//	left = strafe, right = turn
-
-
-
-
-
-
-
+		//	Drive
+		OmniArcadeDrive(primary.rightJoystick, primary.leftJoystick);	//	right = arcade, left = sidewind
+		//OmniStrafeDrive(primary.leftJoystick, primary.rightJoystick);	//	left = strafe, right = turn
+		
+		
+		
+		
+		
+		//	FIXME: do mechanism stuff
 
 
 		//	FIXME: implement
 	}
 }
+
+
+
+
+
