@@ -164,7 +164,7 @@ void MotorRotateEncoderPointsAtSpeed(int m, int encoderPoints, float speed)
 	ClearTimer(MotorTimer);
 	//	time1 only works for 30 seconds
 	//	time10 works for 5 min and gives time in 100ths of a second
-	
+	//	int nPgmTime is the time in 1000ths of a second since the program started == use this!
 	
 }
 
