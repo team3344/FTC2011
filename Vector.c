@@ -11,8 +11,9 @@
 #include "Vector.h"
 #endif
 
-//#include "RobotCIntrinsics.h"
-
+#ifndef _Defines_
+#include "Defines.h"
+#endif
 
 
 

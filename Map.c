@@ -408,7 +408,8 @@ NodeID MapGetPreviousNodeID()
 
 NodeID MapRetract()
 {
-	globalMap.currentNode = MAX(globalMap.currentNode, 0);	//	don't let it go before zero
+	globalMap.currentNode = MAX(globalMap.currentNode - 1, 0);	//	don't let it go before zero
+
 	if ( globalMap.currentNode == 0 ) return NodeIDZero;	//	there's not a node before the first one
 	return globalMap.cachedPath[globalMap.currentNode - 1];
 }
@@ -477,6 +478,3 @@ void MapSetNodeNameForID(NodeID nodeID, string name)
 {
 	strcpy(globalMap.nodes[nodeID].name, name);
 }
-
-
-

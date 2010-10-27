@@ -17,7 +17,7 @@
 static bool boost;
 
 #define kPowerNormal .6
-#define kPoweBoost 1
+#define kPowerBoost 1
 
 
 void SetBoostState(bool state)
@@ -39,18 +39,9 @@ bool BoostIsOn()
 
 
 //	motor names: Left, Right, Front, Back
-void SetMotorPower(short motor, float power)	//	power is from 1 to 100
+void SetMotorPower(short m, float power)	//	power is from 1 to 100
 {
-	motors[motor] = power * (( BoostIsOn() ) ? kPowerBoost : kPowerNormal);
-}
-
-
-
-
-void SetMotorVelocity(short motor, float velocity)
-{
-	//	FIXME this is completely wrong.  take into account power to rotation rate and circumference of wheels
-	motors[motor] = velocity;
+	motor[m] = power * (( BoostIsOn() ) ? kPowerBoost : kPowerNormal);
 }
 
 
@@ -88,20 +79,20 @@ void SetMotorSpeedsForVelocities(float dx_dt, float dy_dt, float dtheta_dt, floa
 	float Fr, Br;	//	velocities of the front and back wheels for rotation
 	Fr = kRobotHalfLength * dtheta_dt;
 	Br = -Fr;
-	
+
 	float Ft, Bt;	//	velocities of the front and back wheels for translation
 	Ft = dx_dt / cos(angle);
 	Bt = Ft;
-	
+
 	float F, B;
 	F = Fr + Ft;
 	B = Br + Bt;
-	
+
 	float L, R;
 	L = dy_dt / cos(angle);
 	R = L;
-	
-	
+
+
 	motor[Left] = L;
 	motor[Right] = R;
 	motor[Front] = F;
@@ -141,19 +132,19 @@ float VelocityCurveGetVelocityAtTime(float time, VelocityCurve& vCurve)
 float VelocityCurveGetDistanceAtTime(float time, VelocityCurve& vCurve)
 {
 	//	FIXME: implement
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	return 3;	//	FIXME: remove
 }
 
 
 
-float OmniTimeRequiredForTranslation(Vector translation)
+float OmniTimeRequiredForTranslation(Vector& translation)
 {
 	/*
 	 *		|	constant acceleration until max velocity, then
@@ -165,12 +156,12 @@ float OmniTimeRequiredForTranslation(Vector translation)
 	 *		|/________________________\____
 	 *				      t
 	 */
-	
+
 	float distance = VectorGetMagnitude(translation);
-	
+
 	float timeIfPeak = kMaxWheelVelocity / kMaxTranslationalAcceleration * 2;	//	time to accelerate to max velocity, then decelerate to zero
 	float distanceIfPeak = .5 * kMaxWheelVelocity * timeIfPeak;					//	distance we go if we just peak then go back down
-	
+
 	if ( distance > distanceIfPeak )
 	{
 		float timeAtMaxVelocity = kMaxWheelVelocity / (distance - distanceIfPeak );
@@ -180,7 +171,7 @@ float OmniTimeRequiredForTranslation(Vector translation)
 	{
 		//	dist = peak * time * .5
 		//	time * .5 * acc = peak
-		
+
 		//	dist = (time * .5 * acc) * time * .5
 		//	dist = time^2 * .25 * acc
 		//	time^2 = dist / (.25 * acc)
@@ -192,21 +183,21 @@ float OmniTimeRequiredForTranslation(Vector translation)
 float OmniTimeRequiredForRotation(float rotationAngle)
 {
 	//	FIXME: implement
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -217,48 +208,48 @@ void OmniCreateVelocityCurve(float minDuration, float maxAcceleration, float max
 {
 	float timeIfPeak = (maxVelocity / acceleration) * 2;
 	float distanceIfPeak
-	
-	
+
+
 	//	FIXME: implement
 	///
-	
+
 	//////////
 	//////////////
 	////////////////
 	//////////////////
 	////////////////////
-	
+
 	///////////////////////
 	/////////////////////////
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
 
 
 
-void OmniTranslate(Vector translation)
+void OmniTranslate(Vector& translation)
 {
 	VelocityCurve xCurve, yCurve;
-	
+
 	//	FIXME:	get both curves & get them correctly
 	OmniCreateVelocityCurve(0, kMaxTranslationalAcceleration, kMaxWheelVelocity, 0, xCurve);	//	get the velocity curve
-	
-	
-	
+
+
+
 	float endTime = 3;	//	FIXME: fix this
 	float time;
-	
+
 	//	FIXME: set time here!!!!!!!!!!
 	while ( (time = 3) <= endTime )
 	{
@@ -281,23 +272,16 @@ void OmniRotate(float angle)
 
 
 
-void OmniTranslateAndRotate(Vector translation, float rotationAngle)
+void OmniTranslateAndRotate(Vector& translation, float angle)
 {
 	float time = MAX( OmniTimeRequiredForTranslation(translation), OmniTimeRequiredForRotation(rotationAngle) );
-	
-	
+
+
 	//	FIXME: implement
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 }
-
-
-
-
-
-
-

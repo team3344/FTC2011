@@ -3,12 +3,18 @@
 #define _Defines_
 
 
+
+
+
+
+
+
 //	All measurements are in inches
 
-#define kMotorEncoderPointsPerRotation 4 * 360
+#define kTetrixMotorEncoderPointsPerRotation 4 * 360
+#define kNXTMotorEncoderPointsPerRotation 360
 
 #define kRobotWidth 10
-
 
 #define kRobotWheelRadius 2			//	multiply this by a wheel's rotation in radians to get the distance travelled in inches
 

@@ -61,8 +61,8 @@ typedef struct {
 	float tunnelAngle;
 	bool atBridgeEntrance;
 	//	float angleToBridge;	//	0 or pi
-	
-	
+
+
 	//	FIXME: white line???????????????????????????????????????????????????????
 } KeyPointInfo;
 
@@ -78,71 +78,71 @@ typedef struct {
 
 typedef enum {
 	KeyPointIDZero = 0,
-	
-	
+
+
 	//	start squares	//
 	KeyPointIDRedStartSquareLeft,
 	KeyPointIDRedStartSquareRight,
-	
+
 	KeyPointIDBlueStartSquareLeft,
 	KeyPointIDBlueStartSquareRight,
-	
-	
-	
+
+
+
 	//	dispensers	//
 	KeyPointIDBlueDispenserLeft,
 	KeyPointIDBlueDispenserCenter,
 	KeyPointIDBlueDispenserRight,
-	
+
 	KeyPointIDRedDispenserLeft,
 	KeyPointIDRedDispenserCenter,
 	KeyPointIDRedDispenserRight,
-	
-	
-	
+
+
+
 	//	bridges	//
 	KeyPointIDBlueBridgeTop,
 	KeyPointIDBlueBridgeCenter,
 	KeyPointIDBlueBridgeBottom,
-	
+
 	KeyPointIDRedBridgeTop,
 	KeyPointIDRedBridgeCenter,
 	KeyPointIDRedBridgeBottom,
-	
-	
-	
+
+
+
 	//	mountain	//
 	KeyPointIDMountainCenterTopEdge,
 	KeyPointIDMountainCenterPeak,
 	KeyPointIDMountainCenterBottomEdge,
-	
-	
-	
+
+
+
 	//	pit goals	//
 	KeyPointIDRedPitCenter,
 	KeyPointIDBluePitCenter,
-	
-	
-	
+
+
+
 	//	white lines	//
 	KeyPointIDLine1Top,
 	KeyPointIDLine1Bottom,
-	
+
 	KeyPointIDLine2Top,
 	KeyPointIDLine2Bottom,
-	
+
 	KeyPointIDLine3Top,
 	KeyPointIDLine3Bottom,
-	
+
 	KeyPointIDLine4Top,
 	KeyPointIDLine4Bottom,
-	
+
 	KeyPointIDLine5Top,
 	KeyPointIDLine5Bottom,
-	
+
 	KeyPointIDLine6Top,
 	KeyPointIDLine6Bottom
-	
+
 } KeyPointID;
 
 
@@ -170,8 +170,8 @@ KeyPointID FTCFieldGetTargetKeyPoint();
 
 void FTCFieldSetCurrentKeyPoint(KeyPointID kp);
 
-void FTCFieldGetLocationOfKeyPoint(KeyPointID, Vector& locOut);
-void FTCFieldGetNameOfKeyPoint(KeyPointID, string& nameOut);
+void FTCFieldGetLocationOfKeyPoint(KeyPointID kp, Vector& locOut);
+void FTCFieldGetNameOfKeyPoint(KeyPointID kp, string& nameOut);
 
 
 

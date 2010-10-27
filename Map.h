@@ -7,6 +7,10 @@
 #include "Vector.h"
 #endif
 
+#ifndef _Tracker_
+#include "Tracker.h"
+#endif
+
 
 
 
@@ -21,6 +25,7 @@ typedef struct {
 } Node;
 
 
+#define NodeIDZero -1
 typedef int NodeID;
 
 

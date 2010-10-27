@@ -9,11 +9,10 @@
 #include "Vector.h"
 #endif
 
+#ifndef _FTCField_
+#include "FTCField.h"
+#endif
 
-typedef struct {
-	Vector location;
-	float orientation;
-} RobotPosition;
 
 
 
