@@ -54,6 +54,10 @@ float ScanForLineEdgeValue()
    int light = SensorValue[Light];
    if ( light > max) max = light;
    if ( light < min) min = light;
+
+   nxtDisplayTextLine(0, (string)min);
+   nxtDisplayTextLine(1, (string)max);
+   nxtDisplayTextLine(2, (string)light);
  }
 
  motor[motorB] = 20;
@@ -63,6 +67,10 @@ float ScanForLineEdgeValue()
    int light = SensorValue[Light];
    if ( light > max) max = light;
    if ( light < min) min = light;
+
+   nxtDisplayTextLine(0, (string)min);
+   nxtDisplayTextLine(1, (string)max);
+   nxtDisplayTextLine(2, (string)light);
  }
 
 
@@ -78,8 +86,9 @@ float ScanForLineEdgeValue()
 
 task main()
 {
+  wait10Msec(50);
 
-  float edgeValue = ScanForLineEdgeValue();
+  float edgeValue = 46;//ScanForLineEdgeValue();
 
 
   nxtDisplayTextLine(0, (string)edgeValue;
@@ -103,7 +112,7 @@ task main()
 
   //float previousTime;
   //float previousEncoder;
-  float power = 15;
+  float power = 25;
 
   while ( true )
   {

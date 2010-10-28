@@ -16,9 +16,10 @@
 
 
 
-
+//	NOTE: robot always follows RIGHT side of line
 void RobotFollowWhiteLine();
 bool RobotFindWhiteLine(float expectedAngle);	//	returns true if it finds it and is aligned to it
+
 
 void RobotFollowIR();
 bool RobotIRIsVisible();

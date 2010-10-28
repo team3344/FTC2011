@@ -16,8 +16,8 @@
 
 static bool boost;
 
-#define kPowerNormal .6
-#define kPowerBoost 1
+#define kPowerNormal .4
+#define kPowerBoost 1.0
 
 
 void SetBoostState(bool state)
@@ -39,9 +39,9 @@ bool BoostIsOn()
 
 
 //	motor names: Left, Right, Front, Back
-void SetMotorPower(short m, float power)	//	power is from 1 to 100
+void SetMotorPower(short m, float power)	//	power is from 0 to 1
 {
-	motor[m] = power * (( BoostIsOn() ) ? kPowerBoost : kPowerNormal);
+	motor[m] = power * 100. * (( BoostIsOn() ) ? kPowerBoost : kPowerNormal);
 }
 
 
@@ -53,7 +53,14 @@ void SetMotorPower(short m, float power)	//	power is from 1 to 100
 */
 void OmniArcadeDrive(Vector& drive, Vector& omni)
 {
-	//	FIXME: implement
+	float power = drive.y;
+	float turn = drive.x;
+	float side = omni.x;
+
+	SetMotorPower(Left, power + turn);
+	SetMotorPower(Right, power - turn);
+	SetMotorPower(Front, side);
+	SetMotorPower(Back, side);
 }
 
 
@@ -100,7 +107,7 @@ void SetMotorSpeedsForVelocities(float dx_dt, float dy_dt, float dtheta_dt, floa
 }
 
 
-
+/*
 
 
 
@@ -156,7 +163,7 @@ float OmniTimeRequiredForTranslation(Vector& translation)
 	 *		|/________________________\____
 	 *				      t
 	 */
-
+/*
 	float distance = VectorGetMagnitude(translation);
 
 	float timeIfPeak = kMaxWheelVelocity / kMaxTranslationalAcceleration * 2;	//	time to accelerate to max velocity, then decelerate to zero
@@ -201,7 +208,7 @@ float OmniTimeRequiredForRotation(float rotationAngle)
 }
 
 
-
+/*
 
 //	FIXME: is it necessary to include an initial & final velocity here???????????????????????????????
 void OmniCreateVelocityCurve(float minDuration, float maxAcceleration, float maxVelocity, float initialVelocity, float finalVelocity, VelocityCurve& vCurve)
@@ -234,10 +241,10 @@ void OmniCreateVelocityCurve(float minDuration, float maxAcceleration, float max
 
 }
 
+*/
 
 
-
-
+/*
 void OmniTranslate(Vector& translation)
 {
 	VelocityCurve xCurve, yCurve;
@@ -285,3 +292,4 @@ void OmniTranslateAndRotate(Vector& translation, float angle)
 
 
 }
+*/
