@@ -54,7 +54,7 @@ void SetMotorPower(short m, float power)	//	power is from 0 to 1
 void OmniArcadeDrive(Vector& drive, Vector& omni)
 {
 	float power = drive.y;
-	float turn = drive.x;
+	float turn = drive.x / 2;
 	float side = omni.x;
 
 	SetMotorPower(Left, power + turn);
