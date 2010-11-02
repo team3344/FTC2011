@@ -152,14 +152,22 @@ typedef enum {
 
 
 
-
-
+void FTCFieldGetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpiOut);
+void FTCFieldSetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpi);
 
 
 bool WhiteLineConnectsKeyPoints(KeyPointID kp1, KeyPointID kp2);
 
+
 bool TunnelExistsAtKeyPoint(KeyPointID kp);
 float TunnelAngleAtKeyPoint(KeyPointID kp);
+
+
+
+
+
+
+
 
 
 

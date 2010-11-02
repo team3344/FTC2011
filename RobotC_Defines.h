@@ -34,6 +34,14 @@ static int SensorValue[100];
 
 
 
+
+
+#define PC_DEBUG_STRING(string str) printf(str)
+
+
+
+
+
 #define FloorLightSensor 0
 
 

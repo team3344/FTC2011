@@ -1,5 +1,12 @@
 
 
+#ifndef _FTCField_
+#include "FTCField.h"
+#endif
+
+
+
+static KeyPointInfo _infoForKeyPoints[kNodeCount];
 
 
 
@@ -7,10 +14,15 @@
 
 
 
+void FTCFieldGetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpiOut)
+{
+	memcpy(kpiOut, _infoForKeyPoints[kp], sizeof(KeyPointInfo));
+}
 
-
-
-
+void FTCFieldSetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpi)
+{
+	memcpy(_infoForKeyPoints[kp], kpi, sizeof(KeyPointInfo);
+}
 
 
 
