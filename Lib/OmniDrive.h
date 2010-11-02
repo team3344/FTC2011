@@ -39,6 +39,9 @@ void OmniArcadeDrive(Vector& drive, Vector& omni);
 void OmniStrafeDrive(Vector& strafe, Vector& rotate);
 
 
+void OmniDrivePro(Controller& ctrlr);
+
+
 
 
 void OmniTranslate(Vector translation);

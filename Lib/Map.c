@@ -236,7 +236,7 @@ void _MapClearCachedPath()
 void _MapTravelNode(NodeID nodeID);
 void _CallMapTravelNode(NodeID nodeID)
 {
- _MapTravelNode(nodeID);
+	_MapTravelNode(nodeID);
 }
 
 
@@ -365,13 +365,24 @@ void MapConnectNodes(NodeID n1, NodeID n2, float cost)
 
 bool MapNodesAreConnected(NodeID n1, NodeID n2)
 {
-	return globalMap.pathCosts[n1][n2] != kInfinity;
+	return globalMap.pathCosts[n1][n2] != kInfinity && globalMap.validPaths[n1, n2];	//	it's valid and not infinite
 }
 
 
 void MapInvalidatePath(NodeID n1, NodeID n2)
 {
 	MapConnectNodes(n1, n2, kInfinity);
+}
+
+void MapInvalidatePathFromNodeToNode(NodeID n1, NodeID n2)	//	tell it there is no path between the two given nodes.  order MATTERS
+{
+	globalMap.validPaths[n1][n2] = false;
+}
+
+void MapInvalidatePathBetweenNodes(NodeID n1, NodeID n2)	//	tell it there is no path between the two given nodes.  order DOESN'T matter
+{
+	MapInvalidatePathFromNodeToNode(n1, n2);
+	MapInvalidatePathFromNodeToNode(n2, n1);
 }
 
 void MapSetCurrentNodeID(NodeID current)
@@ -439,6 +450,8 @@ void MapReset() //	sets cost from each node to itself to zero, and the rest to i
 			{
 				globalMap.pathCosts[i][j] = kInfinity;	//	default value of infinity says there's no path between i & j
 			}
+			
+			globalMap.validPaths[i][j] = true;
 		}
 
 		globalMap.cachedPath[i] = NodeIDZero; //	clear each node id in the cached path

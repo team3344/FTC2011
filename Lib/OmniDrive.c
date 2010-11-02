@@ -78,6 +78,61 @@ void OmniStrafeDrive(Vector& strafe, Vector& rotate)
 
 
 
+void OmniDrivePro(Controller& ctrlr)
+{
+	
+	#define kSidewindSpeedFast .8
+	#define kSidewindSpeedSlow .4
+	
+	
+	
+	bool r1, r2, l1, l2, left, right;
+	
+	r1 = ControllerButtonIsPressed(ctrlr, ControllerButtonR1);
+	r2 = ControllerButtonIsPressed(ctrlr, ControllerButtonR2);
+	l1 = ControllerButtonIsPressed(ctrlr, ControllerButtonL1);
+	l2 = ControllerButtonIsPressed(ctrlr, ControllerButtonL2);
+	
+	right = r1 || r2;
+	left = l1 || l2;
+	
+	if ( !left || !right )	//	only one is pressed
+	{
+		if ( r2 )
+		{
+			
+		}
+		else if ( r1 )
+		{
+			
+		}
+		else if ( l2 )
+		{
+			
+		}
+		else	//	l1
+		{
+			
+		}
+	}
+	
+	//	FIXME: implement!!!!!!!!!!!!!!!
+	
+	
+	
+	
+	//	arcade drive with the left joystick
+	float power = ctrlr.leftJoystick.y;
+	float turn = ctrlr.leftJoystick.x / 2;
+	float side = ctrlr.leftJoystick.x;
+	
+	SetMotorPower(Left, power + turn);
+	SetMotorPower(Right, power - turn);
+}
+
+
+
+
 
 
 

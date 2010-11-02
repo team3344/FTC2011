@@ -40,4 +40,14 @@ float LightSensorGetBrightness(short s);
 
 
 
+
+
+
+bool EnemyRobotDetected();
+
+
+
+
+
+
 #endif

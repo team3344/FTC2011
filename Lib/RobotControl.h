@@ -27,8 +27,10 @@ bool RobotIRIsVisible();
 
 
 
-void RobotRotate(float angle);	//	0 = straight ahead, pi/2 = left, -pi/2 = right
-void RobotMove(float distance);	//	distance in inches???.  Can be negative.
+
+void RobotRotate(float angle);			//	0 = straight ahead, pi/2 = left, -pi/2 = right
+void RobotRotateToAngle(float angle);
+void RobotMove(float distance);			//	distance in inches???.  Can be negative.
 
 
 
@@ -39,21 +41,15 @@ void RobotGetCurrentPosition(RobotPosition& posOut);
 
 
 
-//	motor control by power
-void MotorRotateToEncoderValueAtPower(int m, int encoderValue, int power);
-void MotorRotateTurnsAtPower(int m, float turns, int power);
-
-//	motor control by speed
-//	NOTE: speed is in radians/sec
-void MotorRotateEncoderPointsAtSpeed(int m, int encoderPoints, int speed);
-void MotorRotateTurnsAtSpeed(int m, float turns, int speed);
-
-
-
 
 void RobotGoToKeyPoint(KeyPointID target);
 
 void RobotMoveWithVector(Vector& displacement);	// go in the direction of 'displacement' and travel its magnitude
+
+
+
+
+void RobotBalance();	//	call this when we're on the bridge and the robot will adjust its position until it's balanced
 
 
 
