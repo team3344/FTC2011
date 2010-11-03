@@ -12,7 +12,33 @@
 #endif
 
 
+//	Position Tracking
+//===========================================================================================================
+static RobotPosition _currentRobotPosition;
 
+void RobotSetCurrentPosition(RobotPosition& pos)
+{
+	memcpy(_currentRobotPosition, pos, sizeof(RobotPosition));
+}
+
+void RobotGetCurrentPosition(RobotPosition& posOut)
+{
+	memcpy(posOut, _currentRobotPosition, sizeof(RobotPosition));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//	Line Following
+//===========================================================================================================
 
 
 #define kLineEdgeLightSensorValue 20	//	FIXME: can this value be calibrated during run????????????????
@@ -74,91 +100,32 @@ void RobotMove(float distance)
 
 
 
-
-
-
-//	Node Traveling
-//===================================================================================================================
-
-
-void _RobotGoFromCurrentNodeToNode(Node& current, Node& target)
-{
-	Vector displacement;
-	VectorSubtract(&target.location, &current.location, &displacement);
-
-	//printf("\ncurrentLocation = ");
-	//PrintVector(current.location);
-
-	//printf("\ntarget.location = ");
-	//PrintVector(target.location);
-
-	//printf("\nrobot move w/vector: ");
-	//PrintVector(displacement);
-	//printf("\n");
-
-
-	RobotMoveWithVector(&displacement);	//	FIXME: only do this for things without landmarks or beacons???
-
-	//	FIXME: look for landmarks???
-	//	FIXME: if we hit a landmark, tell tracker we have an absolute position
-
-
-
-
-
-}
-
-
-void RobotGoToNode(NodeID target)
-{
-	MapSetGoalNodeID(target);
-
-	Node previous;
-	MapGetNode(MapGetCurrentNodeID(), &previous);	//	start position
-
-	while ( true )
-	{
-		NodeID node = MapAdvance();			//	get the id of the next node along the path
-		if ( node == NodeIDZero ) break;	//	if we're at the end of the path, we're done!
-
-		Node segmentTarget;
-		MapGetNode(node, &segmentTarget);	//	this is where we're heading
-
-		_RobotGoFromCurrentNodeToNode(&previous, &segmentTarget);	//	go to the target
-
-		previous = segmentTarget;	//	the node we're now heading to will be the previous node in the next iteration
-	}
-}
-
-
-
-
-
-
-
-//	FIXME: below method is trash and may have been redone in OmniDrive.c
-
 void RobotMoveWithVector(Vector& displacement)
 {
 	RobotPosition currentPosition;
 	//TrackerGetCurrentPosition(&currentPosition);
-
+	
 	//printf("currentPosition.orientation = %f\n", currentPosition.orientation);
-
+	
 	//printf("displacement angle = %f\n", VectorGetAngle(displacement));
-
+	
 	RobotRotate(VectorGetAngle(&displacement) - currentPosition.orientation);	//	turn towards the destination
 	RobotMove(VectorGetMagnitude(&displacement));								//	move the required distance to the destination
-
-
-
-
+	
+	
+	
+	
 	//FIXME: remove below line
-
+	
 	RobotPosition future;
 	VectorAdd(&currentPosition.location, &displacement, &future.location);
 	future.orientation = VectorGetAngle(&displacement);
-//	TrackerSetCurrentPosition(&future);
+	//	TrackerSetCurrentPosition(&future);
 	//	FIXME: trash above
-
+	
 }
+
+
+
+
+

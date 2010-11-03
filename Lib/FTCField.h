@@ -14,6 +14,25 @@
 
 
 
+typedef enum {
+	FTCTeamRed,
+	FTCTeamBlue
+} FTCTeam;
+
+void FTCTeamSetCurrent(FTCTeam team);
+FTCTeam FTCTeamGetCurrent();
+
+
+
+typedef enum {
+	FTCStartPositionLeft,
+	FTCStartPositionRight
+} FTCStartPosition;
+
+void FTCFieldSetStartPosition(FTCStartPosition pos);
+FTCStartPosition FTCFieldGetStartPosition();
+
+
 
 //	field coordinates are in inches
 //	the origin is at the corner on the red side
@@ -190,6 +209,19 @@ KeyPointID FTCFieldGetPreviousKeyPoint();
 
 KeyPointID FTCFieldAdvance();	//	says "hey we got to our segment goal key point, where's the next one
 KeyPointID FTCFieldRetract();	//	same thing as above, but for going backwards
+
+
+
+
+
+
+
+
+KeyPoint FTCFieldGetKeyPointOfBridgeForTeam(FTCTeam team);
+KeyPoint FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeam team);
+
+
+
 
 
 

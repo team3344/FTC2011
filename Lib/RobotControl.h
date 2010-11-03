@@ -35,14 +35,19 @@ void RobotMove(float distance);			//	distance in inches???.  Can be negative.
 
 
 
+void RobotLowerBridge();
+void RobotMountCenterDispenser();	//	we're right in front of it.  drive up close to it and get in position to dispense
+
+
+
+
+
+
 //	Position Tracking
 void RobotSetCurrentPosition(RobotPosition& pos);
 void RobotGetCurrentPosition(RobotPosition& posOut);
 
 
-
-
-void RobotGoToKeyPoint(KeyPointID target);
 
 void RobotMoveWithVector(Vector& displacement);	// go in the direction of 'displacement' and travel its magnitude
 

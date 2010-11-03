@@ -15,48 +15,82 @@
 
 
 
-#include "include.c"
+#include "Lib/include.c"
 
+
+
+void setStartInfo()
+{
+	FTCTeamSetCurrent(FTCTeamRed);					//	tell it what team we are on
+	FTCFieldSetStartPosition(FTCStartPositionLeft);	//	tell it which start square we're on
+}
 
 
 
 void initializeRobot()
 {
-	// FIXME: implement
+	FTCFieldInit();	//  initialize the map of the field
 
-
-	FTCFieldInit();  //  initialize the map of the field
-
-
-
-	//MapSetCurrentNodeID(NodeIDRedStartSquareLeft);  //  set starting position
-
-
-
-	RobotPosition position;
-	Vector2DMake(50, 50, position.location);
-	position.orientation = 0;
-	//	TrackerSetCurrentPosition(position);
+	setStartInfo();
 	
 	
+	//	FIXME: init mechanism???
 	
 	
 	PlaySound(soundUpwardTones);
-
-
-	return;
 }
+
+
+
+static bool gettingDoubler;	//	global variable that tells whether or not the GetDoublerBaton task is running
+
+task GetDoublerBaton()
+{
+	gettingDoubler = true;
+	
+	
+	KeyPointID dispenserID = FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeamGetCurrent());	//	get key point of the dispenser
+	//	FIXME: go to the dispenser
+	//	FIXME: turn towards it
+	RobotMountCenterDispenser();	//	get aligned with the dispenser
+	//	FIXME: run the conveyor to get batons
+	//	FIXME: backup to node
+	
+	
+	gettingDoubler = false;
+}
+
+
+
+task GetToBridgeAndBalance()
+{
+	FTCFIeldGetKeyPointOfBridgeForTeam(FTCTeamGetCurrent());	//	FIXME: what about the other bridge????
+	//	FIXME: go to the key point
+	
+	RobotBalance();
+}
+
 
 
 
 task main()
 {
 	initializeRobot();
-
-	//waitForStart(); // Wait for the beginning of autonomous phase.
-
-  //RobotGoToNode(NodeIDBlueStartSquareRight);
-
-
-	//	FIXME: implement
+	
+	waitForStart();		// Wait for the beginning of autonomous phase.
+	
+	long startTime = nPgmTime;
+	
+	
+	StartTask(GetDoublerBaton);
+	
+	while ( nPgmTime - startTime < 25000 && gettingDoubler )	//	wait until 25 seconds are up or we have the doubler
+	{
+		wait10Msec(100);	//	wait 1 second
+	}
+	
+	StartTask(GetToBridgeAndBalance);
 }
+
+
+

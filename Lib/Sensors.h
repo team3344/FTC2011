@@ -10,7 +10,7 @@
 
 
 //	Accelerometer
-float AccelerometerGetTiltAngle(short s);
+float AccelerometerSensorGetTiltAngle(short s);
 
 
 

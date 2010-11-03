@@ -6,6 +6,52 @@
 
 
 
+
+
+//		Teams
+//========================================================================================================================
+
+static FTCTeam _currentTeam;
+
+void FTCTeamSetCurrent(FTCTeam team)
+{
+	_currentTeam = team;
+}
+
+FTCTeam FTCTeamGetCurrent()
+{
+	return _currentTeam;
+}
+
+
+
+//		Start Position
+//========================================================================================================================
+
+static FTCStartPosition _startPosition;
+
+void FTCFieldSetStartPosition(FTCStartPosition pos)
+{
+	_startPosition = pos;
+	//	FIXME: set current location & key point
+}
+
+FTCStartPosition FTCFieldGetStartPosition()
+{
+	return _startPosition;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 static KeyPointInfo _infoForKeyPoints[kNodeCount];
 
 
