@@ -56,7 +56,7 @@ task ContinuouslyUpdateMotorPower()
 {
 	while ( true )
 	{
-		UpdateMotorPower();
+		//UpdateMotorPower();
 		wait1Msec(kRobotMotorRefreshInterval);
 	}
 }

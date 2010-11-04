@@ -7,10 +7,6 @@
 #include "Vector.h"
 #endif
 
-#ifndef _Tracker_
-#include "Tracker.h"
-#endif
-
 
 
 
@@ -38,7 +34,7 @@ typedef struct {
 	bool cached;
 	int currentNode;
 	float pathCosts[kNodeCount][kNodeCount];
-	bool validPaths[kNodeCount][kNodeCount];
+	int validationTimes[kNodeCount][kNodeCount];	//	If nPgmTime is greater than the validation time b/w nodes, the node is valid
 } Map;
 
 
@@ -47,7 +43,8 @@ bool MapNodesAreConnected(NodeID n1, NodeID n2);			//	note: order matters
 void MapConnectNodes(NodeID n1, NodeID n2, float cost);		//	tell it the distance between the two given nodes
 void MapConnectNodesAutomatically(NodeID n1, NodeID n2);	//	calculates the distance between the nodes using their locations. note: order doesn't matter
 void MapInvalidatePathFromNodeToNode(NodeID n1, NodeID n2);	//	tell it there is no path between the two given nodes.  order MATTERS
-void MapInvalidatePathBetweenNodes(NodeID n1, NodeID n2);	//	tell it there is no path between the two given nodes.  order DOESN'T matter
+void MapInvalidatePathBetweenNodes(NodeID n1, NodeID n2, int time);	//	tell it there is no path between the two given nodes.  order DOESN'T matter.  time = time in msec until it's valid again
+bool MapPathBetweenNodesIsValid(NodeID n1, NodeID n2);
 
 void MapSetCurrentNodeID(NodeID current);					//	tell the map where we are at the moment
 NodeID MapGetCurrentNodeID();								//	ask the map where it thinks we are

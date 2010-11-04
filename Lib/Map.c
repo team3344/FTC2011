@@ -115,7 +115,7 @@ void MapDraw()
 
 }
 
-
+/*
 task MapContinuouslyRedraw()
 {
   while ( true )
@@ -182,7 +182,7 @@ task MapContinuouslyRedraw()
 
 
 
-
+*/
 
 
 
@@ -316,7 +316,7 @@ void _MapFindShortestPath(NodeID from, NodeID to)
 
 
 
-
+/*
 void _MapPrintPath()
 {
 	//printf("\n\npath:\n");
@@ -332,7 +332,7 @@ void _MapPrintPath()
 
 	//printf("\n");
 }
-
+*/
 
 
 
@@ -365,24 +365,19 @@ void MapConnectNodes(NodeID n1, NodeID n2, float cost)
 
 bool MapNodesAreConnected(NodeID n1, NodeID n2)
 {
-	return globalMap.pathCosts[n1][n2] != kInfinity && globalMap.validPaths[n1, n2];	//	it's valid and not infinite
+	return globalMap.pathCosts[n1][n2] != kInfinity && MapPathBetweenNodesIsValid(n1, n2);	//	it's valid and not infinite
 }
 
-
-void MapInvalidatePath(NodeID n1, NodeID n2)
+void MapInvalidatePathBetweenNodes(NodeID n1, NodeID n2, int time)	//	tell it there is no path between the two given nodes.  order DOESN'T matter
 {
-	MapConnectNodes(n1, n2, kInfinity);
+  int validTime = time + nPgmTime;
+	globalMap.validationTimes[n1][n2] = validTime;
+	globalMap.validationTimes[n2][n1] = validTime;
 }
 
-void MapInvalidatePathFromNodeToNode(NodeID n1, NodeID n2)	//	tell it there is no path between the two given nodes.  order MATTERS
+bool MapPathBetweenNodesIsValid(NodeID n1, NodeID n2)
 {
-	globalMap.validPaths[n1][n2] = false;
-}
-
-void MapInvalidatePathBetweenNodes(NodeID n1, NodeID n2)	//	tell it there is no path between the two given nodes.  order DOESN'T matter
-{
-	MapInvalidatePathFromNodeToNode(n1, n2);
-	MapInvalidatePathFromNodeToNode(n2, n1);
+	return nPgmTime > globalMap.validationTimes[n1][n2];
 }
 
 void MapSetCurrentNodeID(NodeID current)
@@ -450,8 +445,8 @@ void MapReset() //	sets cost from each node to itself to zero, and the rest to i
 			{
 				globalMap.pathCosts[i][j] = kInfinity;	//	default value of infinity says there's no path between i & j
 			}
-			
-			globalMap.validPaths[i][j] = true;
+
+			globalMap.validationTimes[i][j] = 0;
 		}
 
 		globalMap.cachedPath[i] = NodeIDZero; //	clear each node id in the cached path

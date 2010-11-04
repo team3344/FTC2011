@@ -217,8 +217,8 @@ KeyPointID FTCFieldRetract();	//	same thing as above, but for going backwards
 
 
 
-KeyPoint FTCFieldGetKeyPointOfBridgeForTeam(FTCTeam team);
-KeyPoint FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeam team);
+KeyPointID FTCFieldGetKeyPointOfBridgeForTeam(FTCTeam team);
+KeyPointID FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeam team);
 
 
 

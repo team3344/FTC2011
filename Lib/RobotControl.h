@@ -15,6 +15,14 @@
 
 
 
+typedef struct {
+  float orientation;
+  Vector location;
+} RobotPosition;
+
+
+
+
 
 //	NOTE: robot always follows RIGHT side of line
 void RobotFollowWhiteLine();
