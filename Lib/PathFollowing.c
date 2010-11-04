@@ -7,6 +7,9 @@
 
 
 
+#define kObstructedPathInvalidationTime 5000	//	5 seconds
+
+
 PathSegment _currentPathSegment;
 
 
@@ -28,7 +31,7 @@ void RobotTravelPathSegment(PathSegment& ps)
 	
 	
 	
-	
+	//	FIXME: implement
 	
 	
 	float currentAngle;
@@ -52,19 +55,7 @@ void RobotTravelPathSegment(PathSegment& ps)
 
 void RobotInvalidateCurrentPathSegmentForTime(float time)	//	time in seconds
 {
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	MapInvalidatePathBetweenNodes(_currentPathSegment.source, _currentPathSegment.destination, kObstructedPathInvalidationTime);
 }
 
 void RobotRetraceMovementToPreviousKeyPoint()
@@ -72,7 +63,7 @@ void RobotRetraceMovementToPreviousKeyPoint()
 	
 	
 	
-	
+	//	FIXME: implement
 	
 	
 	
@@ -86,10 +77,12 @@ void RobotRetraceMovementToPreviousKeyPoint()
 
 void RobotTravelFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest)
 {
+	MapSetCurrentNodeID(src);
+	MapSetGoalNodeID(dest);
+
+	while (
 	
-	
-	
-	
+	//	FIXME: implement
 	
 	
 	

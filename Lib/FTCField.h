@@ -160,8 +160,8 @@ typedef enum {
 	KeyPointIDLine1Top,
 	KeyPointIDLine1Bottom,
 
-	KeyPointIDLine2Top,
-	KeyPointIDLine2Bottom,
+	//KeyPointIDLine2Top,
+	//KeyPointIDLine2Bottom,
 
 	KeyPointIDLine3Top,
 	KeyPointIDLine3Bottom,
@@ -169,8 +169,8 @@ typedef enum {
 	KeyPointIDLine4Top,
 	KeyPointIDLine4Bottom,
 
-	KeyPointIDLine5Top,
-	KeyPointIDLine5Bottom,
+	//KeyPointIDLine5Top,
+	//KeyPointIDLine5Bottom,
 
 	KeyPointIDLine6Top,
 	KeyPointIDLine6Bottom
