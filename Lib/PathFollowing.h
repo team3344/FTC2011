@@ -31,6 +31,7 @@ void RobotGetCurrentPathSegment(PathSegment& psOut);
 void RobotTravelFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest);
 void RobotTravelPathSegment(PathSegment& ps);
 void RobotInvalidateCurrentPathSegmentForTime(float time);	//	time in seconds
+void RobotAbortCurrentTravel();
 void RobotRetraceMovementToPreviousKeyPoint();
 
 

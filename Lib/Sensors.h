@@ -10,29 +10,29 @@
 
 
 //	Accelerometer
-float AccelerometerSensorGetTiltAngle(short s);
+float AccelerometerSensorGetTiltAngle(tSensors s);
 
 
 
 //	Ultrasonic
-float UltrasonicSensorGetDistance(short s);	//	distance is in inches
+float SonarSensorGetDistance(tSensors s);	//	distance is in inches
 
 
 
 //	IR
-bool IRSensorBeaconIsVisible(short s);
-float IRSensorGetAngleToBeacon(short s);
-float IRSensorGetIRStrength(short s);
+bool IRSensorBeaconIsVisible(tSensors s);
+float IRSensorGetAngleToBeacon(tSensors s);
+float IRSensorGetIRStrength(tSensors s);
 
 
 
 //	Magnet
-bool MagneticSensorMagnetIsPresent(short s);
+bool MagneticSensorMagnetIsPresent(tSensors s);
 
 
 
 //	Light
-float LightSensorGetBrightness(short s);
+float LightSensorGetBrightness(tSensors s);
 
 
 
