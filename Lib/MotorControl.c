@@ -37,7 +37,7 @@ void MotorRotateTurnsAtPower(int m, int turns, int power)
 }
 
 //	FIXME: is all this stuff shenannigans???
-
+/*
 typedef struct {
 	float speed;
 	int lastUpdateTime;
@@ -70,7 +70,7 @@ void UpdateMotorPower()
 	}
 }
 
-
+*/
 
 
 

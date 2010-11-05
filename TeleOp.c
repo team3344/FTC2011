@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  none)
 #pragma config(Sensor, S2,     IR,                  sensorNone)
-#pragma config(Motor,  motorA,          Conveyor,      tmotorNormal, PIDControl, encoder)
+#pragma config(Motor,  motorA,          Conveyor,      tmotorNormal, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     Front,         tmotorNormal, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C1_2,     Back,          tmotorNormal, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     Left,          tmotorNormal, openLoop, reversed)
@@ -74,11 +74,19 @@ void initializeRobot()
 
 
 
+#define kLowPower .2
+#define kRegularPower .4
+#define kHighPower .8
+
+
+
+
 task main()
 {
 	initializeRobot();
 
 	waitForStart();   // wait for start of tele-op phase
+
 
 	while (true)
 	{
@@ -89,7 +97,25 @@ task main()
 
 
 
-		SetBoostState(ControllerButtonIsToggledOn(primary, ControllerButton2));  //  set boost mode
+		//SetBoostState(ControllerButtonIsToggledOn(primary, ControllerButton2));  //  set boost mode
+
+    if ( ControllerButtonIsPressed(primary, ControllerButton1) )
+    {
+      SetPowerMultiplier(kLowPower);
+    }
+    else if ( ControllerButtonIsPressed(primary, ControllerButton2) )
+    {
+      SetPowerMultiplier(kRegularPower);
+    }
+    else if ( ControllerButtonIsPressed(primary, ControllerButton3) )
+    {
+      SetPowerMultiplier(kHighPower);
+    }
+
+
+
+
+
 
 
 
@@ -109,13 +135,37 @@ task main()
 
 
 		//	Drive
-		OmniArcadeDrive(primary.rightJoystick, primary.leftJoystick);	//	right = arcade, left = sidewind
+		//OmniArcadeDrive(primary.rightJoystick, primary.leftJoystick);	//	right = arcade, left = sidewind
 		//OmniStrafeDrive(primary.leftJoystick, primary.rightJoystick);	//	left = strafe, right = turn
 
 
 
 
-		//	FIXME: do mechanism stuff
+    //  tank drive
+    SetMotorPower(Left, primary.leftJoystick.y);
+    SetMotorPower(Right, primary.rightJoystick.y);
+
+
+
+
+
+
+    /*
+
+    bool r1, r2, l1, l2, left, right;
+
+	  r1 = ControllerButtonIsPressed(primary, ControllerButtonR1);
+	  r2 = ControllerButtonIsPressed(primary, ControllerButtonR2);
+	  l1 = ControllerButtonIsPressed(primary, ControllerButtonL1);
+	  l2 = ControllerButtonIsPressed(primary, ControllerButtonL2);
+
+    if ( r1 ) OmniSetStrafePower(.5);
+    else if ( r2 ) OmniSetStrafePower(1);
+    else if ( l1 ) OmniSetStrafePower(-.5);
+    else if ( l2 ) OmniSetStrafePower(-1);
+
+    */
+
 
 
 		//	FIXME: implement

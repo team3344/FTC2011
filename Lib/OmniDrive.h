@@ -16,11 +16,13 @@
 
 
 
+void SetPowerMultiplier(float multiplier);
 
+/*
 void SetBoostState(bool state);
 bool BoostToggle();	//	toggles boost and returns the new value
 bool BoostIsOn();
-
+*/
 
 
 
@@ -42,7 +44,7 @@ void OmniStrafeDrive(Vector& strafe, Vector& rotate);
 void OmniDrivePro(Controller& ctrlr);
 
 
-
+void OmniSetStrafePower(float power);
 
 void OmniTranslate(Vector translation);
 void OmniRotate(float angle);

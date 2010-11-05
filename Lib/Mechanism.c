@@ -12,8 +12,8 @@
 
 
 
-#define kKickerServoDownPosition 255
-#define kKickerServoUpPosition 255 - 65
+#define kKickerServoDownPosition 250
+#define kKickerServoUpPosition 255 - 80
 #define kKickerPostDelay 400            //  delay after mechanism kicks
 
 bool _kickingBaton;

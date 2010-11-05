@@ -14,12 +14,19 @@
 
 
 
-static bool boost;
+static float _powerMultiplier;
 
 #define kPowerNormal .4
 #define kPowerBoost 1.0
 
 
+void SetPowerMultiplier(float multiplier)
+{
+  _powerMultiplier = multiplier;
+}
+
+
+/*
 void SetBoostState(bool state)
 {
 	boost = state;
@@ -36,12 +43,12 @@ bool BoostIsOn()
 {
 	return boost;
 }
-
+*/
 
 //	motor names: Left, Right, Front, Back
 void SetMotorPower(short m, float power)	//	power is from 0 to 1
 {
-	motor[m] = power * 100. * (( BoostIsOn() ) ? kPowerBoost : kPowerNormal);
+	motor[m] = power * 100. * _powerMultiplier;
 }
 
 
@@ -78,54 +85,62 @@ void OmniStrafeDrive(Vector& strafe, Vector& rotate)
 
 
 
+void OmniSetStrafePower(float power)
+{
+  SetMotorPower(Left, power);
+  SetMotorPower(Right, power);
+}
+
+
+
 void OmniDrivePro(Controller& ctrlr)
 {
-	
+
 	#define kSidewindSpeedFast .8
 	#define kSidewindSpeedSlow .4
-	
-	
-	
+
+
+
 	bool r1, r2, l1, l2, left, right;
-	
+
 	r1 = ControllerButtonIsPressed(ctrlr, ControllerButtonR1);
 	r2 = ControllerButtonIsPressed(ctrlr, ControllerButtonR2);
 	l1 = ControllerButtonIsPressed(ctrlr, ControllerButtonL1);
 	l2 = ControllerButtonIsPressed(ctrlr, ControllerButtonL2);
-	
+
 	right = r1 || r2;
 	left = l1 || l2;
-	
+
 	if ( !left || !right )	//	only one is pressed
 	{
 		if ( r2 )
 		{
-			
+
 		}
 		else if ( r1 )
 		{
-			
+
 		}
 		else if ( l2 )
 		{
-			
+
 		}
 		else	//	l1
 		{
-			
+
 		}
 	}
-	
+
 	//	FIXME: implement!!!!!!!!!!!!!!!
-	
-	
-	
-	
+
+
+
+
 	//	arcade drive with the left joystick
 	float power = ctrlr.leftJoystick.y;
 	float turn = ctrlr.leftJoystick.x / 2;
 	float side = ctrlr.leftJoystick.x;
-	
+
 	SetMotorPower(Left, power + turn);
 	SetMotorPower(Right, power - turn);
 }
