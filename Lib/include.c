@@ -8,3 +8,4 @@
 #include "FTCField.c"
 #include "OmniDrive.c"
 #include "Mechanism.c"
+#include "Sensors.c"

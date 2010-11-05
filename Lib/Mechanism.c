@@ -9,9 +9,6 @@
 
 
 
-
-
-
 #define kKickerServoDownPosition 250
 #define kKickerServoUpPosition 255 - 80
 #define kKickerPostDelay 400            //  delay after mechanism kicks
@@ -30,7 +27,7 @@ task MechanismKickBaton()
   servo[Kicker] = kKickerServoUpPosition;
   wait1Msec(kKickerPostDelay);
   servo[Kicker] = kKickerServoDownPosition;
-  wait1Msec(300);
+  wait1Msec(250);								//	FIXME: is this delay alright
 
   _kickingBaton = false;
 }
@@ -40,10 +37,25 @@ task MechanismKickBaton()
 
 
 
+bool MechanismHasMagnetBaton()
+{
+	return MagneticSensorMagnetIsPresent();	//	FIXME: fix this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
 
 
 
-#define kMechanismConveyorFullCycleEncoderCount 2000
+#define kIndicatorLightPower 70	//	FIXME: IS THIS GOOD ENOUGH????????????????????????????
+
+void MechanismSetIndicatorLightState(bool turnedOn)
+{
+	motor[IndicatorLight] = ( turnedOn ) ? kIndicatorLightPower : 0;
+}
+
+
+
+
+
+#define kMechanismConveyorFullCycleEncoderCount 2000	//	FIXME: this is garbage	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #define kMechanismConveyorMotorSpeed 70
 
 bool _conveyorRunning;
@@ -71,14 +83,10 @@ task MechanismCycleConveyor()
 
 
 
-
-
-
-
 void MechanismInit()
 {
   servo[Kicker] = kKickerServoDownPosition; //  put the kicker down
-
-
-
+	
+	
+	
 }

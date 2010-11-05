@@ -5,6 +5,11 @@
 
 
 
+#ifndef _Sensors_
+#include "Sensors.h"
+#endif
+
+
 
 
 typedef enum {
@@ -26,22 +31,14 @@ task MechanismKickBaton();
 void MechanismInit();
 
 
+bool MechanismHasMagnetBaton();
+void MechanismSetIndicatorLightState(bool turnedOn);
+
+
 
 bool MechanismConveyorIsRunning();
 task MechanismCycleConveyor();    //  make it go all the way around once
 
-
-
-
-
-
-
-
-//typedef Baton MagazineContents[kMagazineCapacity];
-//void MagazineEat(float time);	//	time is in ms????? distance??? # of batons???
-//void MagazineEject(int count);
-//task MagazinePack();			//	pushes the batons back tight
-//task MagazineSaveContents();	//	saves magine contents to a file.  where??????????????
 
 
 
