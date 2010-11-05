@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  none)
 #pragma config(Sensor, S2,     IR,                  sensorNone)
-#pragma config(Motor,  motorA,          Conveyor,      tmotorNormal, PIDControl, encoder)
+#pragma config(Motor,  motorA,          Conveyor,      tmotorNormal, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     Front,         tmotorNormal, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C1_2,     Back,          tmotorNormal, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     Left,          tmotorNormal, openLoop, reversed)
@@ -36,12 +36,10 @@ void setStartInfo()
 void initializeRobot()
 {
 	FTCFieldInit();	//  initialize the map of the field
-
 	setStartInfo();
 	
-	
-	//	FIXME: init mechanism???
-	
+	MechanismInit();
+		
 	
 	PlaySound(soundUpwardTones);
 }
@@ -56,10 +54,15 @@ task GetDoublerBaton()
 	
 	
 	KeyPointID dispenserID = FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeamGetCurrent());	//	get key point of the dispenser
-	//	FIXME: go to the dispenser
+	KeyPointID currentID = MapGetCurrentNodeID();
+	RobotTravelFromKeyPointToKeyPoint(currentID, dispenserID);	// go to the dispenser
+	
 	//	FIXME: turn towards it
+	
+	
 	RobotMountCenterDispenser();	//	get aligned with the dispenser
-	//	FIXME: run the conveyor to get batons
+	MechanismCycleConveyor();		//	pull in the doubler baton & a few others
+	
 	//	FIXME: backup to node
 	
 	
@@ -70,10 +73,11 @@ task GetDoublerBaton()
 
 task GetToBridgeAndBalance()
 {
-	FTCFIeldGetKeyPointOfBridgeForTeam(FTCTeamGetCurrent());	//	FIXME: what about the other bridge????
-	//	FIXME: go to the key point
+	KeyPointID bridgeID = FTCFieldGetKeyPointOfBridgeForTeam(FTCTeamGetCurrent());	//	FIXME: get id of closest bridge!!!!!!!!!!!!
+	KeyPointID currentID = MapGetCurrentNodeID();
+	RobotTravelFromKeyPointToKeyPoint(currentID, bridgeID);	//	go to the bridge
 	
-	RobotBalance();
+	RobotBalance();	//	use the accelerometor to balance the bot
 }
 
 
@@ -86,6 +90,13 @@ task main()
 	waitForStart();		// Wait for the beginning of autonomous phase.
 	
 	long startTime = nPgmTime;
+	
+	
+	
+	
+	//	FIXME: move the bot to the start node.  our starting spot is just off from the start node!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	
 	
 	
 	StartTask(GetDoublerBaton);
