@@ -20,9 +20,6 @@
 
 
 
-typedef struct {
-	KeyPointID source, destination;
-} PathSegment;
 
 
 

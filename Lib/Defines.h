@@ -5,7 +5,7 @@
 
 
 
-
+#define kLightSensorDistanceFromCenter 5
 
 
 
@@ -21,7 +21,6 @@
 
 
 //#define kRobotMotorCount 7
-
 //#define kRobotMotorRefreshInterval 20	//	number of milliseconds to wait between motor refreshes
 
 

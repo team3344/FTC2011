@@ -10,6 +10,10 @@
 #include "Map.h"
 #endif
 
+#ifndef _Defines_
+#include "Defines.h"
+#endif
+
 
 
 
@@ -71,37 +75,27 @@ FTCStartPosition FTCFieldGetStartPosition();
 
 
 
-/*
- *	A tunnel is just a place where turning is bad.
- *	For example: the top of the mountain.  The robot should
- *	only try to go over it perpindicular to the base otherwise
- *	bad things will happen.
- */
 
 
-
+typedef struct {
+	KeyPointID source, destination;
+} PathSegment;
 
 
 
 typedef enum {
-	PathSegmentFlagBridgeEntrance,
-	PathSegment
+	PathSegmentFlagBridgeEntrance	= 1 << 0,
+	PathSegmentFlagWhiteConnectingLine	= 1 << 1
 } PathSegmentFlags;
 
 
-typedef struct {
-	bool hasTunnel;
-	float tunnelAngle;
-	bool atBridgeEntrance;
 
+bool FTCFieldPathSegmentHasWhiteConnectingLine(PathSegment segment);
+void FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointID kp1, KeyPointID kp2);
+void FTCFieldAddBridgeEntranceFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest);
+bool FTCFieldBridgeEntranceIsFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest);
 
-	//	FIXME: white line???????????????????????????????????????????????????????
-} KeyPointInfo;
-
-
-
-
-
+PathSegmentFlags FTCFieldGetFlagsForPathSegment(PathSegment segment);
 
 
 
@@ -133,26 +127,21 @@ typedef enum {
 
 
 	//	bridges	//
-	KeyPointIDBlueBridgeTop,
 	KeyPointIDBlueBridgeCenter,
-	KeyPointIDBlueBridgeBottom,
-
-	KeyPointIDRedBridgeTop,
 	KeyPointIDRedBridgeCenter,
-	KeyPointIDRedBridgeBottom,
 
 
 
 	//	mountain	//
-	KeyPointIDMountainCenterTopEdge,
-	KeyPointIDMountainCenterPeak,
-	KeyPointIDMountainCenterBottomEdge,
+	//KeyPointIDMountainCenterTopEdge,
+	//KeyPointIDMountainCenterPeak,
+	//KeyPointIDMountainCenterBottomEdge,
 
 
 
 	//	pit goals	//
-	KeyPointIDRedPitCenter,
-	KeyPointIDBluePitCenter,
+	//KeyPointIDRedPitCenter,
+	//KeyPointIDBluePitCenter,
 
 
 
@@ -160,8 +149,8 @@ typedef enum {
 	KeyPointIDLine1Top,
 	KeyPointIDLine1Bottom,
 
-	//KeyPointIDLine2Top,
-	//KeyPointIDLine2Bottom,
+	KeyPointIDLine2Top,
+	KeyPointIDLine2Bottom,
 
 	KeyPointIDLine3Top,
 	KeyPointIDLine3Bottom,
@@ -169,33 +158,13 @@ typedef enum {
 	KeyPointIDLine4Top,
 	KeyPointIDLine4Bottom,
 
-	//KeyPointIDLine5Top,
-	//KeyPointIDLine5Bottom,
+	KeyPointIDLine5Top,
+	KeyPointIDLine5Bottom,
 
 	KeyPointIDLine6Top,
 	KeyPointIDLine6Bottom
 
 } KeyPointID;
-
-
-
-
-
-
-
-void FTCFieldGetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpiOut);
-void FTCFieldSetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpi);
-
-
-bool WhiteLineConnectsKeyPoints(KeyPointID kp1, KeyPointID kp2);
-
-
-bool TunnelExistsAtKeyPoint(KeyPointID kp);
-float TunnelAngleAtKeyPoint(KeyPointID kp);
-
-
-
-
 
 
 

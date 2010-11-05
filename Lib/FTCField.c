@@ -46,30 +46,38 @@ FTCStartPosition FTCFieldGetStartPosition()
 
 
 
+//		Key Point Flags
+//========================================================================================================================
+
+PathSegmentFlags _pathSegmentFlags[kNodeCount][kNodeCount];
 
 
-
-
-
-
-static KeyPointInfo _infoForKeyPoints[kNodeCount];
-
-
-
-
-
-
-
-void FTCFieldGetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpiOut)
+bool FTCFieldPathSegmentHasWhiteConnectingLine(PathSegment segment)
 {
-	memcpy(kpiOut, _infoForKeyPoints[kp], sizeof(KeyPointInfo));
+	return _pathSegmentFlags[segment.source][segment.destination] & PathSegmentFlagWhiteConnectingLine;
 }
 
-void FTCFieldSetInfoForKeyPoint(KeyPointID kp, KeyPointInfo& kpi)
+void FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointID kp1, KeyPointID kp2)
 {
-	memcpy(_infoForKeyPoints[kp], kpi, sizeof(KeyPointInfo);
+	_pathSegmentFlags[kp1][kp2] |= PathSegmentFlagWhiteConnectingLine;
+	_pathSegmentFlags[kp2][kp1] |= PathSegmentFlagWhiteConnectingLine;
 }
 
+void FTCFieldAddBridgeEntranceFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest)
+{
+	_pathSegmentFlags[src][dest] |= PathSegmentFlagBridgeEntrance;
+}
+
+bool FTCFieldBridgeEntranceIsFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest)
+{
+	return _pathSegmentFlags[src][dest] & PathSegmentFlagBridgeEntrance;
+}
+
+
+PathSegmentFlags FTCFieldGetFlagsForPathSegment(PathSegment segment)
+{
+	return _pathSegmentFlags[segment.source][segment.destination];
+}
 
 
 
@@ -163,61 +171,121 @@ void FTCFieldInit()		//	sets values specific to our field.
 	
 	
 	/**********		Bridges		**********/
-	Vector2DMake(kFieldSize - kBridgeDistanceFromSide, (kFieldSize / 2) + (kBridgeLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDRedBridgeTop, "R bridge top", location);
+	//Vector2DMake(kFieldSize - kBridgeDistanceFromSide, (kFieldSize / 2) + (kBridgeLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDRedBridgeTop, "R bridge top", location);
 	
 	VectorMake(kFieldSize - kBridgeDistanceFromSide, kFieldSize / 2, kBridgeHeight, location);
 	MapSetNodeInfoForID(KeyPointIDRedBridgeCenter, "R bridge cntr", location);
 	
-	Vector2DMake(kFieldSize - kBridgeDistanceFromSide, (kFieldSize / 2) - (kBridgeLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDRedBridgeBottom, "R bridge btm", location);
+	//Vector2DMake(kFieldSize - kBridgeDistanceFromSide, (kFieldSize / 2) - (kBridgeLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDRedBridgeBottom, "R bridge btm", location);
 	
-	Vector2DMake(kBridgeDistanceFromSide, (kFieldSize / 2) + (kBridgeLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDBlueBridgeTop, "B bridge top", location);
+	//Vector2DMake(kBridgeDistanceFromSide, (kFieldSize / 2) + (kBridgeLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDBlueBridgeTop, "B bridge top", location);
 	
 	
 	VectorMake(kBridgeDistanceFromSide, kFieldSize / 2, kBridgeHeight, location);
 	MapSetNodeInfoForID(KeyPointIDBlueBridgeCenter, "B bridge cntr", location);
 	
-	Vector2DMake(kBridgeDistanceFromSide, (kFieldSize / 2) - (kBridgeLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDBlueBridgeBottom, "B bridge btm", location);
+	//Vector2DMake(kBridgeDistanceFromSide, (kFieldSize / 2) - (kBridgeLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDBlueBridgeBottom, "B bridge btm", location);
 	
 	
 	
 	/**********		Pit Goals		**********/
-	Vector2DMake(kFieldSize - (kPitWidth / 2), (kFieldSize / 2) - (kPitLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDRedPitCenter, "R pit goal cntr", location);
+	//Vector2DMake(kFieldSize - (kPitWidth / 2), (kFieldSize / 2) - (kPitLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDRedPitCenter, "R pit goal cntr", location);
 	
-	Vector2DMake(kPitWidth / 2, (kFieldSize / 2) + (kPitLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDBluePitCenter, "B pit goal cntr", location);
+	//Vector2DMake(kPitWidth / 2, (kFieldSize / 2) + (kPitLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDBluePitCenter, "B pit goal cntr", location);
 	
 	
 	/**********		Mountain		**********/
-	Vector2DMake(kFieldSize / 2, (kFieldSize / 2) + (kMountainLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDMountainCenterTopEdge, "mntn cntr top edge", location);
+	//Vector2DMake(kFieldSize / 2, (kFieldSize / 2) + (kMountainLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDMountainCenterTopEdge, "mntn cntr top edge", location);
 	
-	VectorMake(kFieldSize / 2, kFieldSize / 2, kMountainHeight, location);
-	MapSetNodeInfoForID(KeyPointIDMountainCenterPeak, "mntn cntr peak", location);
+	//VectorMake(kFieldSize / 2, kFieldSize / 2, kMountainHeight, location);
+	//MapSetNodeInfoForID(KeyPointIDMountainCenterPeak, "mntn cntr peak", location);
 	
-	Vector2DMake(kFieldSize / 2, (kFieldSize / 2) - (kMountainLength / 2), location);
-	MapSetNodeInfoForID(KeyPointIDMountainCenterBottomEdge, "mntn cntr btm edge", location);
+	//Vector2DMake(kFieldSize / 2, (kFieldSize / 2) - (kMountainLength / 2), location);
+	//MapSetNodeInfoForID(KeyPointIDMountainCenterBottomEdge, "mntn cntr btm edge", location);
 	
 
 
-	#define kLightSensorSeparation 5		//	FIXME: get legit value!!!!!!!!!!!!!!!!
-	
-	/**********		White Lines	**********/
-	Vector2DMake(kLineDistanceFromFieldSide, kLineDistanceFromEdge + kLightSensorSeparation, location);
-MapSetNodeInfoForID(KeyPointIDLine1Bottom, "ln1 bottom", location);
 
-Vector2DMake(kLineDistanceFromFieldSide, ((kFieldSize  - kBridgeLength) / 2) - kRobotRadius, location);
-MapSetNodeInfoForID(KeyPointIDLine1Top, "ln1 top", location);
-
-
-Vector2DMake(kFieldSize - kLineDistanceFromFieldSide, 
 
 	
-	//	FIXME: add the white line stuff here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/**********		White Lines		**********/
+	Vector2DMake(kLineDistanceFromFieldSide, kLineDistanceFromEdge + kLightSensorDistanceFromCenter, location);
+	MapSetNodeInfoForID(KeyPointIDLine1Bottom, "ln1 bottom", location);
+	
+	Vector2DMake(kLineDistanceFromFieldSide, ((kFieldSize  - kBridgeLength) / 2) - kRobotRadius, location);
+	MapSetNodeInfoForID(KeyPointIDLine1Top, "ln1 top", location);
+	
+	
+	
+	Vector2DMake(kFieldSize / 2, kLineDistanceFromEdge + kLightSensorDistanceFromCenter, location);
+	MapSetNodeInfoForID(KeyPointIDLine2Bottom, "ln2 bottom", location);
+	
+	Vector2DMake(kFieldSize / 2, ((kFieldSize - kMountainLength) / 2) - kRobotRadius, location);
+	MapSetNodeInfoForID(KeyPointIDLine2Top, "ln2 top", location);
+	
+	
+	
+	Vector2DMake(kFieldSize - kLineDistanceFromFieldSide, kLineDistanceFromEdge + kLightSensorDistanceFromCenter, location);
+	MapSetNodeInfoForID(KeyPointIDLine3Bottom, "ln3 bottom", location);
+	
+	Vector2DMake(kFieldSize - kLineDistanceFromFieldSide, ((kFieldSize  - kBridgeLength) / 2) - kRobotRadius, location);
+	MapSetNodeInfoForID(KeyPointIDLine3Top, "ln3 top", location);
+	
+	
+	
+	Vector2DMake(kLineDistanceFromFieldSide, ((kFieldSize + kBridgeLength) / 2) + kRobotRadius, location);
+	MapSetNodeInfoForID(KeyPointIDLine4Bottom, "ln4 bottom", location);
+	
+	Vector2DMake(kLineDistanceFromFieldSide, kFieldSize - (kLineDistanceFromEdge + kLightSensorDistanceFromCenter), location);
+	MapSetNodeInfoForID(KeyPointIDLine4Top, "ln4 top", location);
+	
+	
+	
+	Vector2DMake(kFieldSize / 2, ((kFieldSize + kMountainLength) / 2) + kRobotRadius, location);
+	MapSetNodeInfoForID(KeyPointIDLine5Bottom, "ln5 bottom", location);
+	
+	Vector2DMake(kFieldSize / 2, kFieldSize - (kLineDistanceFromEdge + kLightSensorDistanceFromCenter), location);
+	MapSetNodeInfoForID(KeyPointIDLine5Top, "ln5 top", location);
+	
+	
+	
+	Vector2DMake(kFieldSize - kLineDistanceFromFieldSide, ((kFieldSize + kBridgeLength) / 2) + kRobotRadius, location);
+	MapSetNodeInfoForID(KeyPointIDLine6Bottom, "ln6 bottom", location);
+	
+	Vector2DMake(kFieldSize - kLineDistanceFromFieldSide, kFieldSize - (kLineDistanceFromEdge + kLightSensorDistanceFromCenter), location);
+	MapSetNodeInfoForID(KeyPointIDLine6Top, "ln6 top", location);
+	
+	
+	
+	
+	//	Tell it where the white lines are
+	FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointIDLine1Bottom, KeyPointIDLine1Top);	//	line 1
+	FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointIDLine2Bottom, KeyPointIDLine2Top);	//	line 2
+	FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointIDLine3Bottom, KeyPointIDLine3Top);	//	line 3
+	FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointIDLine4Bottom, KeyPointIDLine4Top);	//	line 4
+	FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointIDLine5Bottom, KeyPointIDLine5Top);	//	line 5
+	FTCFieldAddWhiteLineBetweenKeyPoints(KeyPointIDLine6Bottom, KeyPointIDLine6Top);	//	line 6
+	
+	
+	
+	
+	
+	//	Tell it where the bridge entrances are
+	FTCFieldAddBridgeEntranceFromKeyPointToKeyPoint(KeyPointIDLine1Top, KeyPointIDBlueBridgeCenter);	//	Blue bridge
+	FTCFieldAddBridgeEntranceFromKeyPointToKeyPoint(KeyPointIDLine4Bottom, KeyPointIDBlueBridgeCenter);	//
+	
+	FTCFieldAddBridgeEntranceFromKeyPointToKeyPoint(KeyPointIDLine3Top, KeyPointIDRedBridgeCenter);		//	Red bridge
+	FTCFieldAddBridgeEntranceFromKeyPointToKeyPoint(KeyPointIDLine6Bottom, KeyPointIDRedBridgeCenter);	//
+	
+	
+	
 	
 	
 	
@@ -228,51 +296,73 @@ Vector2DMake(kFieldSize - kLineDistanceFromFieldSide,
 	
 	MapConnectNodesAutomatically(KeyPointIDRedStartSquareLeft, KeyPointIDBlueDispenserLeft);
 	MapConnectNodesAutomatically(KeyPointIDRedStartSquareLeft, KeyPointIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDRedStartSquareLeft, KeyPointIDLine1Bottom);
 	
 	MapConnectNodesAutomatically(KeyPointIDRedStartSquareRight, KeyPointIDBlueDispenserCenter);
 	MapConnectNodesAutomatically(KeyPointIDRedStartSquareRight, KeyPointIDBlueDispenserRight);
+	MapConnectNodesAutomatically(KeyPointIDRedStartSquareRight, KeyPointIDLine3Bottom);
 	
 	
 	MapConnectNodesAutomatically(KeyPointIDBlueStartSquareLeft, KeyPointIDRedDispenserLeft);
 	MapConnectNodesAutomatically(KeyPointIDBlueStartSquareLeft, KeyPointIDRedDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDBlueStartSquareLeft, KeyPointIDLine4Top);
 	
 	MapConnectNodesAutomatically(KeyPointIDBlueStartSquareRight, KeyPointIDRedDispenserCenter);
 	MapConnectNodesAutomatically(KeyPointIDBlueStartSquareRight, KeyPointIDRedDispenserRight);
+	MapConnectNodesAutomatically(KeyPointIDBlueStartSquareRight, KeyPointIDLine6Top);
 	
 	
 	/**********		Bridge Centers		**********/
-	MapConnectNodesAutomatically(KeyPointIDRedBridgeCenter, KeyPointIDRedBridgeTop);
-	MapConnectNodesAutomatically(KeyPointIDRedBridgeCenter, KeyPointIDRedBridgeBottom);
+	MapConnectNodesAutomatically(KeyPointIDRedBridgeCenter, KeyPointIDLine4Bottom);
+	MapConnectNodesAutomatically(KeyPointIDRedBridgeCenter, KeyPointIDLine1Top);
 	
-	MapConnectNodesAutomatically(KeyPointIDBlueBridgeCenter, KeyPointIDBlueBridgeTop);
-	MapConnectNodesAutomatically(KeyPointIDBlueBridgeCenter, KeyPointIDBlueBridgeBottom);
+	MapConnectNodesAutomatically(KeyPointIDBlueBridgeCenter, KeyPointIDLine6Bottom);
+	MapConnectNodesAutomatically(KeyPointIDBlueBridgeCenter, KeyPointIDLine3Top);
 	
 	
 	/**********		Mountain	**********/
-	MapConnectNodesAutomatically(KeyPointIDMountainCenterPeak, KeyPointIDMountainCenterTopEdge);
-	MapConnectNodesAutomatically(KeyPointIDMountainCenterPeak, KeyPointIDMountainCenterBottomEdge);
+	//MapConnectNodesAutomatically(KeyPointIDMountainCenterPeak, KeyPointIDMountainCenterTopEdge);
+	//MapConnectNodesAutomatically(KeyPointIDMountainCenterPeak, KeyPointIDMountainCenterBottomEdge);
 	
 	
 	/**********		Pits	**********/
-	MapConnectNodesAutomatically(KeyPointIDRedPitCenter, KeyPointIDBlueDispenserRight);
+	//MapConnectNodesAutomatically(KeyPointIDRedPitCenter, KeyPointIDBlueDispenserRight);
+	//MapConnectNodesAutomatically(KeyPointIDBluePitCenter, KeyPointIDRedDispenserLeft);
 	
-	MapConnectNodesAutomatically(KeyPointIDBluePitCenter, KeyPointIDRedDispenserLeft);
+	
+	/**********		White Lines	**********/
+	MapConnectNodesAutomatically(KeyPointIDLine1Bottom, KeyPointIDLine1Top);
+	MapConnectNodesAutomatically(KeyPointIDLine1Bottom, KeyPointIDBlueDispenserLeft);
+	MapConnectNodesAutomatically(KeyPointIDLine1Bottom, KeyPointIDLine2Bottom);
+	MapConnectNodesAutomatically(KeyPointIDLine1Bottom, KeyPointIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDLine1Top, KeyPointIDBlueDispenserLeft);
+	
+	MapConnectNodesAutomatically(KeyPointIDLine2Bottom, KeyPointIDLine2Top);
+	MapConnectNodesAutomatically(KeyPointIDLine2Bottom, KeyPointIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDLine2Bottom, KeyPointIDLine1Top);
+	MapConnectNodesAutomatically(KeyPointIDLine2Bottom, KeyPointIDLine3Top);
+	
+	MapConnectNodesAutomatically(KeyPointIDLine3Bottom, KeyPointIDLine3Top);
+	MapConnectNodesAutomatically(KeyPointIDLine3Bottom, KeyPointIDBlueDispenserRight);
+	MapConnectNodesAutomatically(KeyPointIDLine3Bottom, KeyPointIDLine2Bottom);
+	MapConnectNodesAutomatically(KeyPointIDLine3Bottom, KeyPointIDBlueDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDLine3Top, KeyPointIDBlueDispenserRight);
 	
 	
+	MapConnectNodesAutomatically(KeyPointIDLine4Top, KeyPointIDLine4Bottom);
+	MapConnectNodesAutomatically(KeyPointIDLine4Top, KeyPointIDRedDispenserLeft);
+	MapConnectNodesAutomatically(KeyPointIDLine4Top, KeyPointIDLine5Top);
+	MapConnectNodesAutomatically(KeyPointIDLine4Top, KeyPointIDRedDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDLine4Bottom, KeyPointIDRedDispenserLeft);
 
+	MapConnectNodesAutomatically(KeyPointIDLine5Top, KeyPointIDLine5Bottom);
+	MapConnectNodesAutomatically(KeyPointIDLine5Top, KeyPointIDRedDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDLine5Top, KeyPointIDLine4Bottom);
+	MapConnectNodesAutomatically(KeyPointIDLine5Top, KeyPointIDLine6Bottom);
 	
-
-
-	
-
-
-
-	
-	
-	//	trash //////////////////////////////////
-	
-	
-	
-	
-	//	FIXME: finish implementation
+	MapConnectNodesAutomatically(KeyPointIDLine6Top, KeyPointIDLine6Bottom);
+	MapConnectNodesAutomatically(KeyPointIDLine6Top, KeyPointIDRedDispenserRight);
+	MapConnectNodesAutomatically(KeyPointIDLine6Top, KeyPointIDLine5Top);
+	MapConnectNodesAutomatically(KeyPointIDLine6Top, KeyPointIDRedDispenserCenter);
+	MapConnectNodesAutomatically(KeyPointIDLine6Bottom, KeyPointIDRedDispenserRight);
 }
