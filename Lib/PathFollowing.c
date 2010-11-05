@@ -60,7 +60,11 @@ void RobotInvalidateCurrentPathSegmentForTime(float time)	//	time in seconds
 
 void RobotRetraceMovementToPreviousKeyPoint()
 {
-	
+	//	get location of key point we're near
+	//	get our location
+	//	find the angle we need to be at to go to it and add pi
+	//	turn to that angle
+	//	find the distance between where we're at & where we wanna be and go backwards that distance
 	
 	
 	//	FIXME: implement

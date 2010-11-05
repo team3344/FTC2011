@@ -39,6 +39,8 @@ typedef struct {
 
 
 
+void MapRecalculatePath();
+
 bool MapNodesAreConnected(NodeID n1, NodeID n2);			//	note: order matters
 void MapConnectNodes(NodeID n1, NodeID n2, float cost);		//	tell it the distance between the two given nodes
 void MapConnectNodesAutomatically(NodeID n1, NodeID n2);	//	calculates the distance between the nodes using their locations. note: order doesn't matter
@@ -55,7 +57,7 @@ NodeID MapGetGoalNodeID();
 NodeID MapGetNextNodeID();
 NodeID MapGetPreviousNodeID();
 
-NodeID MapRetract();										//	sets current node to previous node and returns the node before that
+//NodeID MapRetract();										//	sets current node to previous node and returns the node before that
 NodeID MapAdvance();										//	sets current node to next node and returns the next node after that
 
 

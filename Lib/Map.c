@@ -399,31 +399,47 @@ void MapSetGoalNodeID(NodeID goal)
 }
 
 
+void MapRecalculatePath()
+{
+	_MapFindShortestPath(globalMap.cachedPath[0], globalMap.goalNodeID);
+}
+
+void _MapRecalculatePathIfNecessary()
+{
+	if ( !globalMap.cached ) _MapFindShortestPath(globalMap.cachedPath[0], globalMap.goalNodeID);
+}
+
 NodeID MapGetNextNodeID()
 {
+	_MapRecalculatePathIfNecessary();
 	return globalMap.cachedPath[globalMap.currentNode + 1];
 }
 
 
 NodeID MapGetPreviousNodeID()
 {
+	_MapRecalculatePathIfNecessary();
+	
 	if ( globalMap.currentNode == 0 ) return NodeIDZero;
 	return globalMap.cachedPath[globalMap.currentNode - 1];
 }
 
-
+/*
 NodeID MapRetract()
 {
+	_MapRecalculatePathIfNecessary();
+	
 	globalMap.currentNode = MAX(globalMap.currentNode - 1, 0);	//	don't let it go before zero
 
 	if ( globalMap.currentNode == 0 ) return NodeIDZero;	//	there's not a node before the first one
 	return globalMap.cachedPath[globalMap.currentNode - 1];
 }
+*/
 
 
 NodeID MapAdvance() //	Sets current node to next node and returns the next node after that
 {
-	if ( !globalMap.cached ) _MapFindShortestPath(globalMap.cachedPath[0], globalMap.goalNodeID);
+	_MapRecalculatePathIfNecessary();
 
 	++globalMap.currentNode;	//	set the index to the next node
 
