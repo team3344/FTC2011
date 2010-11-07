@@ -48,7 +48,7 @@ bool BoostIsOn()
 //	motor names: Left, Right, Front, Back
 void SetMotorPower(short m, float power)	//	power is from 0 to 1
 {
-	motor[m] = power * 100. * _powerMultiplier;
+	motor[m] = power * 100.;  // * _powerMultiplier;  //  FIXME: fix
 }
 
 
@@ -58,6 +58,7 @@ void SetMotorPower(short m, float power)	//	power is from 0 to 1
 /*	drive - controls bot arcade style
 *	omni - x component controls sidewinding
 */
+/*
 void OmniArcadeDrive(Vector& drive, Vector& omni)
 {
 	float power = drive.y;
@@ -69,11 +70,12 @@ void OmniArcadeDrive(Vector& drive, Vector& omni)
 	SetMotorPower(Front, side);
 	SetMotorPower(Back, side);
 }
-
+*/
 
 /*	strafe - controls forward, backward, & side to side
 *	rotate - x component controls the rotation of the bot around the center
 */
+/*
 void OmniStrafeDrive(Vector& strafe, Vector& rotate)
 {
 	SetMotorPower(Left, strafe.y);
@@ -81,7 +83,7 @@ void OmniStrafeDrive(Vector& strafe, Vector& rotate)
 	SetMotorPower(Front, strafe.x + rotate.x);	//	FIXME: should rotate.x be scaled down????????????????
 	SetMotorPower(Front, strafe.x - rotate.x);
 }
-
+*/
 
 
 
@@ -92,7 +94,7 @@ void OmniSetStrafePower(float power)
 }
 
 
-
+/*
 void OmniDrivePro(Controller& ctrlr)
 {
 
@@ -147,9 +149,9 @@ void OmniDrivePro(Controller& ctrlr)
 
 
 
+*/
 
-
-
+/*
 
 void SetMotorSpeedsForVelocities(float dx_dt, float dy_dt, float dtheta_dt, float angle)
 {

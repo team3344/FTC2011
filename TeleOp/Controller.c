@@ -75,7 +75,7 @@ void _UpdateControllerDPad(Controller& c, short dPadValue)
 
 bool ControllerButtonIsPressed(Controller& c, ControllerButton b)
 {
-	return c.buttons & (1 << b);
+	return (bool)(c.buttons & (1 << b));
 }
 
 bool ControllerButtonChanged(Controller& c, ControllerButton b)
