@@ -146,7 +146,7 @@ void FieldReset();											//	sets cost from each node to itself to zero, and 
 
 void FieldSetNodeCoordinates(Node n, float x, float y, float z);
 void FieldSetNodeLocation(Node n, Vector& location);
-void FieldGetNodeLocation(Node node, Vector& locationOut);
+void FieldGetNodeLocation(Node n, Vector& locationOut);
 
 //void FieldSetNodeForID(Node Node, Node& node);				//	give it the node info for a given node id
 //void FieldGetNode(Node Node, Node& nodeOut);				//	get the node info for a given node id

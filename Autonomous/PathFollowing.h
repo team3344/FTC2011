@@ -18,7 +18,7 @@
 
 void AbortPathFollowing();
 
-bool RobotTravelFromKeyPointToKeyPoint(KeyPointID src, KeyPointID dest);
+bool RobotTravelFromKeyPointToKeyPoint(Node src, Node dest);
 bool RobotTravelPathSegment(PathSegment& segment);
 
 

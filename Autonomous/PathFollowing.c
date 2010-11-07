@@ -24,65 +24,65 @@ void AbortPathFollowing()
 bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
-	
+
 	bool success;
-	
-	
-	
+
+
+
 	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
 	{
 		RobotApproachBridge();
 		RobotLowerBridge();
 	}
-	
-	
-	
+
+
+
 	if ( segmentFlags & PathSegmentFlagWhiteConnectingLine )
 	{
 		//	follow the line
 		///////////////////////////
 		//	FIXME: implement	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
+
 		//	?Follow for distance?
 		///	Follow til end?
-		
+
 		////////////
 	}
 	else	//	there's no line to follow
 	{
 		RobotPosition startPosition;
 		RobotGetCurrentPosition(startPosition);
-		
+
 		Vector destination;
 		FieldGetNodeLocation(segment.destination, destination);
-		
+
 		Vector displacement;
 		VectorSubtract(destination, startPosition.location, displacement);
-		
+
 		float distance, angle;
 		distance = VectorGetMagnitude(displacement);
 		angle = VectorGetAngle(displacement);
-		
+
 		RobotRotateToOrientation(angle);
-		
+
 		if ( !RobotMoveDistance(distance) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
 			RobotPosition currentPosition;
 			RobotGetCurrentPosition(currentPosition);
-			
+
 			VectorSubtract(startPosition.location, currentPosition.location, displacement);
 			distance = VectorGetMagnitude(displacement);
 			angle = VectorGetAngle(displacement);
-			
+
 			//	backup to the start location
-			RobotRotateToOrientation(displacement + PI);
+			RobotRotateToOrientation(angle + PI);
 			RobotMoveDistance(-distance);					//	FIXME: go this time without stopping for obstructions
-			
+
 			success = false;
 		}
 	}
-	
-	
+
+
 	if ( success )
 	{
 		FieldAdvance();	//	tell the field we made it to the next node
@@ -91,7 +91,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	{
 			FieldTemporarilyInvalidatePathBetweenNodes(segment.source, segment.destination, kObstructedPathInvalidationTime);
 	}
-	
+
 	return success;
 }
 
@@ -107,12 +107,12 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 		PathSegment segment;
 		segment.source = FieldGetCurrentNode();
 		segment.destination = FieldGetNextNode();
-		
-		if ( currentNode == dest )
+
+		if ( FieldGetCurrentNode() == dest )
 		{
 			break;	//	we're there!!!
 		}
-		else if ( segmentTargetNode == NodeZero )	//	there's no path available
+		else if ( segment.destination == NodeZero )	//	there's no path available
 		{
 			wait10Msec(100);		//	wait 1 second to see if a path validated
 			FieldRecalculatePath();
@@ -122,9 +122,9 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 			RobotTravelPathSegment(segment);
 		}
 	}
-	
+
 	_abort = false;	//	unabort so the next task actually runs
-	
+
 	return FieldGetCurrentNode() == dest;	//	return true if we got where we were supposed to
 }
 

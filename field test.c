@@ -46,8 +46,8 @@ task main()
 
 	long startTime = nPgmTime;
 
-	
-	RobotTravelFromNodeToNode(NodeRedStartSquareLeft, BlueStartSquareLeft);
-	
-	
+
+	RobotTravelFromNodeToNode(NodeRedStartSquareLeft, NodeBlueStartSquareLeft);
+
+
 }
