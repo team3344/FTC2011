@@ -22,6 +22,15 @@ typedef struct {
 
 
 
+
+
+//	Position Tracking
+//===========================================================================================================
+static RobotPosition currentRobotPosition;
+
+
+
+
 #define TetrixConvertEncoderToDistance(encoder) ( (encoder / kTetrixMotorEncoderPointsPerRotation) * kRobotWheelCircumference )
 #define TetrixConvertDistanceToEncoder(dist) ( (dist / kRobotWheelCircumference) * kTetrixMotorEncoderPointsPerRotation )
 
@@ -43,7 +52,6 @@ bool RobotFindWhiteLine(LineFollowingContext& ctxtOut);	//	returns true if it fi
 
 void RobotRotateToOrientation(float orientation);
 bool RobotMoveDistance(float distance);				//	distance in inches.  Can be negative.
-void RobotMoveDisplacement(Vector& displacement);
 
 
 void RobotApproachBridge();

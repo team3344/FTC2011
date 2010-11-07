@@ -10,29 +10,6 @@
 #endif
 
 
-//	Position Tracking
-//===========================================================================================================
-static RobotPosition _currentRobotPosition;
-
-void RobotSetCurrentPosition(RobotPosition& pos)
-{
-	memcpy(_currentRobotPosition, pos, sizeof(RobotPosition));
-}
-
-void RobotGetCurrentPosition(RobotPosition& posOut)
-{
-	memcpy(posOut, _currentRobotPosition, sizeof(RobotPosition));
-}
-
-
-
-
-
-
-
-
-
-
 
 
 //	Line Following
@@ -54,14 +31,6 @@ bool RobotFindWhiteLine(LineFollowingContext& ctxtOut)	//	returns true if it fin
 {
 	return true;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -116,34 +85,6 @@ bool RobotMoveDistance(float distance)
 	return true;	//	FIXME: this value should mean asometihgn	///////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-
-/*
-bool RobotMoveWithVector(Vector& displacement)
-{
-	RobotPosition currentPosition;
-	//TrackerGetCurrentPosition(&currentPosition);
-
-	//printf("currentPosition.orientation = %f\n", currentPosition.orientation);
-
-	//printf("displacement angle = %f\n", VectorGetAngle(displacement));
-
-	RobotRotateAngle(VectorGetAngle(&displacement) - currentPosition.orientation);	//	turn towards the destination
-	bool success = RobotMoveDistance(VectorGetMagnitude(&displacement));								//	move the required distance to the destination
-
-
-
-
-	//FIXME: remove below line
-
-	RobotPosition future;
-	VectorAdd(&currentPosition.location, &displacement, &future.location);
-	future.orientation = VectorGetAngle(&displacement);
-	//	TrackerSetCurrentPosition(&future);
-	//	FIXME: trash above
-
-	return success;
-}
-*/
 
 void RobotApproachBridge()
 {
