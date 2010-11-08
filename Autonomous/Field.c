@@ -285,15 +285,17 @@ void FieldConnectNodesAutomatically(Node n1, Node n2)
 	FieldConnectNodes(n2, n1, distance);
 }
 
+/*
 void FieldConnectNodes(Node n1, Node n2, float cost)
 {
 	globalField.pathCosts[n1][n2] = cost;
 }
+*/
 
 
 bool FieldNodesAreConnected(Node n1, Node n2)
 {
-	return globalField.pathCosts[n1][n2] != kInfinity && FieldPathBetweenNodesIsValid(n1, n2);	//	it's valid and not infinite
+	return globalField.pathCosts[n1][n2] != kInfinity && (nPgmTime > globalField.validationTimes[n1][n2]);	//	it's valid and not infinite
 }
 
 void FieldInvalidatePathBetweenNodes(Node n1, Node n2, int time)	//	tell it there is no path between the two given nodes.  order DOESN'T matter
@@ -303,10 +305,6 @@ void FieldInvalidatePathBetweenNodes(Node n1, Node n2, int time)	//	tell it ther
 	globalField.validationTimes[n2][n1] = validTime;
 }
 
-bool FieldPathBetweenNodesIsValid(Node n1, Node n2)
-{
-	return nPgmTime > globalField.validationTimes[n1][n2];
-}
 
 void FieldSetCurrentNode(Node current)
 {
@@ -390,41 +388,12 @@ Node FieldGetNextNode()
 
 
 
-
-
 void FieldAdvance() //	Sets current node to next node and returns the next node after that
 {
 	if ( !globalField.cached ) FieldRecalculatePath();	//	recalculate if necessary
 
 	++globalField.currentNode;	//	set the index to the next node
 }
-
-
-void FieldReset() //	sets cost from each node to itself to zero, and the rest to infinity.	 clears all Nodes from nodes array.	 clears cachedPath.
-{
-	for ( Node i = 0; i < kNodeCount; i++ )
-	{
-		for ( Node j = 0; j < kNodeCount; j++ )
-		{
-			if ( j == i )
-			{
-				globalField.pathCosts[i][j] = 0;	//	there's a cost of zero to go from a node to itself
-			}
-			else
-			{
-				globalField.pathCosts[i][j] = kInfinity;	//	default value of infinity says there's no path between i & j
-			}
-
-			globalField.validationTimes[i][j] = 0;
-		}
-
-
-		globalField.cachedPath[i] = NodeZero; //	clear each node in the cached path
-	}
-
-	globalField.currentNode = 0;	//	we're at the first node in the path
-}
-
 
 
 void FieldSetNodeCoordinates(Node n, float x, float y, float z)
@@ -513,9 +482,34 @@ PathSegmentFlags FieldGetPathSegmentFlags(Node n)
 
 void FieldInit()		//	sets values specific to our field.
 {
-	FieldReset(); //	clear old values
-
-	Vector location;
+	
+	//	sets cost from each node to itself to zero, and the rest to infinity.	 clears all Nodes from nodes array.	 clears cachedPath.
+	for ( Node i = 0; i < kNodeCount; i++ )
+	{
+		for ( Node j = 0; j < kNodeCount; j++ )
+		{
+			if ( j == i )
+			{
+				globalField.pathCosts[i][j] = 0;	//	there's a cost of zero to go from a node to itself
+			}
+			else
+			{
+				globalField.pathCosts[i][j] = kInfinity;	//	default value of infinity says there's no path between i & j
+			}
+			
+			globalField.validationTimes[i][j] = 0;
+		}
+		
+		
+		globalField.cachedPath[i] = NodeZero; //	clear each node in the cached path
+	}
+	
+	globalField.currentNode = 0;	//	we're at the first node in the path
+	
+	
+	
+	
+	
 
 	/**********		Start Squares		**********/
 	FieldSetNodeCoordinates(NodeRedStartSquareLeft, kStartSquareWidth / 2, kStartSquareWidth / 2, 0);
