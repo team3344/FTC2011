@@ -11,7 +11,7 @@
 
 
 
-//	attempts to travel the segment.  returns success.  if successful,  to wherever it went
+//	attempts to travel the segment.  returns success.  if successful, sets currentNode & currentPosition to wherever it went
 bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
@@ -19,7 +19,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	bool success;
 
 
-
+	//	if there's a bridge in front of us, GET OVER IT!
 	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
 	{
 		RobotApproachBridge();
@@ -30,6 +30,10 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 	if ( segmentFlags & PathSegmentFlagWhiteConnectingLine )
 	{
+		LineFollowingContext ctxt;
+		RobotFindWhiteLine(ctxt);
+		success = RobotFollowWhiteLineToEnd(ctxt);
+		
 		//	follow the line
 		///////////////////////////
 		//	FIXME: implement	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,6 +75,12 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 			success = false;
 		}
+		else
+		{
+			memcpy(&currentRobotPosition.location, &destination, sizeof(Vector));	//	tell it we're at the location of the node	//	FIXME: is this necessary?
+			success = true;
+		}
+
 	}
 
 

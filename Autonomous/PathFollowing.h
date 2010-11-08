@@ -18,7 +18,7 @@
 
 static bool abortPathFollowing;	//	set this to yes to have the path follower stop at the next iteration
 
-bool RobotTravelFromKeyPointToKeyPoint(Node src, Node dest);
+bool RobotTravelFromNodeToNode(Node src, Node dest);
 bool RobotTravelPathSegment(PathSegment& segment);
 
 

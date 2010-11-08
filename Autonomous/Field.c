@@ -314,7 +314,7 @@ void FieldSetCurrentNode(Node current)
 
 Node FieldGetCurrentNode()
 {
-	return globalField.cachedPath[0]; //	first node in path is our current position
+	return globalField.cachedPath[globalField.currentNodeIndex];
 }
 
 
@@ -327,9 +327,11 @@ void FieldSetGoalNode(Node goal)
 
 void FieldRecalculatePath()
 {
+	
+	globalField.currentNodeIndex = 0;	//	we're at the first node
+	
 	//	reset the dijkstra algorithm caches before we use them
-	//	we don't erase the 0th item because it's the current node
-	for ( Node n = 1; n < kNodeCount; n++ )
+	for ( Node n = 0; n < kNodeCount; n++ )
 	{
 		previous[n] = NodeZero;
 		tentativeCosts[n] = kInfinity;
@@ -351,7 +353,6 @@ void FieldRecalculatePath()
 
 
 	tentativeCosts[src] = 0;
-
 
 	_FieldTravelNode(src);			//	start at 'from' and find shortest path
 
@@ -423,14 +424,14 @@ Node FieldGetGoalNode()
 
 
 
-void FieldSetPathSegmentFlags(Node n, PathSegmentFlags flags)
+void FieldSetPathSegmentFlags(PathSegment segment, PathSegmentFlags flags)
 {
-	globalField.segmentFlags[n] = flags;
+	globalField.segmentFlags[segment.source][segment.destination] = flags;
 }
 
-PathSegmentFlags FieldGetPathSegmentFlags(Node n)
+PathSegmentFlags FieldGetPathSegmentFlags(PathSegment segment)
 {
-	return globalField.segmentFlags[n];
+	return globalField.segmentFlags[segment.source][segment.destination];
 }
 
 
@@ -624,11 +625,11 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		Bridge Centers		**********/
-	FieldConnectNodesAutomatically(NodeRedBridgeCenter, NodeLine4Bottom);
-	FieldConnectNodesAutomatically(NodeRedBridgeCenter, NodeLine1Top);
-
-	FieldConnectNodesAutomatically(NodeBlueBridgeCenter, NodeLine6Bottom);
-	FieldConnectNodesAutomatically(NodeBlueBridgeCenter, NodeLine3Top);
+	FieldConnectNodesAutomatically(NodeRedBridgeCenter, NodeLine6Bottom);
+	FieldConnectNodesAutomatically(NodeRedBridgeCenter, NodeLine3Top);
+	
+	FieldConnectNodesAutomatically(NodeBlueBridgeCenter, NodeLine4Bottom);
+	FieldConnectNodesAutomatically(NodeBlueBridgeCenter, NodeLine1Top);
 
 
 	/**********		Mountain	**********/

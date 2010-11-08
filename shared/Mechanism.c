@@ -15,7 +15,7 @@
 
 
 #define kKickerServoDownPosition 250
-#define kKickerServoUpPosition 255 - 90
+#define kKickerServoUpPosition 255 - 85
 #define kKickerPostDelay 550            //  delay after mechanism kicks
 
 bool _kickingBaton;
@@ -32,7 +32,7 @@ task MechanismKickBaton()
   servo[Kicker] = kKickerServoUpPosition;
   wait1Msec(kKickerPostDelay);
   servo[Kicker] = kKickerServoDownPosition;
-  wait1Msec(250);								//	FIXME: is this delay alright
+  wait1Msec(320);								//	FIXME: is this delay alright
 
   _kickingBaton = false;
 }
@@ -40,13 +40,12 @@ task MechanismKickBaton()
 
 
 
-/*
+
 
 bool MechanismHasMagnetBaton()
 {
-	return MagneticSensorMagnetIsPresent();	//	FIXME: fix this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	return MagneticSensorMagnetIsPresent();
 }
-
 
 
 
@@ -57,7 +56,7 @@ void MechanismSetIndicatorLightState(bool turnedOn)
 	motor[IndicatorLight] = ( turnedOn ) ? kIndicatorLightPower : 0;
 }
 
-*/
+
 
 
 
@@ -99,17 +98,24 @@ task MechanismCycleConveyor()
 #define kSlideRegularPosition 70
 #define kSlideLongPosition 95
 
-
 short MechanismSlideGetPosition()
 {
     return servo[Slide];
 }
 
-
-
 void MechanismSlideSetPosition(short position)
 {
   nxtDisplayCenteredTextLine(1, (string)position);
+
+  //  door
+  if ( position == kSlideDownPosition )
+  {
+    MechanismDoorClose();
+  }
+  else
+  {
+    MechanismDoorOpen();
+  }
 
 
   short value = MIN(position, kSlideMaxPosition);
@@ -119,6 +125,27 @@ void MechanismSlideSetPosition(short position)
 
   servo[Slide] = value;
 }
+
+
+
+
+#define kDoorClosedPosition 255
+#define kDoorOpenPosition 0
+
+
+void MechanismDoorClose()
+{
+    servo[Door] = kDoorClosedPosition;
+}
+
+void MechanismDoorOpen()
+{
+    servo[Door] = kDoorOpenPosition;
+}
+
+
+
+
 
 
 #define kSlidePositionIncrement 1

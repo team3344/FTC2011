@@ -113,7 +113,7 @@ typedef struct {
 	Node cachedPath[kNodeCount];							//	array of nodes to go to.  the 0th entry is currentNode
 	Node goalNode;											//	the node we want to go to
 	bool cached;											//	tracks whether or not the path has been calculated between the currentNode and goalNode
-	int currentNode;										//	the node the bot is currently at
+	int currentNodeIndex;									//	the index in cachedPath of the node the bot is currently at
 	float pathCosts[kNodeCount][kNodeCount];				//	cost value associated with each path segment.  may not be equal to the distance between the nodes, but it usually is.
 	int validationTimes[kNodeCount][kNodeCount];			//	If nPgmTime is greater than the validation time b/w nodes, the node is valid
 } Field;
