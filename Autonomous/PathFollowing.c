@@ -63,7 +63,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		if ( !RobotMoveDistance(distance) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
 			RobotPosition currentPosition;
-			RobotGetCurrentPosition(currentPosition);
+			memcpy(currentPosition, currentRobotPosition, sizeof(RobotPosition));
 
 			VectorSubtract(startPosition.location, currentPosition.location, displacement);
 			distance = VectorGetMagnitude(displacement);

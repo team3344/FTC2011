@@ -4,6 +4,15 @@
 #include "Field.h"
 #endif
 
+
+#ifndef _Defines_
+#include "Defines.h"
+#endif
+
+
+
+
+
 //	caches used for dijkstra's algorithm
 Node previous[kNodeCount];
 float tentativeCosts[kNodeCount];
@@ -198,10 +207,10 @@ task FieldContinuouslyRedraw()
 #define kInfinity 100000
 
 
-void _FieldTravelNode(Node node);
-void _CallFieldTravelNode(Node node)
+void _FieldTravelNode(Node n);
+void _CallFieldTravelNode(Node n)
 {
-	_FieldTravelNode(Node);	//	this function is here b/c robotc doesn't allow recursive functions.	 this is just an easy work-around
+	_FieldTravelNode(n);	//	this function is here b/c robotc doesn't allow recursive functions.	 this is just an easy work-around
 }
 
 
@@ -298,7 +307,7 @@ bool FieldNodesAreConnected(Node n1, Node n2)
 	return globalField.pathCosts[n1][n2] != kInfinity && (nPgmTime > globalField.validationTimes[n1][n2]);	//	it's valid and not infinite
 }
 
-void FieldInvalidatePathBetweenNodes(Node n1, Node n2, int time)	//	tell it there is no path between the two given nodes.  order DOESN'T matter
+void FieldTemporarilyInvalidatePathBetweenNodes(Node n1, Node n2, int time)	//	tell it there is no path between the two given nodes.  order DOESN'T matter
 {
   int validTime = time + nPgmTime;
 	globalField.validationTimes[n1][n2] = validTime;
@@ -384,7 +393,7 @@ void FieldRecalculatePath()
 Node FieldGetNextNode()
 {
 	if ( !globalField.cached ) FieldRecalculatePath();	//	recalculate if necessary
-	return globalField.cachedPath[globalField.currentNode + 1];
+	return globalField.cachedPath[globalField.currentNodeIndex + 1];
 }
 
 
@@ -393,7 +402,7 @@ void FieldAdvance() //	Sets current node to next node and returns the next node 
 {
 	if ( !globalField.cached ) FieldRecalculatePath();	//	recalculate if necessary
 
-	++globalField.currentNode;	//	set the index to the next node
+	++globalField.currentNodeIndex;	//	set the index to the next node
 }
 
 
@@ -424,12 +433,12 @@ Node FieldGetGoalNode()
 
 
 
-void FieldSetPathSegmentFlags(PathSegment segment, PathSegmentFlags flags)
+void FieldSetPathSegmentFlags(PathSegment& segment, PathSegmentFlags flags)
 {
 	globalField.segmentFlags[segment.source][segment.destination] = flags;
 }
 
-PathSegmentFlags FieldGetPathSegmentFlags(PathSegment segment)
+PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment)
 {
 	return globalField.segmentFlags[segment.source][segment.destination];
 }
@@ -505,7 +514,7 @@ void FieldInit()		//	sets values specific to our field.
 		globalField.cachedPath[i] = NodeZero; //	clear each node in the cached path
 	}
 
-	globalField.currentNode = 0;	//	we're at the first node in the path
+	globalField.currentNodeIndex = 0;	//	we're at the first node in the path
 
 
 
