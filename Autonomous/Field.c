@@ -207,10 +207,10 @@ task FieldContinuouslyRedraw()
 #define kInfinity 100000
 
 
-void _FieldTravelNode(Node n);
-void _CallFieldTravelNode(Node n)
+void _FieldTravelNode(Node node);
+void _CallFieldTravelNode(Node node)
 {
-	_FieldTravelNode(n);	//	this function is here b/c robotc doesn't allow recursive functions.	 this is just an easy work-around
+	_FieldTravelNode(node);	//	this function is here b/c robotc doesn't allow recursive functions.	 this is just an easy work-around
 }
 
 
@@ -336,9 +336,9 @@ void FieldSetGoalNode(Node goal)
 
 void FieldRecalculatePath()
 {
-	
+
 	globalField.currentNodeIndex = 0;	//	we're at the first node
-	
+
 	//	reset the dijkstra algorithm caches before we use them
 	for ( Node n = 0; n < kNodeCount; n++ )
 	{
@@ -636,7 +636,7 @@ void FieldInit()		//	sets values specific to our field.
 	/**********		Bridge Centers		**********/
 	FieldConnectNodesAutomatically(NodeRedBridgeCenter, NodeLine6Bottom);
 	FieldConnectNodesAutomatically(NodeRedBridgeCenter, NodeLine3Top);
-	
+
 	FieldConnectNodesAutomatically(NodeBlueBridgeCenter, NodeLine4Bottom);
 	FieldConnectNodesAutomatically(NodeBlueBridgeCenter, NodeLine1Top);
 

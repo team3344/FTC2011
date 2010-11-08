@@ -91,6 +91,11 @@ void RobotApproachBridge()
   //  FIXME: implement
 }
 
+void RobotLowerBridge()
+{
+  //  FIXME: implement
+}
+
 void RobotMountCenterDispenser()
 {
   //  FIXME: implement
