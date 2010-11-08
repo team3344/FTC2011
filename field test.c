@@ -29,20 +29,11 @@
 #include "Autonomous/include.c"
 
 
-void initializeRobot()
-{
-	FieldInit();	//  initialize the map of the field
-	MechanismInit();
-
-
-	PlaySound(soundUpwardTones);
-}
-
-
 
 task main()
 {
-	initializeRobot();
+	FieldInit();	//  initialize the map of the field
+	MechanismInit();
 
 	long startTime = nPgmTime;
 

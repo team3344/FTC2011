@@ -281,8 +281,8 @@ void FieldConnectNodesAutomatically(Node n1, Node n2)
 
 	float distance = VectorGetMagnitude(diff);
 
-	FieldConnectNodes(n1, n2, distance);
-	FieldConnectNodes(n2, n1, distance);
+	globalField.pathCosts[n1][n2] = distance;
+	globalField.pathCosts[n2][n1] = distance;
 }
 
 /*
@@ -482,7 +482,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(Node n)
 
 void FieldInit()		//	sets values specific to our field.
 {
-	
+
 	//	sets cost from each node to itself to zero, and the rest to infinity.	 clears all Nodes from nodes array.	 clears cachedPath.
 	for ( Node i = 0; i < kNodeCount; i++ )
 	{
@@ -496,20 +496,20 @@ void FieldInit()		//	sets values specific to our field.
 			{
 				globalField.pathCosts[i][j] = kInfinity;	//	default value of infinity says there's no path between i & j
 			}
-			
+
 			globalField.validationTimes[i][j] = 0;
 		}
-		
-		
+
+
 		globalField.cachedPath[i] = NodeZero; //	clear each node in the cached path
 	}
-	
+
 	globalField.currentNode = 0;	//	we're at the first node in the path
-	
-	
-	
-	
-	
+
+
+
+
+
 
 	/**********		Start Squares		**********/
 	FieldSetNodeCoordinates(NodeRedStartSquareLeft, kStartSquareWidth / 2, kStartSquareWidth / 2, 0);
