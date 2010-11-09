@@ -584,28 +584,28 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment)
 #define kFieldSize 144
 
 
-#define kDispenserPerpendicularDistance 10	//	distance from a dispenser to its corresponding node
-#define kSideDispenserDistanceFromFieldEnd 25  //  //
+#define kDispenserPerpendicularDistance 10	//	distance from a dispenser to its corresponding node	//	//	///////////////////////////////
+#define kSideDispenserDistanceFromFieldEnd 36
 
-#define kStartSquareWidth 18  //  //
-
-
-#define kBridgeDistanceFromSide 44  //  //
-
-#define kBridgeHeight 6  //  //
-#define kBridgeWidth 20  //  //
-#define kBridgeLength 36  //  //
+#define kStartSquareWidth 24
 
 
-#define kPitWidth 20  //  //
-#define kPitLength 20  //  //
+#define kBridgeDistanceFromSide 24
+
+#define kBridgeHeight 4.06
+#define kBridgeWidth 24
+#define kBridgeLength 48
 
 
-#define kMountainHeight 6  //  //
-#define kMountainLength 12  //  //
-#define kMountainWidth 50  //  //
+#define kPitWidth 24
+#define kPitLength 24
 
-#define kLineDistanceFromFieldEnd 50	//	//
+
+#define kMountainHeight 6
+#define kMountainLength 20.78
+#define kMountainWidth 42
+
+#define kLineDistanceFromFieldEnd 24
 #define kLineDistanceFromFieldSide ((kBridgeWidth / 2) + kBridgeDistanceFromSide)
 
 //	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:

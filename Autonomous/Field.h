@@ -10,7 +10,7 @@
 
 
 
-#define kNodeCount 40
+#define kNodeCount 25
 
  typedef enum {
 	NodeZero = -1,
