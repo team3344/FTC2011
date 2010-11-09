@@ -207,6 +207,125 @@ task FieldContinuouslyRedraw()
 #define kInfinity 100000
 
 
+bool touched[kNodeCount];
+
+
+
+void _Travel(Node n)
+{
+  traveled[n] = true;
+
+  for ( int i; i < kNodeCount; i++ )
+  {
+    if ( FieldNodesAreConnected(n, i) )
+    {
+      touched[i] = true;
+
+      float totalCost = globalField.pathCosts[n][i] + tentativeCosts[n];	//	cost from our current position to n + cost from start to current position
+
+			if ( totalCost < tentativeCosts[i] )	//	we found a path shorter than the one previously recorded
+			{
+				tentativeCosts[i] = totalCost;		//	new shortest cost to get to n
+				previous[i] = n;				//	shortest path to get to n
+			}
+    }
+  }
+}
+
+
+
+void FieldRecalculatePath()
+{
+   globalField.currentNodeIndex = 0;	//	we're at the first node
+
+	//	reset the dijkstra algorithm caches before we use them
+	for ( Node n = 0; n < kNodeCount; n++ )
+	{
+		previous[n] = NodeZero;
+		tentativeCosts[n] = kInfinity;
+		traveled[n] = false;
+		touched[n] = false;
+	}
+
+
+
+	Node src = globalField.cachedPath[0];
+
+
+
+	//	clear previous path
+	for ( Node n = 0; n < kNodeCount; n++ )
+	{
+		globalField.cachedPath[n] = NodeZero;
+	}
+
+
+
+	tentativeCosts[src] = 0;
+
+	_Travel(src);			//	start at 'from' and find shortest path
+
+	while ( true )
+	{
+	  bool madeProgress = false;
+
+	  for ( int i = 0; i < kNodeCount; i++ )
+	  {
+	    if ( touched[i] && !traveled[i] )
+	    {
+	      _Travel(i);
+	      madeProgress = true;
+	    }
+	  }
+
+	  if ( !madeProgress ) break; //  go until there's no more to do
+	}
+
+
+
+
+
+
+	//	count how many segments are in the path
+	int pathItemCount = 0;									//	number of nodes in the path including the start and the finish
+	for ( Node n = globalField.goalNode; n != NodeZero; n = previous[n] ) //	iterate through the path until we hit the beginning
+	{
+		pathItemCount++;				//	increment count
+	}
+
+
+	if ( pathItemCount > 1 )	//	see if we even have a path
+	{
+		//	store the path for later use
+		int i = pathItemCount - 1;	//	index in cachedPath where we'll put the node id
+		for ( Node n = globalField.goalNode; i >= 0; i-- )
+		{
+			globalField.cachedPath[i] = n;
+			n = previous[n];
+		}
+	}
+
+
+	globalField.cached = true;	//	we just cached the results
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 void _FieldTravelNode(Node node);
 void _CallFieldTravelNode(Node node)
 {
@@ -247,7 +366,7 @@ void _FieldTravelNode(Node node)
 		}
 	}
 }
-
+*/
 
 
 
@@ -333,7 +452,7 @@ void FieldSetGoalNode(Node goal)
 	globalField.cached = false; //	tell it that it needs to update the cache
 }
 
-
+/*
 void FieldRecalculatePath()
 {
 
@@ -388,6 +507,7 @@ void FieldRecalculatePath()
 
 	globalField.cached = true;	//	we just cached the results
 }
+*/
 
 
 Node FieldGetNextNode()
