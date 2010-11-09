@@ -215,7 +215,7 @@ void _Travel(Node n)
 {
   traveled[n] = true;
 
-  for ( int i; i < kNodeCount; i++ )
+  for ( Node i = 0; i < kNodeCount; i++ )
   {
     if ( FieldNodesAreConnected(n, i) )
     {
@@ -269,7 +269,7 @@ void FieldRecalculatePath()
 	{
 	  bool madeProgress = false;
 
-	  for ( int i = 0; i < kNodeCount; i++ )
+	  for ( Node i = 0; i < kNodeCount; i++ )
 	  {
 	    if ( touched[i] && !traveled[i] )
 	    {

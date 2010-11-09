@@ -82,7 +82,12 @@ bool RobotMoveDistance(float distance)
 	while ( abs(nMotorEncoder[Left]) < abs(encoderPoints) ) {}	//	wait until we're done
 
 
-	return true;	//	FIXME: this value should mean asometihgn	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	//  stop
+	motor[Left] = 0;
+	motor[Right] = 0;
+
+
+	return true;	//	FIXME: this value should mean something	///////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 

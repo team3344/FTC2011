@@ -36,10 +36,31 @@ task main()
 	FieldInit();	//  initialize the map of the field
 	MechanismInit();
 
-	long startTime = nPgmTime;
+	//long startTime = nPgmTime;
 
 
 	RobotTravelFromNodeToNode(NodeRedStartSquareLeft, NodeBlueStartSquareLeft);
+
+
+	/*
+  FieldSetCurrentNode(NodeRedStartSquareLeft);
+  FieldSetGoalNode(NodeBlueStartSquareLeft);
+  FieldRecalculatePath();
+
+
+
+
+
+  for ( int i = 0; i < 10; i++ )
+  {
+    nxtDisplayCenteredTextLine(i, (string)FieldGetCurrentNode());
+    FieldAdvance();
+    if ( FieldGetNextNode() == NodeZero) break;
+  }
+  */
+
+  wait10Msec(1000);
+
 
 
 }

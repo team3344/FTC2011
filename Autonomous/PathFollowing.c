@@ -33,7 +33,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		LineFollowingContext ctxt;
 		RobotFindWhiteLine(ctxt);
 		success = RobotFollowWhiteLineToEnd(ctxt);
-		
+
 		//	follow the line
 		///////////////////////////
 		//	FIXME: implement	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	{
 		RobotPosition startPosition;
 		memcpy(startPosition, currentRobotPosition, sizeof(RobotPosition));
-		
+
 		Vector destination;
 		FieldGetNodeLocation(segment.destination, destination);
 
@@ -77,6 +77,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		}
 		else
 		{
+		  PlaySound(soundBeepBeep); //  let us know we got to the node
 			memcpy(&currentRobotPosition.location, &destination, sizeof(Vector));	//	tell it we're at the location of the node	//	FIXME: is this necessary?
 			success = true;
 		}
@@ -111,6 +112,7 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 
 		if ( FieldGetCurrentNode() == dest )
 		{
+		  PlaySound(soundUpwardTones);
 			break;	//	we're there!!!
 		}
 		else if ( segment.destination == NodeZero )	//	there's no path available
