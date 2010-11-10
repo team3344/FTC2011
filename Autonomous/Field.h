@@ -17,28 +17,28 @@
 
 
 	//	start squares	//
-	NodeRedStartSquareLeft,
-	NodeRedStartSquareRight,
+	NodeFriendStartSquareLeft,
+	NodeFriendStartSquareRight,
 
-	NodeBlueStartSquareLeft,
-	NodeBlueStartSquareRight,
+	NodeFoeStartSquareLeft,
+	NodeFoeStartSquareRight,
 
 
 
 	//	dispensers	//
-	NodeBlueDispenserLeft,
-	NodeBlueDispenserCenter,
-	NodeBlueDispenserRight,
+	NodeFoeDispenserLeft,
+	NodeFoeDispenserCenter,
+	NodeFoeDispenserRight,
 
-	NodeRedDispenserLeft,
-	NodeRedDispenserCenter,
-	NodeRedDispenserRight,
+	NodeFriendDispenserLeft,
+	NodeFriendDispenserCenter,
+	NodeFriendDispenserRight,
 
 
 
 	//	bridges	//
-	NodeBlueBridgeCenter,
-	NodeRedBridgeCenter,
+	NodeFoeBridgeCenter,
+	NodeFriendBridgeCenter,
 
 
 
@@ -50,8 +50,8 @@
 
 
 	//	pit goals	//
-	//NodeRedPitCenter,
-	//NodeBluePitCenter,
+	//NodeFriendPitCenter,
+	//NodeFoePitCenter,
 
 
 

@@ -49,15 +49,15 @@ void DriveControl(Controller& controller)
     //  power
     if ( ControllerButtonIsPressed(controller, ControllerButton1) )
     {
-      SetPowerMultiplier(kLowPower);
+		DrivePowerMultiplier = kDrivePowerLow;
     }
     else if ( ControllerButtonIsPressed(controller, ControllerButton2) )
     {
-      SetPowerMultiplier(kRegularPower);
+		DrivePowerMultiplier = kDrivePowerNormal;
     }
     else if ( ControllerButtonIsPressed(controller, ControllerButton3) )
     {
-      SetPowerMultiplier(kHighPower);
+		DrivePowerMultiplier = kDrivePowerHigh;
     }
 
 
@@ -67,7 +67,7 @@ void DriveControl(Controller& controller)
 
 
 
-
+	/*
     //  omni strafe
     bool r1, r2, l1, l2, left, right;
 	  r1 = ControllerButtonIsPressed(controller, ControllerButtonR1);
@@ -80,6 +80,7 @@ void DriveControl(Controller& controller)
     else if ( l1 ) OmniSetStrafePower(.5);
     else if ( l2 ) OmniSetStrafePower(1);
     else OmniSetStrafePower(0);
+	*/
 }
 
 void MechanismControl(Controller& controller)
@@ -87,72 +88,65 @@ void MechanismControl(Controller& controller)
     //  slide adjustment
     if ( controller.dPad.y == 1 && !MechanismSlideIsMoving())
     {
-      StartTask(MechanismSlideIncrementPosition);
+		StartTask(MechanismSlideIncrementPosition);
     }
     else if ( controller.dPad.y == -1 && !MechanismSlideIsMoving() )
     {
-      StartTask(MechanismSlideDecrementPosition);
+		StartTask(MechanismSlideDecrementPosition);
     }
 
 
 
     //  kicker
-		if ( !MechanismIsKicking() && ControllerButtonIsPressed(controller, ControllerButtonR1) )
-		{
-		  StartTask(MechanismKickBaton);
-		}
+	if ( !MechanismIsKicking && ControllerButtonIsPressed(controller, ControllerButtonR1) )
+	{
+		StartTask(MechanismKickBaton);
+	}
 
 
 
 
 
-		//  conveyor
-		if ( ControllerButtonIsPressed(controller, ControllerButtonL1) )
-		{
-		  motor[Conveyor] = 50;
-	  }
-	  else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) )
-	  {
-	    motor[Conveyor] = -50;
-	  }
-		else
-		{
-		  motor[Conveyor] = 0;
-		}
-
-		/*if ( !MechanismConveyorIsRunning() && ControllerButtonIsPressed(controller, ControllerButtonL1) )
-		{
-		  StartTask(MechanismCycleConveyor);
-		}*/
+	//  conveyor
+	if ( ControllerButtonIsPressed(controller, ControllerButtonL1) )		//	forward
+	{
+		motor[Conveyor] = 50;
+	}
+	else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) )	//	reverse
+	{
+		motor[Conveyor] = -50;
+	}
+	else																	//	stop
+	{
+		motor[Conveyor] = 0;
+	}
 
 
 
 
+	//  magnet slide position
+	if ( ControllerButtonIsPressed(controller, ControllerButton4) )
+	{
+		MechanismSlideSetMagnetPosition();
+	}
+	
+	//  regular slide position
+	if ( ControllerButtonIsPressed(controller, ControllerButton2) )
+	{
+		MechanismSlideSetRegularPosition();
+	}
+	
+	//  down position
+	if ( ControllerButtonIsPressed(controller, ControllerButton3) )
+	{
+		MechanismSlideSetDownPosition();
+	}
 
-		//  magnet slide position
-		if ( ControllerButtonIsPressed(controller, ControllerButton4) )
-		{
-		  MechanismSlideSetMagnetPosition();
-		}
-
-
-		//  regular slide position
-		if ( ControllerButtonIsPressed(controller, ControllerButton2) )
-		{
-		  MechanismSlideSetRegularPosition();
-		}
-
-		//  down position
-		if ( ControllerButtonIsPressed(controller, ControllerButton3) )
-		{
-		  MechanismSlideSetDownPosition();
-		}
-
-		//  long position
-		if ( ControllerButtonIsPressed(controller, ControllerButton1)
-		{
-		  MechanismSlideSetLongPosition();
-		}
+	//  long position
+	if ( ControllerButtonIsPressed(controller, ControllerButton1)
+	{
+		MechanismSlideSetLongPosition();
+	}
 }
 
 
@@ -173,19 +167,17 @@ task main()
 		UpdatePrimaryController(primary);
 		UpdateSecondaryController(secondary);
 
-    DriveControl(primary);
-    MechanismControl(secondary);
-
-
-    if ( MagneticSensorMagnetIsPresent() )
-    {
-      motor[IndicatorLight] = 100;  //  turn the light on
-    }
-    else
-    {
-      motor[IndicatorLight] = 0;
-    }
-
-
+		DriveControl(primary);
+		MechanismControl(secondary);
+		
+		
+		if ( MagneticSensorMagnetIsPresent() )
+		{
+			motor[IndicatorLight] = 100;  //  turn the light on
+		}
+		else
+		{
+			motor[IndicatorLight] = 0;
+		}
 	}
 }

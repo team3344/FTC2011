@@ -18,23 +18,16 @@
 #define kKickerServoUpPosition 255 - 85
 #define kKickerPostDelay 550            //  delay after mechanism kicks
 
-bool _kickingBaton;
-
-bool MechanismIsKicking()
-{
-  return _kickingBaton;
-}
-
 task MechanismKickBaton()
 {
-  _kickingBaton = true;
+  MechanismIsKicking = true;
 
   servo[Kicker] = kKickerServoUpPosition;
   wait1Msec(kKickerPostDelay);
   servo[Kicker] = kKickerServoDownPosition;
   wait1Msec(320);								//	FIXME: is this delay alright
 
-  _kickingBaton = false;
+  MechanismIsKicking = false;
 }
 
 

@@ -7,23 +7,24 @@
 
 
 #ifndef _Vector_
-#include "Vector.h"
+#include "../shared/Vector.h"
 #endif
 
 #ifndef _Defines_
-#include "Defines.h"
+#include "../shared/Defines.h"
 #endif
 
 
 
-void SetPowerMultiplier(float multiplier);
+#define kDrivePowerLow		.2
+#define kDrivePowerNormal	.4
+#define kDrivePowerHigh		1.0
 
-/*
-void SetBoostState(bool state);
-bool BoostToggle();	//	toggles boost and returns the new value
-bool BoostIsOn();
-*/
+static float DrivePowerMultiplier = kPowerNormal;	//	set this to slow down or speed up the bot
 
+
+
+void SetMotorPower(short m, float power);	//	power is from 0 to 1
 
 
 
@@ -44,7 +45,7 @@ bool BoostIsOn();
 //void OmniDrivePro(Controller& ctrlr);
 
 
-void OmniSetStrafePower(float power);
+//void OmniSetStrafePower(float power);
 
 //void OmniTranslate(Vector translation);
 //void OmniRotate(float angle);

@@ -25,7 +25,7 @@ typedef enum {
 
 
 
-bool MechanismIsKicking();
+static bool MechanismIsKicking;
 task MechanismKickBaton();
 
 void MechanismInit();

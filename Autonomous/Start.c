@@ -37,10 +37,12 @@ TButtons NXTGetButtonPress()
   return button;
 }
 
+
 void NXTWaitUntilButtonRelease()
 {
 	while ( nNxtButtonPressed != kNoButton ){}
 }
+
 
 int NXTShowMenu(NXTMenu& menu)
 {
@@ -103,51 +105,37 @@ int NXTShowMenu(NXTMenu& menu)
 
 void FTCGetStartPosition()
 {
-  hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
+	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
 
-  NXTMenu teamMenu;
-  teamMenu.title = "Select Team";
-  teamMenu.items[0] = "Red";
-  teamMenu.items[1] = "Blue";
-  teamMenu.itemCount = 2;
+	NXTMenu teamMenu;
+	teamMenu.title = "Select Team";
+	teamMenu.items[0] = "Red";
+	teamMenu.items[1] = "Blue";
+	teamMenu.itemCount = 2;
 
-  int team = NXTShowMenu(teamMenu) << 1;
+	int team = NXTShowMenu(teamMenu);	//	FIXME: is it necessary to get the team color?
 
-  NXTMenu sideMenu;
-  sideMenu.title = "Select Side";
-  sideMenu.items[0] = "Left";
-  sideMenu.items[1] = "Right";
-  sideMenu.itemCount = 2;
+	NXTMenu sideMenu;
+	sideMenu.title = "Select Side";
+	sideMenu.items[0] = "Left";
+	sideMenu.items[1] = "Right";
+	sideMenu.itemCount = 2;
 
-  int side = NXTShowMenu(sideMenu);
-
-
-
-  //  the node sides are global, while the selection is local
-  //  a left node is one that is one that is one the left when looking
-  //  at a map of the field with the red side at the bottom & the blue
-  //  side at the top.  For blue nodes, this is backwards from the left
-  //  or right of a person standing in the start area
-  Node startNodes[] = {
-    NodeRedStartSquareLeft,         //  0 + 0
-    NodeRedStartSquareRight,        //  0 + 1
-    NodeBlueStartSquareRight,       //  2 + 0
-    NodeBlueStartSquareLeft         //  2 + 1
-  };
+	int side = NXTShowMenu(sideMenu);
 
 
-  //  set the start node
-  Node startNode = startNodes[team + side];
-  FieldSetCurrentNode(startNode);
+	//  set the start node
+	Node startNode = ( side == 0 ) ? NodeFriendStartSquareLeft : NodeFriendStartSquareRight;
+	FieldSetCurrentNode(startNode);
 
 	RobotPosition startPos;
-  FieldGetNodeLocation(startNode, startPos.location);
-  startPos.orientation = (team == 0) ? PI / 2 : -PI / 2;
-  memcpy(currentRobotPosition, startPos, sizeof(RobotPosition));
+	FieldGetNodeLocation(startNode, startPos.location);
+	startPos.orientation = (team == 0) ? PI / 2 : -PI / 2;
+	memcpy(currentRobotPosition, startPos, sizeof(RobotPosition));
 
 
 
-  eraseDisplay();
+	eraseDisplay();
 
-  releaseCPU();
+	releaseCPU();	//	'unhog' the CPU so other tasks can run
 }

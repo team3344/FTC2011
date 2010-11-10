@@ -27,30 +27,24 @@
 
 #include "shared/include.c"
 #include "Autonomous/include.c"
-#include "HT RobotC Drivers/drivers/HTAC-driver.h"
-#include "HT RobotC Drivers/drivers/HTIRS2-driver.h"
-#include "HT RobotC Drivers/drivers/HTMag-driver.h"
 
 
 void initializeRobot()
 {
 	FieldInit();	//  initialize the map of the field
-	//FTCTeamSetCurrent(FTCTeamRed);					//	tell it what team we are on
-	//FTCFieldSetStartPosition(FTCStartPositionLeft);	//	tell it which start square we're on
-
-  //  FIXME: get start position!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! location, node!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
 	HTSMUXinit();             //  init the sensor multiplexor
 	HTSMUXscanPorts(HTSMUX);  //  tell smux to detect connected sensors
 
-
 	MechanismInit();
 
+	FTCGetStartPosition();	//	ask the user where the robot is starting
 
 	PlaySound(soundUpwardTones);
 }
 
 
-
+/*
 static bool gettingDoubler;	//	global variable that tells whether or not the GetDoublerBaton task is running
 
 task GetDoublerBaton()
@@ -86,7 +80,7 @@ void GetToBridgeAndBalance()
 
 	RobotBalance();	//	use the accelerometor to balance the bot
 }
-
+*/
 
 
 
@@ -97,6 +91,13 @@ task main()
 	waitForStart();		// Wait for the beginning of autonomous phase.
 
 	long startTime = nPgmTime;
+
+
+
+
+	//	score preloads
+	//	get doubler
+	//	balance on bridge
 
 
 

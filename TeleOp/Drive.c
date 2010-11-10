@@ -6,26 +6,6 @@
 
 
 
-
-#define kRobotHalfLength 10
-#define kRobotHalfWidth 8
-
-
-
-
-
-static float _powerMultiplier;
-
-#define kPowerNormal .4
-#define kPowerBoost 1.0
-
-
-void SetPowerMultiplier(float multiplier)
-{
-  _powerMultiplier = multiplier;
-}
-
-
 /*
 void SetBoostState(bool state)
 {
@@ -48,7 +28,7 @@ bool BoostIsOn()
 //	motor names: Left, Right, Front, Back
 void SetMotorPower(short m, float power)	//	power is from 0 to 1
 {
-	motor[m] = power * 100.;  // * _powerMultiplier;  //  FIXME: fix
+	motor[m] = power * 100. * DrivePowerMultiplier;
 }
 
 
@@ -86,13 +66,13 @@ void OmniStrafeDrive(Vector& strafe, Vector& rotate)
 */
 
 
-
+/*
 void OmniSetStrafePower(float power)
 {
   SetMotorPower(Left, power);
   SetMotorPower(Right, power);
 }
-
+*/
 
 /*
 void OmniDrivePro(Controller& ctrlr)
