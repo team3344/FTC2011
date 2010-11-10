@@ -39,6 +39,17 @@ task main()
 	//long startTime = nPgmTime;
 
 
+
+	RobotPosition startPos;
+  FieldGetNodeLocation(NodeRedStartSquareLeft, startPos.location);
+  startPos.orientation = PI / 2;
+
+  memcpy(currentRobotPosition, startPos, sizeof(RobotPosition));
+
+
+  //RobotRotateToOrientation(PI);
+
+
 	RobotTravelFromNodeToNode(NodeRedStartSquareLeft, NodeBlueStartSquareLeft);
 
 
@@ -60,7 +71,4 @@ task main()
   */
 
   wait10Msec(1000);
-
-
-
 }

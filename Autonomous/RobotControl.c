@@ -56,8 +56,9 @@ void RobotRotateToOrientation(float orientation)
 
 	float wheelDistance = angle * (kRobotWidth / 2);
 
+
 	//	start rotating
-	motor[Left] = ( wheelDistance > 0 ) ? kRobotRotateSpeed : -kRobotRotateSpeed;
+	motor[Left] = ( wheelDistance > 0 ) ? -kRobotRotateSpeed : kRobotRotateSpeed;
 	motor[Right] = -motor[Left];
 
 	int encoderPoints = TetrixConvertDistanceToEncoder(wheelDistance);
@@ -68,6 +69,9 @@ void RobotRotateToOrientation(float orientation)
 	//	stop
 	motor[Left] = 0;
 	motor[Right] = 0;
+
+
+	currentRobotPosition.orientation = orientation;
 }
 
 
