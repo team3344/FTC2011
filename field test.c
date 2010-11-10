@@ -28,6 +28,7 @@
 
 #include "shared/include.c"
 #include "Autonomous/include.c"
+#include "JoystickDriver.c"
 
 
 
@@ -35,6 +36,10 @@ task main()
 {
 	FieldInit();	//  initialize the map of the field
 	MechanismInit();
+
+	FTCGetStartPosition();  //  get start position from user
+
+
 
 	//long startTime = nPgmTime;
 
