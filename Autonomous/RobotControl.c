@@ -78,7 +78,14 @@ void RobotRotateToOrientation(float orientation)
 
 bool RobotMoveDistance(float distance)
 {
+  nMotorEncoder[Left] = 0;
+  nMotorEncoder[Right] = 0;
+
 	int encoderPoints = TetrixConvertDistanceToEncoder(distance);
+
+
+	//nxtDisplayCenteredTextLine(3, (string)encoderPoints);
+
 
 	motor[Left] = ( distance > 0 ) ? kRobotMoveSpeed : -kRobotMoveSpeed;
 	motor[Right] = motor[Left];

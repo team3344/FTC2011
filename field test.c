@@ -40,40 +40,13 @@ task main()
 	FTCGetStartPosition();  //  get start position from user
 
 
-
 	//long startTime = nPgmTime;
 
+ //RobotMoveDistance(24);
+  //wait10Msec(1000);
 
 
-	RobotPosition startPos;
-  FieldGetNodeLocation(NodeRedStartSquareLeft, startPos.location);
-  startPos.orientation = PI / 2;
-
-  memcpy(currentRobotPosition, startPos, sizeof(RobotPosition));
-
-
-  //RobotRotateToOrientation(PI);
-
-
-	RobotTravelFromNodeToNode(NodeRedStartSquareLeft, NodeBlueStartSquareLeft);
-
-
-	/*
-  FieldSetCurrentNode(NodeRedStartSquareLeft);
-  FieldSetGoalNode(NodeBlueStartSquareLeft);
-  FieldRecalculatePath();
-
-
-
-
-
-  for ( int i = 0; i < 10; i++ )
-  {
-    nxtDisplayCenteredTextLine(i, (string)FieldGetCurrentNode());
-    FieldAdvance();
-    if ( FieldGetNextNode() == NodeZero) break;
-  }
-  */
+	RobotTravelFromNodeToNode(FieldGetCurrentNode(), NodeBlueStartSquareLeft);
 
   wait10Msec(1000);
 }

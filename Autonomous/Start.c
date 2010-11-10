@@ -137,9 +137,15 @@ void FTCGetStartPosition()
 
 
   //  set the start node
-  FieldSetCurrentNode( startNodes[team + side] );
+  Node startNode = startNodes[team + side];
+  FieldSetCurrentNode(startNode);
 
-  //nxtDisplayCenteredTextLine(5, (string)startNodes[team + side]);
+	RobotPosition startPos;
+  FieldGetNodeLocation(startNode, startPos.location);
+  startPos.orientation = (team == 0) ? PI / 2 : -PI / 2;
+  memcpy(currentRobotPosition, startPos, sizeof(RobotPosition));
+
+
 
   eraseDisplay();
 
