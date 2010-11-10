@@ -649,13 +649,13 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		Dispensers		**********/
-	FieldSetNodeCoordinates(NodeRedDispenserLeft, kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeRedDispenserLeft, kDispenserPerpendicularDistance, kFieldSize - kSideDispenserDistanceFromFieldEnd, 0);
 	FieldSetNodeCoordinates(NodeRedDispenserCenter, kFieldSize / 2, kFieldSize - kDispenserPerpendicularDistance, 0);
-	FieldSetNodeCoordinates(NodeRedDispenserRight, kFieldSize - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeRedDispenserRight, kFieldSize - kDispenserPerpendicularDistance, kFieldSize - kSideDispenserDistanceFromFieldEnd, 0);
 
-	FieldSetNodeCoordinates(NodeBlueDispenserLeft, kDispenserPerpendicularDistance, kFieldSize - kSideDispenserDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeBlueDispenserLeft, kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd, 0);
 	FieldSetNodeCoordinates(NodeBlueDispenserCenter, kFieldSize / 2, kDispenserPerpendicularDistance, 0);
-	FieldSetNodeCoordinates(NodeBlueDispenserRight, kFieldSize - kDispenserPerpendicularDistance, kFieldSize - kSideDispenserDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeBlueDispenserRight, kFieldSize - kDispenserPerpendicularDistance, kSideDispenserDistanceFromFieldEnd, 0);
 
 
 

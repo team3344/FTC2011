@@ -10,13 +10,44 @@
 
 
 
+static bool followLines = false;	//	Set this to true to have the bot use white lines to travel the field when possible
+
+
+
+
 
 //	attempts to travel the segment.  returns success.  if successful, sets currentNode & currentPosition to wherever it went
 bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
-
+	
 	bool success;
+	
+	
+	
+	
+	
+	
+	
+	RobotPosition startPosition;
+	memcpy(startPosition, currentRobotPosition, sizeof(RobotPosition));
+	
+	Vector destination;
+	FieldGetNodeLocation(segment.destination, destination);
+	
+	Vector displacement;
+	VectorSubtract(destination, startPosition.location, displacement);
+	
+	float distance, angle;
+	distance = VectorGetMagnitude(displacement);
+	angle = VectorGetAngle(displacement);
+	
+	RobotRotateToOrientation(angle);
+	
+	
+	
+	
+	
 
 
 	//	if there's a bridge in front of us, GET OVER IT!
@@ -45,20 +76,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	}
 	else	//	there's no line to follow
 	{
-		RobotPosition startPosition;
-		memcpy(startPosition, currentRobotPosition, sizeof(RobotPosition));
-
-		Vector destination;
-		FieldGetNodeLocation(segment.destination, destination);
-
-		Vector displacement;
-		VectorSubtract(destination, startPosition.location, displacement);
-
-		float distance, angle;
-		distance = VectorGetMagnitude(displacement);
-		angle = VectorGetAngle(displacement);
-
-		RobotRotateToOrientation(angle);
+		//	FIXME: recalculate displacement
 
 		if ( !RobotMoveDistance(distance) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
@@ -77,7 +95,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		}
 		else
 		{
-		  PlaySound(soundBeepBeep); //  let us know we got to the node
+			PlaySound(soundBeepBeep); //  let us know we got to the node
 			memcpy(&currentRobotPosition.location, &destination, sizeof(Vector));	//	tell it we're at the location of the node	//	FIXME: is this necessary?
 			success = true;
 		}
