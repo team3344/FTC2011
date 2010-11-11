@@ -20,34 +20,34 @@ static bool followLines = false;	//	Set this to true to have the bot use white l
 bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
-	
+
 	bool success;
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	RobotPosition startPosition;
 	memcpy(startPosition, currentRobotPosition, sizeof(RobotPosition));
-	
+
 	Vector destination;
 	FieldGetNodeLocation(segment.destination, destination);
-	
+
 	Vector displacement;
 	VectorSubtract(destination, startPosition.location, displacement);
-	
+
 	float distance, angle;
 	distance = VectorGetMagnitude(displacement);
 	angle = VectorGetAngle(displacement);
-	
+
 	RobotRotateToOrientation(angle);
-	
-	
-	
-	
-	
+
+
+
+
+
 
 
 	//	if there's a bridge in front of us, GET OVER IT!
@@ -81,7 +81,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		if ( !RobotMoveDistance(distance) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
 			RobotPosition currentPosition;
-			memcpy(currentPosition, currentRobotPosition, sizeof(RobotPosition));
+			memcpy(currentPosition, CurrentRobotPosition, sizeof(RobotPosition));
 
 			VectorSubtract(startPosition.location, currentPosition.location, displacement);
 			distance = VectorGetMagnitude(displacement);

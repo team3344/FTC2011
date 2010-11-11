@@ -9,6 +9,11 @@
 #endif
 
 
+#ifndef _Sensors_
+#include "../shared/Sensors.h"
+#endif
+
+
 
 
 
@@ -26,7 +31,7 @@ typedef struct {
 
 //	Position Tracking
 //===========================================================================================================
-static RobotPosition currentRobotPosition;
+static RobotPosition CurrentRobotPosition;
 
 
 
@@ -41,17 +46,19 @@ typedef struct {
 	int lineBrightness, surroundingBrightness;
 } LineFollowingContext;
 
+LineFollowingContext CurrentLineFollowingContext;
 
 
-bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance);
-bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt);
 
-bool RobotFindWhiteLine(LineFollowingContext& ctxtOut);	//	returns true if it finds it and gives the context
+bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies);
+bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies);
+
+bool RobotFindWhiteLine();	//	returns true if it finds it.  saves context to CurrentLineFollowingContext
 
 
 
 void RobotRotateToOrientation(float orientation);
-bool RobotMoveDistance(float distance);				//	distance in inches.  Can be negative.
+bool RobotMoveDistance(float distance, bool avoidEnemies);				//	distance in inches.  Can be negative.
 
 
 void RobotApproachBridge();

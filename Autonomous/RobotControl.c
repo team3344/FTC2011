@@ -17,19 +17,44 @@
 
 #define kLineFollowerMotorPower 30
 
-bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance)
+bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
 {
 	return true;
 }
 
-bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt)
+bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
 {
 	return true;
 }
 
-bool RobotFindWhiteLine(LineFollowingContext& ctxtOut)	//	returns true if it finds it and gives the context
+
+
+
+
+task _RobotScanWhiteLine()
 {
-	return true;
+  //  look at brightnesses and save them in CurrentLineFollowingContext
+}
+
+
+
+#define kRobotScanAngle PI / 4
+
+bool RobotFindWhiteLine()	//	returns true if it finds it
+{
+  StartTask(_RobotScanWhiteLine); //  start scanning
+
+  float orientation = CurrentRobotPosition.orientation;
+  RobotRotateToOrientation(orientation + kRobotScanAngle);
+  RobotRotateToOrientation(orientation - kRobotScanAngle);
+
+  StopTask(_RobotScanWhiteLine);  //  stop scanning
+
+
+  //  FIXME: align with the line now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+	return true;  //  FIXME: only return true if it finds it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 
@@ -42,9 +67,9 @@ bool RobotFindWhiteLine(LineFollowingContext& ctxtOut)	//	returns true if it fin
 #define kRobotRotateSpeed kRobotMoveSpeed
 
 
-void RobotRotateToOrientation(float orientation)
+void RobotRotateToOrientation(float orientation, bool avoidEnemies)
 {
-	float currentOrientation = currentRobotPosition.orientation;
+	float currentOrientation = CurrentRobotPosition.orientation;
 	float angle = orientation - currentOrientation;
 
 	//	reduce angle
@@ -71,7 +96,7 @@ void RobotRotateToOrientation(float orientation)
 	motor[Right] = 0;
 
 
-	currentRobotPosition.orientation = orientation;
+	CurrentRobotPosition.orientation = orientation;
 }
 
 

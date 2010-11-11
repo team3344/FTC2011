@@ -128,10 +128,9 @@ void FTCGetStartPosition()
 	Node startNode = ( side == 0 ) ? NodeFriendStartSquareLeft : NodeFriendStartSquareRight;
 	FieldSetCurrentNode(startNode);
 
-	RobotPosition startPos;
-	FieldGetNodeLocation(startNode, startPos.location);
-	startPos.orientation = (team == 0) ? PI / 2 : -PI / 2;
-	memcpy(currentRobotPosition, startPos, sizeof(RobotPosition));
+	//	set the start position
+	FieldGetNodeLocation(startNode, CurrentRobotPosition.location);
+	CurrentRobotPosition.orientation = PI / 2;
 
 
 
