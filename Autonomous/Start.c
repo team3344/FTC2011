@@ -76,8 +76,8 @@ int NXTShowMenu(NXTMenu& menu)
 
 
     TButtons button = NXTGetButtonPress();
-    NXTWaitUntilButtonRelease();
     PlaySound(soundBlip);
+    NXTWaitUntilButtonRelease();
 
     if ( button == 3 )  //  center button
     {
@@ -91,6 +91,7 @@ int NXTShowMenu(NXTMenu& menu)
     {
       ++selectedIndex;
     }
+
   }
 }
 

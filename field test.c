@@ -42,11 +42,11 @@ task main()
 
 	//long startTime = nPgmTime;
 
- //RobotMoveDistance(24);
+  //RobotMoveDistance(24);
   //wait10Msec(1000);
 
 
-	RobotTravelFromNodeToNode(FieldGetCurrentNode(), NodeBlueStartSquareLeft);
+	RobotTravelFromNodeToNode(FieldGetCurrentNode(), NodeFoeStartSquareLeft);
 
   wait10Msec(1000);
 }

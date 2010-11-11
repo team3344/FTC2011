@@ -67,7 +67,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 #define kRobotRotateSpeed kRobotMoveSpeed
 
 
-void RobotRotateToOrientation(float orientation, bool avoidEnemies)
+void RobotRotateToOrientation(float orientation)
 {
 	float currentOrientation = CurrentRobotPosition.orientation;
 	float angle = orientation - currentOrientation;

@@ -30,7 +30,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 
 	RobotPosition startPosition;
-	memcpy(startPosition, currentRobotPosition, sizeof(RobotPosition));
+	memcpy(startPosition, CurrentRobotPosition, sizeof(RobotPosition));
 
 	Vector destination;
 	FieldGetNodeLocation(segment.destination, destination);
@@ -61,9 +61,8 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 	if ( segmentFlags & PathSegmentFlagWhiteConnectingLine )
 	{
-		LineFollowingContext ctxt;
-		RobotFindWhiteLine(ctxt);
-		success = RobotFollowWhiteLineToEnd(ctxt);
+		RobotFindWhiteLine();
+		success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
 
 		//	follow the line
 		///////////////////////////
@@ -96,7 +95,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		else
 		{
 			PlaySound(soundBeepBeep); //  let us know we got to the node
-			memcpy(&currentRobotPosition.location, &destination, sizeof(Vector));	//	tell it we're at the location of the node	//	FIXME: is this necessary?
+			memcpy(&CurrentRobotPosition.location, &destination, sizeof(Vector));	//	tell it we're at the location of the node	//	FIXME: is this necessary?
 			success = true;
 		}
 
