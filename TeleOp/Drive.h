@@ -20,7 +20,7 @@
 #define kDrivePowerNormal	.4
 #define kDrivePowerHigh		1.0
 
-static float DrivePowerMultiplier = kPowerNormal;	//	set this to slow down or speed up the bot
+static float DrivePowerMultiplier = kDrivePowerNormal;	//	set this to slow down or speed up the bot
 
 
 

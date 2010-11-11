@@ -1,7 +1,7 @@
 
 
-#ifndef _OmniDrive_
-#include "OmniDrive.h"
+#ifndef _Drive_
+#include "Drive.h"
 #endif
 
 
