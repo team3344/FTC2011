@@ -77,7 +77,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	{
 		//	FIXME: recalculate displacement
 
-		if ( !RobotMoveDistance(distance) )	//	try to travel the distance.  if it fails, go back to where we started
+		if ( !RobotMoveDistance(distance, true) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
 			RobotPosition currentPosition;
 			memcpy(currentPosition, CurrentRobotPosition, sizeof(RobotPosition));
@@ -88,7 +88,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 			//	backup to the start location
 			RobotRotateToOrientation(angle + PI);
-			RobotMoveDistance(-distance);					//	FIXME: go this time without stopping for obstructions
+			RobotMoveDistance(-distance, false);
 
 			success = false;
 		}

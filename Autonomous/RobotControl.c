@@ -63,7 +63,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
 
-#define kRobotMoveSpeed 20	//	FIXME: change this
+#define kRobotMoveSpeed 30	//	FIXME: change this
 #define kRobotRotateSpeed kRobotMoveSpeed
 
 
@@ -101,7 +101,7 @@ void RobotRotateToOrientation(float orientation)
 
 
 
-bool RobotMoveDistance(float distance)
+bool RobotMoveDistance(float distance, bool avoidEnemies)
 {
   nMotorEncoder[Left] = 0;
   nMotorEncoder[Right] = 0;

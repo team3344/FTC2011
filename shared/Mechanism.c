@@ -14,8 +14,8 @@
 
 
 
-#define kKickerServoDownPosition 250
-#define kKickerServoUpPosition 255 - 85
+#define kKickerServoDownPosition 30
+#define kKickerServoUpPosition 170
 #define kKickerPostDelay 550            //  delay after mechanism kicks
 
 task MechanismKickBaton()
@@ -83,10 +83,10 @@ task MechanismCycleConveyor()
 
 
 
-#define kSlideMaxPosition 110
+#define kSlideMaxPosition 255
 #define kSlideMinPosition 1
 
-#define kSlideDownPosition 0
+#define kSlideDownPosition 100
 #define kSlideMagnetPosition 86
 #define kSlideRegularPosition 70
 #define kSlideLongPosition 95

@@ -9,7 +9,7 @@
 
 
 
-
+/*
 //	Accelerometer
 int AccelerometerSensorGetValue()
 {
@@ -21,7 +21,7 @@ int IRSensorGetValue()
 {
   HTIRSreadDir(msensor_S2_4);
 }
-
+*/
 
 
 //	Ultrasonic
