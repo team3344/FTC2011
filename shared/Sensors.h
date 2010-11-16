@@ -4,7 +4,8 @@
 
 
 
-
+#define LEFT_LIGHT_SENSOR SensorValue[LeftLightSensor]
+#define RIGHT_LIGHT_SENSOR SensorValue[RightLightSensor]
 
 
 

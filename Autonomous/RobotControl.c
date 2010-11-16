@@ -22,8 +22,51 @@ bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance,
 	return true;
 }
 
+#define kBrightnessEqualityThreshold 2 //  if brightnesses are less than this much different, they're the same
+
 bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
 {
+
+  float turnRange = 20; //  FIXME: is this ok???
+  float brightnessRange = ctxt.lineBrightness - ctxt.surroundingBrightness;
+  float gain = turnRange / brightnessRange;
+
+
+  while ( true )
+  {
+    float left = LEFT_LIGHT_SENSOR;
+    float right = RIGHT_LIGHT_SENSOR;
+    float error = left - right;
+
+    nxtDisplayCenteredTextLine(0, (string)left);
+    nxtDisplayCenteredTextLine(1, (string)right);
+
+
+    float turn = error * gain;
+
+    /*
+    if ( abs(error) < kBrightnessEqualityThreshold && abs(left - ctxt.surroundingBrightness) < kBrightnessEqualityThreshold )
+    {
+      break;  //  we're at the end of the line
+    }
+     */
+
+    motor[Left] = kLineFollowerMotorPower - turn;
+    motor[Right] = kLineFollowerMotorPower + turn;
+  }
+
+
+
+
+
+
+  motor[Left] = 0;
+  motor[Right] = 0;
+
+
+
+
+
 	return true;
 }
 
