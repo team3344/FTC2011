@@ -12,25 +12,42 @@
 
 
 
+
+void RobotStop()
+{
+  motor[Left] = 0;
+  motor[Right] = 0;
+}
+
+void _RobotZeroDriveEncoders()
+{
+  nMotorEncoder[Left] = 0;
+  nMotorEncoder[Right] = 0;
+}
+
+
+
+
+
+
 //	Line Following
 //===========================================================================================================
 
 #define kLineFollowerMotorPower 30
+#define kLineFollowerTurnRange (kLineFollowerMotorPower * (2.0 / 3.0))
 
-bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
+
+static bool FollowingLine;
+static bool AbortLineFollowing;
+
+task FollowLine()
 {
-	return true;
-}
+  FollowingLine = true;
 
-#define kBrightnessEqualityThreshold 2 //  if brightnesses are less than this much different, they're the same
+  _RobotZeroDriveEncoders();
 
-bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
-{
-
-  float turnRange = 20; //  FIXME: is this ok???
-  float brightnessRange = ctxt.lineBrightness - ctxt.surroundingBrightness;
-  float gain = turnRange / brightnessRange;
-
+  float brightnessRange = CurrentLineFollowingContext.lineBrightness - CurrentLineFollowingContext.surroundingBrightness;
+  float gain = kLineFollowerTurnRange / brightnessRange;
 
   while ( true )
   {
@@ -41,63 +58,184 @@ bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
     nxtDisplayCenteredTextLine(0, (string)left);
     nxtDisplayCenteredTextLine(1, (string)right);
 
-
     float turn = error * gain;
-
-    /*
-    if ( abs(error) < kBrightnessEqualityThreshold && abs(left - ctxt.surroundingBrightness) < kBrightnessEqualityThreshold )
-    {
-      break;  //  we're at the end of the line
-    }
-     */
 
     motor[Left] = kLineFollowerMotorPower - turn;
     motor[Right] = kLineFollowerMotorPower + turn;
+
+    if ( AbortLineFollowing )
+    {
+      PlaySound(soundBeepBeep);
+      AbortLineFollowing = false;
+      break;  //  abort
+    }
   }
 
-
-
-
-
-
+  //  stop
   motor[Left] = 0;
   motor[Right] = 0;
+  PlaySound(soundDownwardTones);
+  wait10Msec(100);
+
+  //  update the position of the robot
+  int encoder = (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2;
+  int distance = TetrixConvertEncoderToDistance(encoder);
+
+  float orientation = CurrentRobotPosition.orientation;
+  CurrentRobotPosition.location.x += distance * cos(orientation);
+  CurrentRobotPosition.location.y += distance * sin(orientation);
+
+  FollowingLine = false;
+}
 
 
 
 
+bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
+{
+  memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
+  StartTask(FollowLine);
+
+  int targetEncoder = TetrixConvertDistanceToEncoder(distance);
+  nxtDisplayCenteredTextLine(4, (string)targetEncoder);
+
+  //  go until we reach the distance
+  while ( abs(nMotorEncoder[Left] + nMotorEncoder[Right]) < targetEncoder )
+  {
+    int encoder = nMotorEncoder[Left];
+    nxtDisplayCenteredTextLine(5, (string)encoder);
+
+    if ( EnemyRobotDetected() && avoidEnemies )
+    {
+      AbortLineFollowing = true;  //  abort
+      while ( FollowingLine ) {}  //  wait until it's stopped
+
+      return false;
+    }
+  }
+
+  AbortLineFollowing = true;
+  while ( FollowingLine ) {}
 
 	return true;
 }
 
+#define kBrightnessEqualityThreshold 3 //  if brightnesses are less than this much different, they're the same
 
-
-
-
-task _RobotScanWhiteLine()
+bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies) //  FIXME: what if it sees an enemy
 {
-  //  look at brightnesses and save them in CurrentLineFollowingContext
+  memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
+
+  StartTask(FollowLine);
+
+
+  while ( true )
+  {
+    float left = LEFT_LIGHT_SENSOR;
+    float right = RIGHT_LIGHT_SENSOR;
+
+    float diff = left - right;
+    bool same = abs(diff) < kBrightnessEqualityThreshold;
+    bool notLine = ( ((left + right) / 2) - ctxt.surroundingBrightness) < kBrightnessEqualityThreshold;
+
+
+    if ( same && notLine )
+    {
+      AbortLineFollowing = true;    //  abort line following
+      while ( FollowingLine ) {}    //  wait until it stops
+
+      return true;
+    }
+
+
+    //  abort if a robot is in the way
+    if ( EnemyRobotDetected() && avoidEnemies )
+    {
+      AbortLineFollowing = true;   //  abort line following
+      while ( FollowingLine ) {}  //  wait until it stops
+
+      return false;
+    }
+  }
+
+}
+
+
+#define kWhiteLineScanAngle PI / 4
+#define kRobotLineScanPower 20
+#define kMinLineSurroundingDifference 15
+
+void _RecordLineBrightness(int b)
+{
+  if ( CurrentLineFollowingContext.lineBrightness < b )
+    CurrentLineFollowingContext.lineBrightness = b;
+  else if ( CurrentLineFollowingContext.surroundingBrightness > b )
+    CurrentLineFollowingContext.surroundingBrightness = b;
 }
 
 
 
-#define kRobotScanAngle PI / 4
-
 bool RobotFindWhiteLine()	//	returns true if it finds it
 {
-  StartTask(_RobotScanWhiteLine); //  start scanning
-
-  float orientation = CurrentRobotPosition.orientation;
-  RobotRotateToOrientation(orientation + kRobotScanAngle);
-  RobotRotateToOrientation(orientation - kRobotScanAngle);
-
-  StopTask(_RobotScanWhiteLine);  //  stop scanning
+  //  initial values
+  CurrentLineFollowingContext.lineBrightness = 0;
+  CurrentLineFollowingContext.surroundingBrightness = 100;
 
 
-  //  FIXME: align with the line now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  float maxScanArc = kWhiteLineScanAngle * (kRobotWidth / 2);
+  int scanEncoder = TetrixConvertDistanceToEncoder(maxScanArc);
 
 
-	return true;  //  FIXME: only return true if it finds it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  motor[Left] = kRobotLineScanPower;
+  motor[Right] = -kRobotLineScanPower;
+
+  while ( abs(nMotorEncoder[Left]) < abs(scanEncoder) )
+  {
+    _RecordLineBrightness(LEFT_LIGHT_SENSOR);
+    _RecordLineBrightness(RIGHT_LIGHT_SENSOR);
+
+    int contrast = CurrentLineFollowingContext.surroundingBrightness - CurrentLineFollowingContext.lineBrightness;
+
+    int edge = (CurrentLineFollowingContext.lineBrightness + CurrentLineFollowingContext.surroundingBrightness) / 2;
+    bool leftOnEdge = abs(LEFT_LIGHT_SENSOR - edge) < kBrightnessEqualityThreshold;
+
+    if ( abs(contrast) > kMinLineSurroundingDifference && leftOnEdge )
+    {
+      RobotStop();
+      return true;
+    }
+  }
+
+  _RobotZeroDriveEncoders();
+
+  motor[Left] = -kRobotLineScanPower;
+  motor[Right] = kRobotLineScanPower;
+
+  while ( abs(nMotorEncoder[Right]) < abs(scanEncoder * 2) )
+  {
+    _RecordLineBrightness(LEFT_LIGHT_SENSOR);
+    _RecordLineBrightness(RIGHT_LIGHT_SENSOR);
+
+    int contrast = CurrentLineFollowingContext.surroundingBrightness - CurrentLineFollowingContext.lineBrightness;
+
+    int edge = (CurrentLineFollowingContext.lineBrightness + CurrentLineFollowingContext.surroundingBrightness) / 2;
+    bool rightOnEdge = abs(RIGHT_LIGHT_SENSOR - edge) < kBrightnessEqualityThreshold;
+
+    if ( abs(contrast) > kMinLineSurroundingDifference && rightOnEdge )
+    {
+      RobotStop();
+      return true;
+    }
+  }
+
+
+  motor[Left] = kRobotLineScanPower;
+  motor[Right] = -kRobotLineScanPower;
+
+  _RobotZeroDriveEncoders();
+  while ( abs(nMotorEncoder[Left]) < scanEncoder ) {}
+
+	return false;
 }
 
 

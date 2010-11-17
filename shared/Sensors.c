@@ -68,12 +68,12 @@ bool MagneticSensorMagnetIsPresent()
 //  Light
 int LightSensorLeftGetBrightness()
 {
-  return LSvalNorm(msensor_S2_1);
+  return 0;//LSvalNorm(msensor_S2_1);
 }
 
 int LightSensorRightGetBrightness()
 {
-  return LSvalNorm(msensor_S2_2);
+  return 0;//LSvalNorm(msensor_S2_2);
 }
 
 
@@ -85,5 +85,5 @@ int LightSensorRightGetBrightness()
 
 bool EnemyRobotDetected()
 {
-	return SonarSensorGetDistance() > 8;	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
+	return false; //SonarSensorGetDistance() > 8;	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
 }

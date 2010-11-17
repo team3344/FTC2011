@@ -23,6 +23,7 @@
 
 #define IndicatorLight 3
 #define Conveyor 2
+#define Magnetic 3
 
 #include "shared/include.c"
 #include "Autonomous/include.c"
@@ -32,22 +33,14 @@
 
 task main()
 {
-  /*
-  while ( true )
-  {
-    nxtDisplayCenteredTextLine(0, (string)LEFT_LIGHT_SENSOR);
-  }*/
+  RobotFindWhiteLine();
+  PlaySound(soundBeepBeep);
+  wait10Msec(20);
+  RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
 
+  nxtDisplayCenteredTextLine(0, "ctxt");
+  nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.surroundingBrightness);
+  nxtDisplayCenteredTextLine(2, (string)CurrentLineFollowingContext.lineBrightness);
 
-  LineFollowingContext ctxt;
-  ctxt.lineBrightness = 47;
-  ctxt.surroundingBrightness = 28;
-
-  RobotFollowWhiteLineToEnd(ctxt, false);
-
-
-  motor[Left] = 30;
-  motor[Right] = 30;
-
-  wait10Msec(1000);
+  while ( true ) {}
 }

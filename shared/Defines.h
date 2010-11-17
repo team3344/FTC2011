@@ -11,8 +11,8 @@
 
 //	All measurements are in inches
 
-#define kTetrixMotorEncoderPointsPerRotation 4 * 360
-#define kNXTMotorEncoderPointsPerRotation 360
+#define kTetrixMotorEncoderPointsPerRotation 4. * 360.
+#define kNXTMotorEncoderPointsPerRotation 360.
 
 #define kRobotWidth 16.25
 
