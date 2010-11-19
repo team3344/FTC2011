@@ -4,6 +4,12 @@
 
 
 
+
+#include "../HT RobotC Drivers/drivers/LEGOLS-driver.h"
+#include "../HT RobotC Drivers/drivers/HTAC-driver.h"
+
+
+
 #define LEFT_LIGHT_SENSOR SensorValue[LeftLightSensor]
 #define RIGHT_LIGHT_SENSOR SensorValue[RightLightSensor] + 3
 

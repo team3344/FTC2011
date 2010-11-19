@@ -33,69 +33,6 @@ task MechanismKickBaton()
 
 
 
-
-/*
-bool MechanismHasMagnetBaton()
-{
-	return MagneticSensorMagnetIsPresent();
-}
-*/
-
-
-#define kIndicatorLightPower 70	//	FIXME: IS THIS GOOD ENOUGH????????????????????????????
-
-void MechanismSetIndicatorLightState(bool turnedOn)
-{
-	motor[IndicatorLight] = ( turnedOn ) ? kIndicatorLightPower : 0;
-}
-
-
-
-
-
-#define kMechanismConveyorFullCycleEncoderCount 2500	//	FIXME: this is garbage	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define kMechanismConveyorMotorSpeed 50
-
-bool _conveyorRunning;
-
-bool MechanismConveyorIsRunning()
-{
-  return _conveyorRunning;
-}
-
-task MechanismCycleConveyor()
-{
-  _conveyorRunning = true;
-
-  nMotorEncoder[Conveyor] = 0;
-  motor[Conveyor] = kMechanismConveyorMotorSpeed;
-  while ( nMotorEncoder[Conveyor] < kMechanismConveyorFullCycleEncoderCount ) {}
-  motor[Conveyor] = 0;
-
-  _conveyorRunning = false;
-}
-
-
-
-
-
-
-
-
-
-#define kSlideMaxPosition 255
-#define kSlideMinPosition 1
-
-#define kSlideDownPosition 100
-#define kSlideMagnetPosition 86
-#define kSlideRegularPosition 70
-#define kSlideLongPosition 95
-
-short MechanismSlideGetPosition()
-{
-    return servo[Slide];
-}
-
 void MechanismSlideSetPosition(short position)
 {
   nxtDisplayCenteredTextLine(1, (string)position);
@@ -143,60 +80,29 @@ void MechanismDoorOpen()
 
 #define kSlidePositionIncrement 1
 #define kSlideAdjustmentWait 70
-bool _movingSlide;
 
-bool MechanismSlideIsMoving()
-{
-  return _movingSlide;
-}
 
 task MechanismSlideIncrementPosition()
 {
-  _movingSlide = true;
+  MechanismSlideIsMoving = true;
 
-  short pos = MechanismSlideGetPosition();
+  short pos = servo[Slide];
   MechanismSlideSetPosition(pos + kSlidePositionIncrement);
   wait1Msec(kSlideAdjustmentWait);
 
-  _movingSlide = false;
+  MechanismSlideIsMoving = false;
 }
 
 task MechanismSlideDecrementPosition()
 {
-  _movingSlide = true;
+  MechanismSlideIsMoving = true;
 
-  short pos = MechanismSlideGetPosition();
+  short pos = servo[Slide];
   MechanismSlideSetPosition(pos - kSlidePositionIncrement);
   wait1Msec(kSlideAdjustmentWait);
 
-  _movingSlide = false;
+  MechanismSlideIsMoving = false;
 }
-
-void MechanismSlideSetRegularPosition()
-{
-  MechanismSlideSetPosition(kSlideRegularPosition);
-}
-
-void MechanismSlideSetMagnetPosition()
-{
-  MechanismSlideSetPosition(kSlideMagnetPosition);
-}
-
-
-
-void MechanismSlideSetDownPosition()
-{
-    MechanismSlideSetPosition(kSlideDownPosition);
-}
-
-void MechanismSlideSetLongPosition()
-{
-  MechanismSlideSetPosition(kSlideLongPosition);
-}
-
-
-
-
 
 
 
@@ -205,9 +111,5 @@ void MechanismInit()
 {
   servo[Kicker] = kKickerServoDownPosition; //  put the kicker down
 
-  MechanismSlideSetDownPosition();
-
-
-  _movingSlide = false;
-
+  MechanismSlideSetPosition(kSlideDownPosition);
 }

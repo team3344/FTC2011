@@ -4,40 +4,19 @@
 #define _Mechanism_
 
 
-/*
+
 #ifndef _Sensors_
 #include "Sensors.h"
 #endif
-*/
-
-
-/*
-typedef enum {
-	BatonTypeUnknown,
-	BatonTypeRegular,
-	BatonTypeMagnet,
-	BatonTypePointDoubler
-} Baton;
-*/
-
-
-//#define kMagazineCapacity 5
 
 
 
-static bool MechanismIsKicking;
-task MechanismKickBaton();
 
 void MechanismInit();
 
 
-bool MechanismHasMagnetBaton();
-void MechanismSetIndicatorLightState(bool turnedOn);
-
-
-
-bool MechanismConveyorIsRunning();
-task MechanismCycleConveyor();    //  make it go all the way around once
+static bool MechanismIsKicking;
+task MechanismKickBaton();
 
 
 
@@ -48,17 +27,22 @@ void MechanismDoorOpen();
 
 
 
-short MechanismSlideGetPosition();
+
+
+#define kSlideMaxPosition 255
+#define kSlideMinPosition 1
+
+#define kSlideDownPosition 100
+#define kSlideMagnetPosition 86
+#define kSlideRegularPosition 70
+#define kSlideLongPosition 95
+
 void MechanismSlideSetPosition(short position);
 task MechanismSlideIncrementPosition();
 task MechanismSlideDecrementPosition();
 
-bool MechanismSlideIsMoving();
+static bool MechanismSlideIsMoving;
 
-void MechanismSlideSetRegularPosition();
-void MechanismSlideSetMagnetPosition();
-void MechanismSlideSetDownPosition();
-void MechanismSlideSetLongPosition();
 
 
 #endif

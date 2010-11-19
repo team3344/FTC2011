@@ -22,37 +22,7 @@
 
 static float DrivePowerMultiplier = kDrivePowerNormal;	//	set this to slow down or speed up the bot
 
-
-
 void SetMotorPower(short m, float power);	//	power is from 0 to 1
-
-
-
-
-
-/*	drive - controls bot arcade style
- *	omni - x component controls sidewinding
- */
-//void OmniArcadeDrive(Vector& drive, Vector& omni);
-
-
-/*	strafe - controls forward, backward, & side to side
- *	rotate - x component controls the rotation of the bot around the center
- */
-//void OmniStrafeDrive(Vector& strafe, Vector& rotate);
-//
-
-//void OmniDrivePro(Controller& ctrlr);
-
-
-//void OmniSetStrafePower(float power);
-
-//void OmniTranslate(Vector translation);
-//void OmniRotate(float angle);
-//void OmniTranslateAndRotate(Vector translation, float angle);
-
-
-
 
 
 

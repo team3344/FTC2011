@@ -32,7 +32,7 @@
 void initializeRobot()
 {
 	FieldInit();	//  initialize the map of the field
-	
+
 	HTSMUXinit();             //  init the sensor multiplexor
 	HTSMUXscanPorts(HTSMUX);  //  tell smux to detect connected sensors
 
@@ -103,7 +103,7 @@ task main()
 
 
 
-	StartTask(GetDoublerBaton);
+	//StartTask(GetDoublerBaton);
 
 	while ( true )
 	{
@@ -115,11 +115,11 @@ task main()
 
 			break;
 		}
-		else if ( !gettingDoubler )	//	see if we're done getting the doubler yet
-		{
-			break;
-		}
+		//else if ( !gettingDoubler )	//	see if we're done getting the doubler yet
+		//{
+		//	break;
+		//}
 	}
 
-  GetToBridgeAndBalance();
+  //GetToBridgeAndBalance();
 }
