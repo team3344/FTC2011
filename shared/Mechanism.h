@@ -15,33 +15,47 @@
 void MechanismInit();
 
 
-static bool MechanismIsKicking;
-task MechanismKickBaton();
+#define kSlideMaxPosition 144
+#define kSlideMinPosition 10
 
-
-
-void MechanismDoorClose();
-void MechanismDoorOpen();
-
-
-
-
-
-
-
-#define kSlideMaxPosition 255
-#define kSlideMinPosition 1
-
-#define kSlideDownPosition 100
-#define kSlideMagnetPosition 86
-#define kSlideRegularPosition 70
-#define kSlideLongPosition 95
+#define kSlideDownPosition 20
+#define kSlideMagnetPosition 95
+#define kSlideRegularPosition 85
+#define kSlideLongPosition 110
 
 void MechanismSlideSetPosition(short position);
 task MechanismSlideIncrementPosition();
 task MechanismSlideDecrementPosition();
 
 static bool MechanismSlideIsMoving;
+
+
+
+
+
+#define kKickerSpeed 170
+#define kKickerStopped 128
+
+
+
+
+
+
+
+
+
+#define kElevatorSpeed 30
+
+
+#define ElevatorIsAtTop (SensorValue[ElevatorTopStop] == 1)
+
+
+#define kDoorUpPosition 30
+#define kDoorDownPosition 200
+#define kDoorFlatPosition  102
+
+
+void MechanismDoorSetPosition(short position);
 
 
 

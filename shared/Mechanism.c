@@ -13,39 +13,9 @@
 
 
 
-
-#define kKickerServoDownPosition 30
-#define kKickerServoUpPosition 170
-#define kKickerPostDelay 550            //  delay after mechanism kicks
-
-task MechanismKickBaton()
-{
-  MechanismIsKicking = true;
-
-  servo[Kicker] = kKickerServoUpPosition;
-  wait1Msec(kKickerPostDelay);
-  servo[Kicker] = kKickerServoDownPosition;
-  wait1Msec(320);								//	FIXME: is this delay alright
-
-  MechanismIsKicking = false;
-}
-
-
-
-
 void MechanismSlideSetPosition(short position)
 {
   nxtDisplayCenteredTextLine(1, (string)position);
-
-  //  door
-  if ( position == kSlideDownPosition )
-  {
-    MechanismDoorClose();
-  }
-  else
-  {
-    MechanismDoorOpen();
-  }
 
 
   short value = MIN(position, kSlideMaxPosition);
@@ -57,21 +27,6 @@ void MechanismSlideSetPosition(short position)
 }
 
 
-
-
-#define kDoorClosedPosition 255
-#define kDoorOpenPosition 0
-
-
-void MechanismDoorClose()
-{
-    servo[Door] = kDoorClosedPosition;
-}
-
-void MechanismDoorOpen()
-{
-    servo[Door] = kDoorOpenPosition;
-}
 
 
 
@@ -107,9 +62,21 @@ task MechanismSlideDecrementPosition()
 
 
 
+
+
+
+void MechanismDoorSetPosition(short position)
+{
+  servo[DoorRight] = position;
+}
+
+
+
+
+
+
 void MechanismInit()
 {
-  servo[Kicker] = kKickerServoDownPosition; //  put the kicker down
 
   MechanismSlideSetPosition(kSlideDownPosition);
 }
