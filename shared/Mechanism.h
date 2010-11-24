@@ -40,9 +40,10 @@ static bool MechanismSlideIsMoving;
 
 
 
-#define kBridgeLowererUp 237
-#define kBridgeLowererDown 72
-
+#define kRightStomperUp 237
+#define kRightStomperDown 72
+#define kLeftStomperUp 0
+#define kLeftStomperDown 165
 
 #define kElevatorSpeed 30
 
