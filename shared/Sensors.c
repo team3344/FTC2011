@@ -52,17 +52,6 @@ float IRSensorGetIRStrength(tSensors s)
 }
 */
 
-#define kMagnetSensorNothingPresent 663
-#define kMagnetSensorThreshold 50     //  FIXME: this value is crap!!!!!!!!!!!!!!
-
-//	Magnet
-bool MagneticSensorMagnetIsPresent()
-{
-  return abs(SensorValue[Magnetic] - kMagnetSensorNothingPresent) > kMagnetSensorThreshold;
-}
-
-
-
 
 
 //  Light

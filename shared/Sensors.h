@@ -6,7 +6,9 @@
 
 
 #include "../HT RobotC Drivers/drivers/LEGOLS-driver.h"
+#include "../HT RobotC Drivers/drivers/LEGOTS-driver.h"
 #include "../HT RobotC Drivers/drivers/HTAC-driver.h"
+#include "../HT RobotC Drivers/drivers/HTMAG-driver.h"
 
 
 
@@ -33,21 +35,10 @@ int IRSensorGetValue();
 
 
 
-//	Magnet
-bool MagneticSensorMagnetIsPresent();
 
-
-
-//	Light
-int LightSensorLeftGetBrightness();
-int LightSensorRightGetBrightness();
-
-
-
-
-
-
-
+#define kMagnetSensorNormal 300
+#define kMagnetThreshold 50
+#define MagnetBatonPresent (abs(HTMAGreadVal(Magnet) - kMagnetSensorNormal) > kMagnetThreshold)
 
 
 

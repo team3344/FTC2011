@@ -91,29 +91,16 @@ void DriveControl(Controller& controller)
 }
 
 
-int vibrateCount = 0;
 bool vibrating = false;
 task vibrate()
 {
-  hogCPU();
-  if ( vibrating ) return;
   vibrating = true;
-  releaseCPU();
 
-  ++vibrateCount;
-
-  PlaySound(soundBeepBeep);
-
-  motor[Elevator] = -30;
-  wait1Msec(100);
-  motor[Elevator] = 30;
-  for ( int i = 0; i < 5; i++ )
-  {
-    PlaySound(soundFastUpwardTones);
-  }
+  motor[Elevator] = -20;
+  wait10Msec(1);
+  motor[Elevator] = 20;
   while ( !ElevatorIsAtTop ) {}
   motor[Elevator] = 0;
-
 
   vibrating = false;
 }
@@ -138,7 +125,15 @@ void MechanismControl(Controller& controller)
 
     if ( ControllerButtonIsPressed(controller, ControllerButtonR1) )
     {
-      //StartTask(vibrate);
+      if ( !vibrating )
+      {
+        StartTask(vibrate);
+      }
+      else
+      {
+        EndTimeSlice();
+      }
+
       servo[Kicker] = kKickerSpeed;
 
       PlaySoundFile("ChaChing.rso");
@@ -230,9 +225,7 @@ task main()
 		MechanismControl(secondary);
 
 
-
-
-		if ( MagneticSensorMagnetIsPresent() )
+		if ( MagnetBatonPresent )
 		{
 			motor[IndicatorLight] = 100;  //  turn the light on
 		}

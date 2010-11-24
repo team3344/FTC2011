@@ -40,19 +40,19 @@ static bool MechanismSlideIsMoving;
 
 
 
-
-
+#define kBridgeLowererUp 237
+#define kBridgeLowererDown 72
 
 
 #define kElevatorSpeed 30
 
 
 #define ElevatorIsAtTop (SensorValue[ElevatorTopStop] == 1)
+#define ElevatorIsAtBottom TSreadState(ElevatorBottomStop)
 
-
-#define kDoorUpPosition 30
-#define kDoorDownPosition 200
-#define kDoorFlatPosition  102
+#define kDoorUpPosition 205
+#define kDoorDownPosition 80
+#define kDoorFlatPosition  140
 
 
 void MechanismDoorSetPosition(short position);
