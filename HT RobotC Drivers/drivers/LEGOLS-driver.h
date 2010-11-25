@@ -46,22 +46,22 @@ int lshigh = 1023;                /*!< High calibration value */
 bool legols_calibrated = false;   /*!< Has the sensor been calibrated yet */
 
 // Function prototypes
-int LSvalRaw(tSensors link);
-int LSvalRaw(tMUXSensor muxsensor);
-int LSvalNorm(tSensors link);
+//int LSvalRaw(tSensors link);
+//int LSvalRaw(tMUXSensor muxsensor);
+//int LSvalNorm(tSensors link);
 int LSvalNorm(tMUXSensor muxsensor);
 
-void LScalLow(tSensors link);
-void LScalLow(tMUXSensor muxsensor);
-void LScalLow(int lowval);
-void LScalHigh(tSensors link);
-void LScalHigh(tMUXSensor muxsensor);
-void LScalHigh(int highval);
+//void LScalLow(tSensors link);
+//void LScalLow(tMUXSensor muxsensor);
+//void LScalLow(int lowval);
+//void LScalHigh(tSensors link);
+//void LScalHigh(tMUXSensor muxsensor);
+//void LScalHigh(int highval);
 
-void LSsetActive(tSensors link);
+//void LSsetActive(tSensors link);
 void LSsetActive(tMUXSensor muxsensor);
-void LSsetInactive(tSensors link);
-void LSsetInactive(tMUXSensor muxsensor);
+//void LSsetInactive(tSensors link);
+//void LSsetInactive(tMUXSensor muxsensor);
 
 void _LScheckSensor(tSensors link);
 void _LSwriteCalVals(int lowval, int highval);
@@ -72,12 +72,12 @@ void _LSreadCalVals(int &lowval, int &highval);
  * Read the raw value of the Light Sensor.
  * @param link the Light Sensor port number
  * @return the raw value of the Light Sensor
- */
+ *//*
 int LSvalRaw(tSensors link) {
   _LScheckSensor(link);
 
   return SensorRaw[link];
-}
+}*/
 
 
 /**
@@ -94,7 +94,7 @@ int LSvalRaw(tMUXSensor muxsensor) {
  * Read the normalised value of the Light Sensor, based on the low and high values.
  * @param link the Light Sensor port number
  * @return the normalised value
- */
+ *//*
 int LSvalNorm(tSensors link) {
   long currval = 0;
 
@@ -112,7 +112,7 @@ int LSvalNorm(tSensors link) {
     return 100;
 
   return ((currval - lslow) * 100) / (lshigh - lslow);
-}
+}*/
 
 
 /**
@@ -141,76 +141,76 @@ int LSvalNorm(tMUXSensor muxsensor) {
 /**
  * Calibrate the Light Sensor's low calibration value with the current raw sensor reading.
  * @param link the Light Sensor port number
- */
+ *//*
 void LScalLow(tSensors link) {
   _LScheckSensor(link);
 
   lslow = SensorRaw[link];
   _LSwriteCalVals(lslow, lshigh);
-}
+}*/
 
 
 /**
  * Calibrate the Light Sensor's low calibration value with the current raw sensor reading.
  * @param muxsensor the SMUX sensor port number
- */
+ *//*
 void LScalLow(tMUXSensor muxsensor) {
   lslow = LSvalRaw(muxsensor);
   _LSwriteCalVals(lslow, lshigh);
-}
+}*/
 
 
 /**
  * Calibrate the Light Sensor's low calibration value with the supplied value.
  * @param lowval the sensor's low calibration value
- */
+ *//*
 void LScalLow(int lowval) {
   lslow = lowval;
   _LSwriteCalVals(lslow, lshigh);
-}
+}*/
 
 
 /**
  * Calibrate the Light Sensor's high calibration value with the current raw sensor reading.
  * @param link the Light Sensor port number
- */
+ *//*
 void LScalHigh(tSensors link) {
   _LScheckSensor(link);
 
   lshigh = SensorRaw[link];
   _LSwriteCalVals(lslow, lshigh);
-}
+}*/
 
 
 /**
  * Calibrate the Light Sensor's high calibration value with the current raw sensor reading.
  * @param muxsensor the SMUX sensor port number
- */
+ *//*
 void LScalHigh(tMUXSensor muxsensor) {
   lshigh = LSvalRaw(muxsensor);
   _LSwriteCalVals(lslow, lshigh);
-}
+}*/
 
 
 /**
  * Calibrate the Light Sensor's high calibration value with the supplied value.
  * @param highval the sensor's high calibration value
- */
+ *//*
 void LScalHigh(int highval) {
   lshigh = highval;
   _LSwriteCalVals(lslow, lshigh);
-}
+}*/
 
 
 /**
  * Configure the sensor as a LightActive sensor
  * @param link the Light Sensor port number
- */
+ *//*
 void LSsetActive(tSensors link) {
   SensorType[link] = sensorLightActive;
   SensorMode[link] = modeRaw;
   wait1Msec(5);
-}
+}*/
 
 
 /**
@@ -226,21 +226,23 @@ void LSsetActive(tMUXSensor muxsensor) {
  * Configure the sensor as a LightInactive sensor
  * @param link the Light Sensor port number
  */
+ /*
 void LSsetInactive(tSensors link) {
   SensorType[link] = sensorLightInactive;
   SensorMode[link] = modeRaw;
   wait1Msec(5);
 }
-
+*/
 
 /**
  * Configure the sensor as a LightInactive sensor
  * @param muxsensor the SMUX sensor port number
  */
+ /*
 void LSsetInactive(tMUXSensor muxsensor) {
   HTSMUXsetAnalogueInactive(muxsensor);
 }
-
+*/
 
 /**
  * Check if the sensor is set to raw and that it's been configured as a
@@ -248,14 +250,14 @@ void LSsetInactive(tMUXSensor muxsensor) {
  *
  * Note: this is an internal function and should not be called directly
  * @param link the Light Sensor port number
- */
+ *//*
 void _LScheckSensor(tSensors link) {
   if (SensorMode[link] != modeRaw &&
     ((SensorType[link] != sensorLightActive) ||
      (SensorType[link] != sensorLightInactive))) {
-      LSsetInactive(link);
+      //LSsetInactive(link);
     }
-}
+}*/
 
 
 /**

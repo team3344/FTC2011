@@ -38,16 +38,16 @@
 #include "common.h"
 #endif
 
-int HTMAGreadVal(tSensors link);
+//int HTMAGreadVal(tSensors link);
 int HTMAGreadVal(tMUXSensor muxsensor);
-int HTMAGreadRaw(tSensors link);
+//int HTMAGreadRaw(tSensors link);
 int HTMAGreadRaw(tMUXSensor muxsensor);
-int HTMAGstartCal(tSensors link);
-int HTMAGstartCal(tMUXSensor muxsensor);
-int HTMAGreadCal(tSensors link);
-int HTMAGreadCal(tMUXSensor muxsensor);
-void HTMAGsetCal(tSensors link, int bias);
-void HTMAGsetCal(tMUXSensor muxsensor, int bias);
+//int HTMAGstartCal(tSensors link);
+//int HTMAGstartCal(tMUXSensor muxsensor);
+//int HTMAGreadCal(tSensors link);
+//int HTMAGreadCal(tMUXSensor muxsensor);
+//void HTMAGsetCal(tSensors link, int bias);
+//void HTMAGsetCal(tMUXSensor muxsensor, int bias);
 
 int HTMAG_bias[][] = {{512, 512, 512, 512}, /*!< Array for bias values.  Default is 512 */
                           {512, 512, 512, 512},
@@ -58,7 +58,7 @@ int HTMAG_bias[][] = {{512, 512, 512, 512}, /*!< Array for bias values.  Default
  * Read the value of the Magnetic Field Sensor
  * @param link the HTMAG port number
  * @return the value of the Magnetic Field Sensor (-200 to +200)
- */
+ *//*
 int HTMAGreadVal(tSensors link) {
   // Make sure the sensor is configured as type sensorRawValue
   if (SensorType[link] != sensorRawValue) {
@@ -67,7 +67,7 @@ int HTMAGreadVal(tSensors link) {
   }
 
   return (SensorValue[link] - HTMAG_bias[link][0]);
-}
+}*/
 
 
 /**
@@ -84,7 +84,7 @@ int HTMAGreadVal(tMUXSensor muxsensor) {
  * Read the raw value of the Magnetic Field Sensor
  * @param link the HTMAG port number
  * @return the value of the Magnetic Field Sensor (approx 300 to 700)
- */
+ *//*
 int HTMAGreadRaw(tSensors link) {
   // Make sure the sensor is configured as type sensorRawValue
   if (SensorType[link] != sensorRawValue) {
@@ -93,7 +93,7 @@ int HTMAGreadRaw(tSensors link) {
   }
 
   return SensorValue[link];
-}
+}*/
 
 
 /**
@@ -110,7 +110,7 @@ int HTMAGreadRaw(tMUXSensor muxsensor) {
  * Calibrate the sensor by calculating the average bias of 5 raw readings.
  * @param link the HTMAG port number
  * @return the new bias value for the sensor
- */
+ *//*
 int HTMAGstartCal(tSensors link) {
   int _avgdata = 0;
 
@@ -131,14 +131,14 @@ int HTMAGstartCal(tSensors link) {
 
   // Return new bias value
   return HTMAG_bias[link][0];
-}
+}*/
 
 
 /**
  * Calibrate the Magnetic Field Sensor by calculating the average bias of 5 raw readings.
  * @param muxsensor the SMUX sensor port number
  * @return the new bias value for the Magnetic Field Sensor
- */
+ *//*
 int HTMAGstartCal(tMUXSensor muxsensor) {
   int _avgdata = 0;
 
@@ -153,47 +153,47 @@ int HTMAGstartCal(tMUXSensor muxsensor) {
 
   // Return new bias value
   return HTMAG_bias[SPORT(muxsensor)][MPORT(muxsensor)];
-}
+}*/
 
 
 /**
  * Override the current bias for the sensor manually
  * @param link the HTMAG port number
  * @param bias the new bias to be used
- */
+ *//*
 void HTMAGsetCal(tSensors link, int bias) {
   HTMAG_bias[link][0] = bias;
-}
+}*/
 
 
 /**
  * Override the current bias for the sensor manually
  * @param muxsensor the SMUX sensor port number
  * @param bias the new bias to be used
- */
+ *//*
 void HTMAGsetCal(tMUXSensor muxsensor, int bias) {
   HTMAG_bias[SPORT(muxsensor)][MPORT(muxsensor)] = bias;
-}
+}*/
 
 
 /**
  * Retrieve the current bias for the sensor
  * @param link the HTMAG port number
  * @return the bias value for the sensor
- */
+ *//*
 int HTMAGreadCal(tSensors link) {
   return HTMAG_bias[link][0];
-}
+}*/
 
 
 /**
  * Retrieve the current bias for the sensor
  * @param muxsensor the SMUX sensor port number
  * @return the bias value for the sensor
- */
+ *//*
 int HTMAGreadCal(tMUXSensor muxsensor) {
   return HTMAG_bias[SPORT(muxsensor)][MPORT(muxsensor)];
-}
+}*/
 
 
 #endif // __HTMAG_H__

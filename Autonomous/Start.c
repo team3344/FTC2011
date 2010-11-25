@@ -38,11 +38,6 @@ TButtons NXTGetButtonPress()
 }
 
 
-void NXTWaitUntilButtonRelease()
-{
-	while ( nNxtButtonPressed != kNoButton ){}
-}
-
 
 int NXTShowMenu(NXTMenu& menu)
 {
@@ -77,7 +72,7 @@ int NXTShowMenu(NXTMenu& menu)
 
     TButtons button = NXTGetButtonPress();
     PlaySound(soundBlip);
-    NXTWaitUntilButtonRelease();
+    while ( nNxtButtonPressed != kNoButton ){}  //  wait until button release
 
     if ( button == 3 )  //  center button
     {

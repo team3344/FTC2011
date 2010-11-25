@@ -9,29 +9,13 @@
 #include "../HT RobotC Drivers/drivers/LEGOTS-driver.h"
 #include "../HT RobotC Drivers/drivers/HTAC-driver.h"
 #include "../HT RobotC Drivers/drivers/HTMAG-driver.h"
+#include "../HT RobotC Drivers/drivers/HTIRS2-driver.h"
+#include "../HT RobotC Drivers/drivers/LEGOUS-driver.h"
 
 
 
-#define LEFT_LIGHT_SENSOR SensorValue[LeftLightSensor]
-#define RIGHT_LIGHT_SENSOR SensorValue[RightLightSensor] + 3
-
-
-
-
-//	Accelerometer
-//float AccelerometerSensorGetTiltAngle(tSensors s);
-int AccelerometerSensorGetValue();
-
-
-//	Ultrasonic
-float SonarSensorGetDistance();	//	distance is in inches
-
-
-
-//	IR
-int IRSensorGetValue();
-//float IRSensorGetAngleToBeacon(tSensors s);
-//float IRSensorGetIRStrength(tSensors s);
+#define LEFT_LIGHT_SENSOR LSvalNorm(LeftLightSensor)
+#define RIGHT_LIGHT_SENSOR (LSvalNorm(RightLightSensor) + 3)
 
 
 

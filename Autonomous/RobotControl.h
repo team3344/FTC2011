@@ -68,11 +68,6 @@ void RobotMountCenterDispenser();	//	we're right in front of it.  drive up close
 
 
 
-//	Position Tracking
-void RobotSetCurrentPosition(RobotPosition& pos);
-void RobotGetCurrentPosition(RobotPosition& posOut);
-
-
 void RobotBalance();	//	call this when we're on the bridge and the robot will adjust its position until it's balanced
 
 

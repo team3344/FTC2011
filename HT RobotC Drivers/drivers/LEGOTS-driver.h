@@ -36,7 +36,7 @@
 #endif
 
 // Function prototypes
-bool TSreadState(tSensors link);
+//bool TSreadState(tSensors link);
 bool TSreadState(tMUXSensor muxsensor);
 
 
@@ -44,7 +44,7 @@ bool TSreadState(tMUXSensor muxsensor);
  * Read the state of the touch sensor
  * @param link the Touch Sensor port number
  * @return true if the sensor is pressed, false if it's not
- */
+ *//*
 bool TSreadState(tSensors link) {
   if ((SensorType(link) !=  sensorTouch) && SensorMode(link) != modeBoolean) {
     SetSensorType(link, sensorTouch);
@@ -53,7 +53,7 @@ bool TSreadState(tSensors link) {
   }
 
   return (SensorRaw[link] < 500) ? true : false;
-}
+}*/
 
 
 /**

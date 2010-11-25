@@ -55,13 +55,13 @@
 #define HTAC_Y_LOW     0x04      /*!< Y axis lower 2 bits */
 #define HTAC_Z_LOW     0x05      /*!< Z axis lower 2 bits */
 
-bool HTACreadAllAxes(tSensors link, int &x, int &y, int &z);
+//bool HTACreadAllAxes(tSensors link, int &x, int &y, int &z);
 bool HTACreadAllAxes(tMUXSensor muxsensor, int &x, int &y, int &z);
-bool HTACreadX(tSensors link, int &x);
+//bool HTACreadX(tSensors link, int &x);
 bool HTACreadX(tMUXSensor muxsensor, int &x);
-bool HTACreadY(tSensors link, int &y);
+//bool HTACreadY(tSensors link, int &y);
 bool HTACreadY(tMUXSensor muxsensor, int &y);
-bool HTACreadZ(tSensors link, int &z);
+//bool HTACreadZ(tSensors link, int &z);
 bool HTACreadZ(tMUXSensor muxsensor, int &z);
 
 tByteArray HTAC_I2CRequest;    /*!< Array to hold I2C command data */
@@ -74,7 +74,7 @@ tByteArray HTAC_I2CReply;      /*!< Array to hold I2C reply data */
  * @param y y axis
  * @param z z axis
  * @return true if no error occured, false if it did
- */
+ *//*
 bool HTACreadAllAxes(tSensors link, int &x, int &y, int &z) {
   memset(HTAC_I2CRequest, 0, sizeof(tByteArray));
 
@@ -101,7 +101,7 @@ bool HTACreadAllAxes(tSensors link, int &x, int &y, int &z) {
                                    : HTAC_I2CReply.arr[2] * 4 + HTAC_I2CReply.arr[5];
 
   return true;
-}
+}*/
 
 
 /**
@@ -143,12 +143,12 @@ bool HTACreadAllAxes(tMUXSensor muxsensor, int &x, int &y, int &z) {
  * @param link the HTIRS port number
  * @param x x axis
  * @return true if no error occured, false if it did
- */
+ *//*
 bool HTACreadX(tSensors link, int &x) {
   int dummy = 0;
 
   return HTACreadAllAxes(link, x, dummy, dummy);
-}
+}*/
 
 
 /**
@@ -169,12 +169,12 @@ bool HTACreadX(tMUXSensor muxsensor, int &x) {
  * @param link the HTIRS port number
  * @param y y axis
  * @return true if no error occured, false if it did
- */
+ *//*
 bool HTACreadY(tSensors link, int &y) {
   int dummy = 0;
 
   return HTACreadAllAxes(link, dummy, y, dummy);
-}
+}*/
 
 
 /**
@@ -195,12 +195,12 @@ bool HTACreadY(tMUXSensor muxsensor, int &y) {
  * @param link the HTIRS port number
  * @param z z axis
  * @return true if no error occured, false if it did
- */
+ *//*
 bool HTACreadZ(tSensors link, int &z) {
   int dummy = 0;
 
   return HTACreadAllAxes(link, dummy, dummy, z);
-}
+}*/
 
 
 /**
