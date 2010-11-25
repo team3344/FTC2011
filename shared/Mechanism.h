@@ -23,7 +23,6 @@ void MechanismInit();
 #define kSlideRegularPosition 85
 #define kSlideLongPosition 110
 
-void MechanismSlideSetPosition(short position);
 task MechanismSlideIncrementPosition();
 task MechanismSlideDecrementPosition();
 
@@ -51,12 +50,9 @@ static bool MechanismSlideIsMoving;
 #define ElevatorIsAtTop (SensorValue[ElevatorTopStop] == 1)
 #define ElevatorIsAtBottom TSreadState(ElevatorBottomStop)
 
-#define kDoorUpPosition 205
-#define kDoorDownPosition 80
-#define kDoorFlatPosition  140
-
-
-void MechanismDoorSetPosition(short position);
+#define kFlapUpPosition 205
+#define kFlapDownPosition 80
+#define kFlapFlatPosition  140
 
 
 
