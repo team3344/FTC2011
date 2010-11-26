@@ -78,8 +78,9 @@
 
 
 
-
-typedef int NodeFlags;	//	FIXME: enumerate on this
+typedef enum {
+  NodeFlagLineEnd   = 1 << 0
+} NodeFlags;
 
 
 
@@ -99,7 +100,7 @@ typedef struct {
 
 
 typedef enum {
-	PathSegmentFlagBridgeEntrance		= 1 << 0,
+	PathSegmentFlagBridgeEntrance		    = 1 << 0,
 	PathSegmentFlagWhiteConnectingLine	= 1 << 1
 } PathSegmentFlags;
 
@@ -118,6 +119,8 @@ typedef struct {
 	int validationTimes[kNodeCount][kNodeCount];			//	If nPgmTime is greater than the validation time b/w nodes, the node is valid
 } Field;
 
+
+static Field globalField; //	this is the field that everything works from
 
 
 

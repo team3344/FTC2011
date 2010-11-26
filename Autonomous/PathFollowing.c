@@ -59,10 +59,21 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 
 
-	if ( segmentFlags & PathSegmentFlagWhiteConnectingLine )
+	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && followLines )
 	{
 		RobotFindWhiteLine();
-		success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
+
+		if ( globalField.nodeInfo[segment.destination] & NodeInfoLineEnd )
+		{
+		  success = FollowWhiteLineToEnd(CurrentLineFollowingContext, true);
+		}
+		else
+		{
+		  success = FollowWhiteLineForDistance(CurrentLineFollowingContext, distance, true);
+		}
+
+
+
 
 		//	follow the line
 		///////////////////////////

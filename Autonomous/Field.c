@@ -20,10 +20,6 @@ bool traveled[kNodeCount];
 
 
 
-static Field globalField; //	this is the field that everything works from
-
-
-
 
 
 
