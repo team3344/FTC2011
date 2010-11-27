@@ -65,6 +65,12 @@ bool RobotMountCenterDispenser();	//	we're right in front of it.  drive up close
 
 
 
+bool RobotMoveToLocation(Vector& location, bool backwards, bool avoidEnemies);
+
+
+
+
+
 void RobotBalance();	//	call this when we're on the bridge and the robot will adjust its position until it's balanced
 
 

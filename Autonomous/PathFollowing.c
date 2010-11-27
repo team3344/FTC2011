@@ -25,10 +25,6 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 
 
-
-
-
-
 	RobotPosition startPosition;
 	memcpy(startPosition, CurrentRobotPosition, sizeof(RobotPosition));
 

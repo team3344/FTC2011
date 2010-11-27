@@ -41,11 +41,6 @@ void ff4() {}
 void ff10() {}
 void ff20() {}
 void ff30() {}
-void ff40() {}
-void ff11() {}
-void ff21() {}
-void ff31() {}
-void ff41() {}
 
 
 
@@ -167,9 +162,4 @@ task main()
   ff10();
   ff20();
   ff30();
-  ff40();
-  ff11();
-  ff21();
-  ff31();
-  ff41();
 }

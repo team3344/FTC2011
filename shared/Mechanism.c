@@ -95,6 +95,7 @@ float MechanismElevatorCurrentHeight()
 
 
   //float angle = kElevatorInitialAngle + !!!!!!!!!!!!!!!!!!!
+  return 0; //  FIXME: fix
 }
 
 
@@ -105,7 +106,7 @@ void MechanismSetElevatorHeight(float height)
   float angle = asin(height - kElevatorInitialHeight);
   int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
 
-  if ( height < MechanismElevatorCurrentHeight )
+  if ( height < MechanismElevatorCurrentHeight() )
   {
     while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom ) {} //  go until we're there or we hit the bottom
   }

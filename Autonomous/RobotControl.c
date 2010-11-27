@@ -308,6 +308,44 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 }
 
 
+
+
+
+bool RobotMoveToLocation(Vector& location, bool backwards, bool avoidEnemies)
+{
+  Vector startLocation;
+  memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
+
+  Vector displacement;
+  VectorSubtract(location, startLocation, displacement);
+
+  float distance, angle;
+  angle = VectorGetAngle(displacement);
+  distance = VectorGetMagnitude(displacement);
+
+  if ( backwards )
+  {
+    angle += PI;
+    distance *= -1;
+  }
+
+  RobotRotateToOrientation(angle);
+
+  return RobotMoveDistance(distance, avoidEnemies);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 void RobotApproachBridge()
 {
   //  FIXME: implement
