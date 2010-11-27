@@ -46,11 +46,6 @@ void ff11() {}
 void ff21() {}
 void ff31() {}
 void ff41() {}
-void ff12() {}
-void ff22() {}
-void ff32() {}
-void ff42() {}
-void sff1() {}
 
 
 
@@ -78,7 +73,7 @@ void initializeRobot()
 }
 
 
-/*
+
 static bool gettingDoubler;	//	global variable that tells whether or not the GetDoublerBaton task is running
 
 task GetDoublerBaton()
@@ -87,19 +82,25 @@ task GetDoublerBaton()
 
 
 	Node d;// = FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeamGetCurrent());	//	get key point of the dispenser
-	Node c = MapGetCurrentNode();
-	RobotTravelFromNodeToNode(d, c);	// go to the dispenser
+	Node c = FieldGetCurrentNode();
+	if ( RobotTravelFromNodeToNode(d, c) )	// go to the dispenser
+  {
+    RobotRotateToOrientation(PI); //  turn towards dispenser
 
-	//	FIXME: turn towards it
+    //  FIXME: lower the elevator???
 
-	RobotMountCenterDispenser();	//	get aligned with the dispenser
+	  RobotMountCenterDispenser();	//	get aligned with the dispenser
 
 
 
-	StartTask(MechanismCycleConveyor);		//	pull in the doubler baton & a few others
-	while ( MechanismConveyorIsRunning() ) { wait10Msec(100); } //  wait until it's done
+	  //  FIXME: get 5 batons
+	  //  FIXME: make a mess with the rest
+
+
+  }
+
 	//	FIXME: backup to node
-
+  //  FIXME: set elevator to reasonable height
 
 	gettingDoubler = false;
 }
@@ -108,13 +109,13 @@ task GetDoublerBaton()
 
 void GetToBridgeAndBalance()
 {
-	Node bridgeID = FTCFieldGetNodeOfBridgeForTeam(FTCTeamGetCurrent());	//	FIXME: get id of closest bridge!!!!!!!!!!!!
-	Node currentID = MapGetCurrentNode();
+	Node bridgeID = NodeFriendBridgeCenter;	//	FIXME:  id of closest bridge???
+	Node currentID = FieldGetCurrentNode();
 	RobotTravelFromNodeToNode(currentID, bridgeID);	//	go to the bridge
 
 	RobotBalance();	//	use the accelerometor to balance the bot
 }
-*/
+
 
 
 
@@ -129,64 +130,45 @@ task main()
 
 
 
-	//	FIXME: score preloa
-
-
-
-
-	//	get doubler
-	//	balance on bridge
+	//	FIXME: score preloads
 
 
 
 
 
 
-
-ff2();
-ff3();
-ff4();
-ff10();
-ff20();
-ff30();
-ff40();
-ff11();
-ff21();
-ff31();
-ff41();
-ff12();
-ff22();
-ff32();
-ff42();
-sff1();
-
-
-
-
-
-
-
-
-
-
-
-	//StartTask(GetDoublerBaton);
+	StartTask(GetDoublerBaton); //  get doubler & make a mess
 
 	while ( true )
 	{
-		wait10Msec(100);	//	wait 1 second
+	  int elapsedTime = nPgmTime - startTime;
 
-		if ( nPgmTime - startTime < 25000 )	//	if 25 seconds are up, abort the doubler mission and go balance on bridge
-		{
-			//	FIXME: abort baton getting
+	  if ( elapsedTime > 25000 )    //  if 25 seconds have passed, abort getting doubler
+	  {
+	    AbortPathFollowing = true;  //  abort
+	    while ( gettingDoubler ) {} //  wait until the task aborts
+	    break;                      //  quit looping
+	  }
 
-			break;
-		}
-		//else if ( !gettingDoubler )	//	see if we're done getting the doubler yet
-		//{
-		//	break;
-		//}
+	  if ( !gettingDoubler ) break; //  quit looping if we got the doubler & accomplished the task
 	}
 
-  //GetToBridgeAndBalance();
+
+	if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
+	{
+	  GetToBridgeAndBalance();
+	}
+
+
+  ff2();
+  ff3();
+  ff4();
+  ff10();
+  ff20();
+  ff30();
+  ff40();
+  ff11();
+  ff21();
+  ff31();
+  ff41();
 }

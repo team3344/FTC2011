@@ -129,7 +129,7 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 	FieldSetCurrentNode(src);
 	FieldSetGoalNode(dest);
 
-	while ( abortPathFollowing == false )	//	keep going as long as we're not aborted
+	while ( AbortPathFollowing == false )	//	keep going as long as we're not aborted
 	{
 		PathSegment segment;
 		segment.source = FieldGetCurrentNode();
@@ -151,7 +151,7 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 		}
 	}
 
-	abortPathFollowing = false;	//	unabort so the next task actually runs
+	AbortPathFollowing = false;	//	unabort so the next task actually runs
 
 	return FieldGetCurrentNode() == dest;	//	return true if we got where we were supposed to
 }

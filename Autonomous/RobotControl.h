@@ -60,7 +60,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies);				//	distance in inc
 
 void RobotApproachBridge();
 void RobotLowerBridge();
-void RobotMountCenterDispenser();	//	we're right in front of it.  drive up close to it and get in position to dispense
+bool RobotMountCenterDispenser();	//	we're right in front of it.  drive up close to it and get in position to dispense
 
 
 
