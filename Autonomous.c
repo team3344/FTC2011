@@ -51,8 +51,6 @@ void ff22() {}
 void ff32() {}
 void ff42() {}
 void sff1() {}
-void sff2() {}
-void sff3() {}
 
 
 
@@ -161,8 +159,6 @@ ff22();
 ff32();
 ff42();
 sff1();
-sff2();
-sff3();
 
 
 

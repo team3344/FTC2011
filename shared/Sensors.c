@@ -28,9 +28,9 @@ bool SMUXiInitialized()
   short status = smuxData[SMUX1].status | smuxData[SMUX2].status;
   short badFlags = HTSMUX_STAT_BATT | HTSMUX_STAT_HALT | HTSMUX_STAT_ERROR | HTSMUX_STAT_NOTHING;
 
-  bool initialised = ( status & badFlags > 0 );
+  bool initialized = ( status & badFlags > 0 );
 
   if ( initialized ) PlaySound(soundException);
 
-  return initialised;
+  return initialized;
 }
