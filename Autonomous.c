@@ -30,9 +30,6 @@
 #define RightLightSensor msensor_S3_4
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-
 #include "JoystickDriver.c"
 #include "shared/include.c"
 #include "Autonomous/include.c"
@@ -65,11 +62,14 @@ void initializeRobot()
 	FieldInit();	//  initialize the map of the field
 
 	HTSMUXinit();             //  init the sensor multiplexor driver
-	HTSMUXscanPorts(SMUX1);  //  tell smux to detect connected sensors
-  HTSMUXscanPorts(SMUX2);
+	HTSMUXscanPorts(SMUX1);   //  tell smuxi to detect connected sensors
+  HTSMUXscanPorts(SMUX2);   //
 
   LSsetActive(LeftLightSensor);
   LSsetActive(RightLightSensor);
+
+
+  SMUXiInitialized();   //  makes an exception noise if the SMUXi aren't doin' good
 
 
 	MechanismInit();

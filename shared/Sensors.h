@@ -35,6 +35,8 @@ bool EnemyRobotDetected();
 
 
 
+bool SMUXiInitialized();
+
 
 
 

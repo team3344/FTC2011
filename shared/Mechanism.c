@@ -51,4 +51,22 @@ void MechanismInit()
 {
   servo[Slide] = kSlideDownPosition;
   servo[Flap] = kFlapFlatPosition;
+
+  //  put stompers in up position
+  servo[RightStomper] = kRightStomperUp;
+  servo[LeftStomper] = kLeftStomperUp;
+
+
+
+
+  //  calibrate elevator
+#if 0
+  if ( SMUXiInitialized() ) //  only calibrate elevator if SMUXi are initialized
+  {
+    motor[Elevator] = -kElevatorSpeed;
+    while ( ElevatorIsAtTop ) {}
+    motor[Elevator] = 0;
+    nMotorEncoder[Elevator] = 0;
+  }
+#endif
 }

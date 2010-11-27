@@ -13,6 +13,15 @@
 
 #define kTetrixMotorEncoderPointsPerRotation 4. * 360.
 #define kNXTMotorEncoderPointsPerRotation 360.
+#define kDriveMotorGearRatio 2
+
+
+
+#define DriveMotorConvertEncoderToDistance(encoder) ( (encoder / (kDriveMotorGearRatio * kTetrixMotorEncoderPointsPerRotation)) * kRobotWheelCircumference )
+#define DriveMotorConvertDistanceToEncoder(dist) ( (dist / kRobotWheelCircumference) * kTetrixMotorEncoderPointsPerRotation * kDriveMotorGearRatio )
+
+
+
 
 #define kRobotWidth 16.25
 

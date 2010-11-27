@@ -79,7 +79,7 @@ task FollowLine()
 
   //  update the position of the robot
   int encoder = (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2;
-  int distance = TetrixConvertEncoderToDistance(encoder);
+  int distance = DriveMotorConvertEncoderToDistance(encoder);
 
   float orientation = CurrentRobotPosition.orientation;
   CurrentRobotPosition.location.x += distance * cos(orientation);
@@ -96,7 +96,7 @@ bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance,
   memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
   StartTask(FollowLine);
 
-  int targetEncoder = TetrixConvertDistanceToEncoder(distance);
+  int targetEncoder = DriveMotorConvertDistanceToEncoder(distance);
   nxtDisplayCenteredTextLine(4, (string)targetEncoder);
 
   //  go until we reach the distance
@@ -183,7 +183,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
   float maxScanArc = kWhiteLineScanAngle * (kRobotWidth / 2);
-  int scanEncoder = TetrixConvertDistanceToEncoder(maxScanArc);
+  int scanEncoder = DriveMotorConvertDistanceToEncoder(maxScanArc);
 
 
   motor[Left] = kRobotLineScanPower;
@@ -267,7 +267,7 @@ void RobotRotateToOrientation(float orientation)
 	motor[Left] = ( wheelDistance > 0 ) ? -kRobotRotateSpeed : kRobotRotateSpeed;
 	motor[Right] = -motor[Left];
 
-	int encoderPoints = TetrixConvertDistanceToEncoder(wheelDistance);
+	int encoderPoints = DriveMotorConvertDistanceToEncoder(wheelDistance);
 	nMotorEncoder[Left] = 0;
 
 	while ( abs(nMotorEncoder[Left]) < abs(encoderPoints) ) {}	//	wait until we're done
@@ -287,7 +287,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
   nMotorEncoder[Left] = 0;
   nMotorEncoder[Right] = 0;
 
-	int encoderPoints = TetrixConvertDistanceToEncoder(distance);
+	int encoderPoints = DriveMotorConvertDistanceToEncoder(distance);
 
 
 	//nxtDisplayCenteredTextLine(3, (string)encoderPoints);

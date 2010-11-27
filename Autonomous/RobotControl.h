@@ -16,9 +16,6 @@
 
 
 
-
-
-
 typedef struct {
   float orientation;
   Vector location;
@@ -36,19 +33,9 @@ typedef struct {
 
 
 
-
-
-
 //	Position Tracking
 //===========================================================================================================
 static RobotPosition CurrentRobotPosition;
-
-
-
-
-#define TetrixConvertEncoderToDistance(encoder) ( (encoder / kTetrixMotorEncoderPointsPerRotation) * kRobotWheelCircumference )
-#define TetrixConvertDistanceToEncoder(dist) ( (dist / kRobotWheelCircumference) * kTetrixMotorEncoderPointsPerRotation )
-
 
 
 
