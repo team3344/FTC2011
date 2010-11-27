@@ -68,5 +68,54 @@ void MechanismInit()
     motor[Elevator] = 0;
     nMotorEncoder[Elevator] = 0;
   }
+  else
+  {
+    while ( true )
+    {
+      if ( SMUXiInitialized ) break;  //  check once per second
+      wait1Msec(1000);
+    }
+  }
 #endif
+}
+
+
+
+
+//  FIXME: these values are garbage!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#define kElevatorInitialAngle (-PI / 4)
+#define kElevatorInitialHeight 2.5
+#define kElevatorArmRadius 10
+
+float MechanismElevatorCurrentHeight()
+{
+  //  FIXME: implement
+
+  int encoder = nMotorEncoder[Elevator];
+
+
+  //float angle = kElevatorInitialAngle + !!!!!!!!!!!!!!!!!!!
+}
+
+
+
+
+void MechanismSetElevatorHeight(float height)
+{
+  float angle = asin(height - kElevatorInitialHeight);
+  int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
+
+  if ( height < MechanismElevatorCurrentHeight )
+  {
+    while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom ) {} //  go until we're there or we hit the bottom
+  }
+  else
+  {
+    while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop ) {}  //  go until we're there of we hit the top
+  }
+
+
+  motor[Elevator] = 0;  //  stop
+
+  //  FIXME: try this method!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }

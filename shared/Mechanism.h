@@ -50,6 +50,21 @@ static bool MechanismSlideIsMoving;
 #define ElevatorIsAtTop (SensorValue[ElevatorTopStop] == 1)
 #define ElevatorIsAtBottom TSreadState(ElevatorBottomStop)
 
+
+
+
+#define kElevatorHeightLowDispenser 1
+#define kElevatorHeightMidDispenser 4
+#define kElevatorHeightHighDispenser 10
+
+void MechanismSetElevatorHeight(float height);
+
+
+
+
+
+
+
 #define kFlapUpPosition 205
 #define kFlapDownPosition 80
 #define kFlapFlatPosition  140

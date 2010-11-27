@@ -86,15 +86,16 @@ task GetDoublerBaton()
 	if ( RobotTravelFromNodeToNode(d, c) )	// go to the dispenser
   {
     RobotRotateToOrientation(PI); //  turn towards dispenser
+    MechanismSetElevatorHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
 
-    //  FIXME: lower the elevator???
+    if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
+    {
+	    //  FIXME: get 5 batons
+	    //  FIXME: make a mess with the rest
+    }
 
-	  RobotMountCenterDispenser();	//	get aligned with the dispenser
 
 
-
-	  //  FIXME: get 5 batons
-	  //  FIXME: make a mess with the rest
 
 
   }

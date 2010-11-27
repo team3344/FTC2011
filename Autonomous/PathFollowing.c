@@ -16,7 +16,7 @@ static bool followLines = false;	//	Set this to true to have the bot use white l
 
 
 
-//	attempts to travel the segment.  returns success.  if successful, sets currentNode & currentPosition to wherever it went
+//	attempts to travel the segment.  returns success.  if successful, sets currentNode & CurrentRobotPosition to wherever it went
 bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
