@@ -24,4 +24,10 @@ bool RobotTravelPathSegment(PathSegment& segment);
 
 
 
+float RobotGetTravelTimeFromNodeToNode(Node src, Node dest);
+float RobotGetTravelTimeForSegment(PathSegment& segment);
+
+
+
+
 #endif

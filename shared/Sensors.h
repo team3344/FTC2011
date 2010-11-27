@@ -19,6 +19,11 @@
 
 
 
+#define IRSensorValue HTIRS2readACDir(IR)
+
+#define SonarSensorDistance (USreadDist(Sonar) / 2.54)  //  distance in inches
+
+
 
 #define kMagnetSensorNormal 300
 #define kMagnetThreshold 50

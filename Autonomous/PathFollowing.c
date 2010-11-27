@@ -63,24 +63,21 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	{
 		RobotFindWhiteLine();
 
-		if ( globalField.nodeInfo[segment.destination] & NodeInfoLineEnd )
+		if ( globalField.nodeInfo[segment.destination] & NodeFlagLineEnd )
 		{
-		  success = FollowWhiteLineToEnd(CurrentLineFollowingContext, true);
+		  success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
 		}
 		else
 		{
-		  success = FollowWhiteLineForDistance(CurrentLineFollowingContext, distance, true);
+		  success = RobotFollowWhiteLineForDistance(CurrentLineFollowingContext, distance, true);
+		}
+
+		if ( !success )
+		{
+		  //  FIXME: go back to where we came from????????????????
 		}
 
 
-
-
-		//	follow the line
-		///////////////////////////
-		//	FIXME: implement	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//	?Follow for distance?
-		///	Follow til end?
 
 		////////////
 	}
@@ -158,3 +155,27 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 
 	return FieldGetCurrentNode() == dest;	//	return true if we got where we were supposed to
 }
+
+
+
+
+
+
+
+/*
+
+
+float RobotGetTravelTimeFromNodeToNode(Node src, Node dest)
+{
+  float time = 0;
+
+
+
+
+
+}
+
+float RobotGetTravelTimeForSegment(PathSegment& segment);
+
+
+*/

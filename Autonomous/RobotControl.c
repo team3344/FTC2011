@@ -315,15 +315,61 @@ void RobotApproachBridge()
 
 void RobotLowerBridge()
 {
-  //  FIXME: implement
+  servo[LeftStomper] = kLeftStomperDown;
+  servo[RightStomper] = kRightStomperDown;
+
+  wait1Msec(300);
+
+  RobotMoveDistance(3, false);
+
+  servo[LeftStomper] = kLeftStomperUp;
+  servo[RightStomper] = kRightStomperUp;
+  //  FIXME: tryme
 }
 
-void RobotMountCenterDispenser()
+bool RobotMountCenterDispenser()
 {
-  //  FIXME: implement
+  bool success = true;
+
+  while ( SonarSensorDistance  > kMidDispenserMountDistance )
+  {
+    if ( IRSensorValue == 0 )
+    {
+      wait1Msec(250); //  wait 1/4 second
+      if ( IRSensorValue == 0 ) //  if we still can't see anything, abort
+      {
+        success = false;
+        break;
+      }
+    }
+
+
+    float speed = ( SonarSensorDistance > 12 ) ? 30 : 15; //  FIXME: test out this speed
+    float errorRange = 4;
+    float turnRange = speed;
+    float gain = turnRange / errorRange;
+
+    float error = 5 - IRSensorValue;
+    float turn = error * gain;
+
+    motor[Left] = speed - turn;
+    motor[Right] = speed + turn;
+  }
+
+  //  stop
+  motor[Left] = 0;
+  motor[Right] = 0;
+
+  return success;
 }
 
 void RobotBalance()
 {
+
+
+
+
+
+
   //  FIXME: implement
 }

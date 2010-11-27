@@ -79,9 +79,9 @@ typedef enum {
 //int HTIRS2readDCAverage(tMUXSensor muxsensor);
 // ---------------------------- AC Signal processing -----------------------------
 //bool HTIRS2setDSPMode(tSensors link, tHTIRS2DSPMode mode);
-int HTIRS2readACDir(tSensors link);
+//int HTIRS2readACDir(tSensors link);
 int HTIRS2readACDir(tMUXSensor muxsensor);
-int HTIRS2readACStrength(tSensors link, byte sensorNr);
+//int HTIRS2readACStrength(tSensors link, byte sensorNr);
 int HTIRS2readACStrength(tMUXSensor muxsensor, byte sensorNr);
 //bool HTIRS2readAllACStrength(tSensors link, int &acS1, int &acS2, int &acS3, int &acS4, int &acS5);
 //bool HTIRS2readAllACStrength(tMUXSensor muxsensor, int &acS1, int &acS2, int &acS3, int &acS4, int &acS5);
@@ -311,7 +311,7 @@ bool HTIRS2setDSPMode(tSensors link, tHTIRS2DSPMode mode) {
  * Read the value of the AC Direction data register and return it.
  * @param link the HTIRS2 port number
  * @return value of 0-9, the direction index of the detected IR signal or -1 if an error occurred.
- */
+ *//*
 int HTIRS2readACDir(tSensors link) {
   memset(HTIRS2_I2CRequest, 0, sizeof(tByteArray));
 
@@ -326,7 +326,7 @@ int HTIRS2readACDir(tSensors link) {
     return -1;
 
   return HTIRS2_I2CReply.arr[0];
-}
+}*/
 
 
 /**
@@ -353,7 +353,7 @@ int HTIRS2readACDir(tMUXSensor muxsensor) {
  * @param link the HTIRS2 port number
  * @param sensorNr the internal sensor to read
  * @return the signal strength value of the specified sensor or -1 if an error occurred.
- */
+ *//*
 int HTIRS2readACStrength(tSensors link, byte sensorNr) {
   memset(HTIRS2_I2CRequest, 0, sizeof(tByteArray));
 
@@ -368,7 +368,7 @@ int HTIRS2readACStrength(tSensors link, byte sensorNr) {
     return -1;
 
   return HTIRS2_I2CReply.arr[0];
-}
+}*/
 
 
 /**

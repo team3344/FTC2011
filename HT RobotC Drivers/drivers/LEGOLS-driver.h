@@ -63,7 +63,7 @@ void LSsetActive(tMUXSensor muxsensor);
 //void LSsetInactive(tSensors link);
 //void LSsetInactive(tMUXSensor muxsensor);
 
-void _LScheckSensor(tSensors link);
+//void _LScheckSensor(tSensors link);
 void _LSwriteCalVals(int lowval, int highval);
 void _LSreadCalVals(int &lowval, int &highval);
 

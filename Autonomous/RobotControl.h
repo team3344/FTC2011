@@ -26,6 +26,16 @@ typedef struct {
 
 
 
+//  FIXME: figure out these distances!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  distance in inches that the sonar sensor sensor should read when the bot is aligned correctly for dispensing
+#define kLowDispenserMountDistance 3
+#define kMidDispenserMountDistance 5
+#define kHighDispenserMountDistance 7
+
+
+
+
+
 
 
 

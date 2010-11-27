@@ -38,11 +38,33 @@
 #include "Autonomous/include.c"
 
 
+void ff2() {}
+void ff3() {}
+void ff4() {}
+void ff10() {}
+void ff20() {}
+void ff30() {}
+void ff40() {}
+void ff11() {}
+void ff21() {}
+void ff31() {}
+void ff41() {}
+void ff12() {}
+void ff22() {}
+void ff32() {}
+void ff42() {}
+void sff1() {}
+void sff2() {}
+void sff3() {}
+
+
+
+
 void initializeRobot()
 {
 	FieldInit();	//  initialize the map of the field
 
-	HTSMUXinit();             //  init the sensor multiplexor
+	HTSMUXinit();             //  init the sensor multiplexor driver
 	HTSMUXscanPorts(SMUX1);  //  tell smux to detect connected sensors
   HTSMUXscanPorts(SMUX2);
 
@@ -109,13 +131,44 @@ task main()
 
 
 
-	//	FIXME: score preloads
+	//	FIXME: score preloa
 
 
 
 
 	//	get doubler
 	//	balance on bridge
+
+
+
+
+
+
+
+ff2();
+ff3();
+ff4();
+ff10();
+ff20();
+ff30();
+ff40();
+ff11();
+ff21();
+ff31();
+ff41();
+ff12();
+ff22();
+ff32();
+ff42();
+sff1();
+sff2();
+sff3();
+
+
+
+
+
+
 
 
 
