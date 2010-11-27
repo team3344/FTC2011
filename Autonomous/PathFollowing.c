@@ -20,10 +20,7 @@ static bool followLines = false;	//	Set this to true to have the bot use white l
 bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
-
 	bool success;
-
-
 
 	RobotPosition startPosition;
 	memcpy(startPosition, CurrentRobotPosition, sizeof(RobotPosition));
@@ -37,12 +34,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	float distance, angle;
 	distance = VectorGetMagnitude(displacement);
 	angle = VectorGetAngle(displacement);
-
 	RobotRotateToOrientation(angle);
-
-
-
-
 
 
 
@@ -57,22 +49,26 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && followLines )
 	{
-		RobotFindWhiteLine();
+		if ( RobotFindWhiteLine() )
+    {
+		  if ( globalField.nodeInfo[segment.destination] & NodeFlagLineEnd )
+		  {
+		    success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
+		  }
+		  else
+		  {
+		    success = RobotFollowWhiteLineForDistance(CurrentLineFollowingContext, distance, true);
+		  }
 
-		if ( globalField.nodeInfo[segment.destination] & NodeFlagLineEnd )
-		{
-		  success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
-		}
-		else
-		{
-		  success = RobotFollowWhiteLineForDistance(CurrentLineFollowingContext, distance, true);
-		}
-
-		if ( !success )
-		{
-		  //  FIXME: go back to where we came from????????????????
-		}
-
+		  if ( !success )
+		  {
+		    //  FIXME: go back to where we came from????????????????
+		  }
+	}
+	else
+	{
+	  //  FIXME: what to do here????????????????????????????????????????????????????????????????????????????????????????????
+	}
 
 
 		////////////
@@ -83,16 +79,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 		if ( !RobotMoveDistance(distance, true) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
-			RobotPosition currentPosition;
-			memcpy(currentPosition, CurrentRobotPosition, sizeof(RobotPosition));
-
-			VectorSubtract(startPosition.location, currentPosition.location, displacement);
-			distance = VectorGetMagnitude(displacement);
-			angle = VectorGetAngle(displacement);
-
-			//	backup to the start location
-			RobotRotateToOrientation(angle + PI);
-			RobotMoveDistance(-distance, false);
+		  RobotMoveToLocation(startPosition.location, true, false);  //  FIXME: Is this good?????
 
 			success = false;
 		}
