@@ -314,6 +314,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
 {
   //  FIXME: MAKE THIS METHOD DO STUFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  return false;
 }
 
 

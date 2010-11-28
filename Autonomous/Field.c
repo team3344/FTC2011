@@ -713,7 +713,7 @@ void FieldInit()		//	sets values specific to our field.
 	ADD_WHITE_LINE(NodeLine6Bottom, NodeLine6Top);	//	line 6
 
 
-  #define ADD_LINE_END(n) globalField.nodeInfo[n].nodeFlags |= NodeFlagLineEnd
+  #define ADD_LINE_END(n) globalField.nodeInfo[n].flags |= NodeFlagLineEnd
 	ADD_LINE_END(NodeLine1Bottom);
 	ADD_LINE_END(NodeLine2Bottom);
 	ADD_LINE_END(NodeLine3Bottom);

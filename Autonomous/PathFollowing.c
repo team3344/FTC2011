@@ -79,7 +79,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 		if ( !RobotMoveDistance(distance, true) )	//	try to travel the distance.  if it fails, go back to where we started
 		{
-		  RobotMoveToLocation(startPosition.location, true, false);  //  FIXME: Is this good?????
+		  RobotMoveToLocation(startLocation, true, false);  //  FIXME: Is this good?????
 
 			success = false;
 		}

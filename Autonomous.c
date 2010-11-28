@@ -39,8 +39,6 @@ void ff2() {}
 void ff3() {}
 void ff4() {}
 void ff10() {}
-void ff20() {}
-void ff30() {}
 
 
 
@@ -160,6 +158,4 @@ task main()
   ff3();
   ff4();
   ff10();
-  ff20();
-  ff30();
 }
