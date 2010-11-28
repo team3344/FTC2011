@@ -147,7 +147,6 @@ task main()
 	  if ( !gettingDoubler ) break; //  quit looping if we got the doubler & accomplished the task
 	}
 
-
 	if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
 	{
 	  GetToBridgeAndBalance();

@@ -21,7 +21,7 @@
 
 #define IRSensorValue HTIRS2readACDir(IR)
 
-#define SonarSensorDistance (USreadDist(Sonar) / 2.54)  //  distance in inches
+#define SonamuxUpdateIntervalrSensorDistance (USreadDist(Sonar) / 2.54)  //  distance in inches
 
 
 
@@ -35,7 +35,7 @@ bool EnemyRobotDetected();
 
 
 
-bool SMUXiInitialized();
+bool SMUXiInitialized();  //  plays sound "Exception" if they're not inited
 
 
 

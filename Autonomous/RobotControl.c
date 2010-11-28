@@ -122,7 +122,7 @@ bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance,
 
 #define kBrightnessEqualityThreshold 3 //  if brightnesses are less than this much different, they're the same
 
-bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies) //  FIXME: what if it sees an enemy
+bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
 {
   memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
 
@@ -244,7 +244,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
 
-#define kRobotMoveSpeed 30	//	FIXME: change this
+#define kRobotMoveSpeed 25
 #define kRobotRotateSpeed kRobotMoveSpeed
 
 
@@ -284,19 +284,30 @@ void RobotRotateToOrientation(float orientation)
 
 bool RobotMoveDistance(float distance, bool avoidEnemies)
 {
-  nMotorEncoder[Left] = 0;
-  nMotorEncoder[Right] = 0;
+  _RobotZeroDriveEncoders();
 
 	int encoderPoints = DriveMotorConvertDistanceToEncoder(distance);
-
-
-	//nxtDisplayCenteredTextLine(3, (string)encoderPoints);
 
 
 	motor[Left] = ( distance > 0 ) ? kRobotMoveSpeed : -kRobotMoveSpeed;
 	motor[Right] = motor[Left];
 
-	while ( abs(nMotorEncoder[Left]) < abs(encoderPoints) ) {}	//	wait until we're done
+	bool success;
+
+	while ( true )
+	{
+	  if ( abs(nMotorEncoder[Left]) >= abs(encoderPoints) ) //  if we're there
+	  {
+	    success = true;
+	    break;
+	  }
+
+	  if ( avoidEnemies && EnemyRobotDetected() ) //  if we see an enemy, stop
+	  {
+	    success = false;
+	    break;
+	  }
+	}
 
 
 	//  stop
@@ -304,7 +315,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	motor[Right] = 0;
 
 
-	return true;	//	FIXME: this value should mean something	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	return success;
 }
 
 
@@ -313,8 +324,55 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
 {
-  //  FIXME: MAKE THIS METHOD DO STUFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  return false;
+   _RobotZeroDriveEncoders();
+
+  int targetEncoder = DriveMotorConvertDistanceToEncoder(maxDistance);
+
+
+  //  start moving
+  motor[Left] = kRobotMoveSpeed;
+  motor[Right] = kRobotMoveSpeed;
+
+  int brightnessThreshold = (.75 * CurrentLineFollowingContext.lineBrightness) + (.25 * CurrentLineFollowingContext.surroundingBrightness);
+
+  bool success;
+
+  while ( true )
+  {
+    if ( abs(nMotorEncoder[Left]) >= abs(targetEncoder) ) //  if we're at the max distance, ...
+    {
+      success = false;
+      break;
+    }
+
+    if ( avoidEnemies && EnemyRobotDetected() ) //  we detected an enemy!!!
+    {
+      success = false;
+      break;
+    }
+
+    int brightness = ((LEFT_LIGHT_SENSOR + RIGHT_LIGHT_SENSOR) / 2);  //  average of the left & right light sensors
+    if ( brightness > brightnessThreshold ) //  see if we detected a line
+    {
+      success = true;
+      break;
+    }
+  }
+
+
+  //  stop
+  motor[Left] = 0;
+  motor[Right] = 0;
+
+
+  float distanceTravelled = DriveMotorConvertEncoderToDistance(nMotorEncoder[Left]);  //  find out how far we went
+  float orientation = CurrentRobotPosition.orientation;
+
+  //  update current position
+  CurrentRobotPosition.location.x += distanceTravelled * cos(orientation);
+  CurrentRobotPosition.location.y += distanceTravelled * sin(orientation);
+
+  return success;
 }
 
 
@@ -391,7 +449,7 @@ bool RobotMountCenterDispenser()
     }
 
 
-    float speed = ( SonarSensorDistance > 12 ) ? 30 : 15; //  FIXME: test out this speed
+    float speed = ( SonarSensorDistance > 12 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
     float errorRange = 4;
     float turnRange = speed;
     float gain = turnRange / errorRange;

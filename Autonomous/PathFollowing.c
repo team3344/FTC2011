@@ -9,8 +9,37 @@
 #define kObstructedPathInvalidationTime 5000	//	5 seconds
 
 
+//  FIXME: implement perpendicular line stuff!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-static bool followLines = false;	//	Set this to true to have the bot use white lines to travel the field when possible
+
+
+
+/*
+bool _TravelSegment(PathSegment& segment, bool avoidEnemies, bool forward)
+{
+  Vector startLocation;
+  memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
+
+  PathSegmentFlags segmentFlags = FieldGetSegmentFlags(segment);
+
+
+
+
+  if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && forward )
+  {
+
+  }
+  else
+
+
+
+
+}
+*/
+
+
+
+
 
 
 
@@ -22,8 +51,18 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
 	bool success;
 
-	Vector startLocation;
+
+	//	if there's a bridge in front of us, GET OVER IT!
+	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
+	{
+		RobotApproachBridge();
+		RobotLowerBridge();
+	}
+
+
+	Vector startLocation, startNodeLocation;
 	memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
+  FieldGetNodeLocation(segment.source, startNodeLocation);
 
 	Vector destination;
 	FieldGetNodeLocation(segment.destination, destination);
@@ -37,19 +76,9 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	RobotRotateToOrientation(angle);
 
 
-
-	//	if there's a bridge in front of us, GET OVER IT!
-	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
+	if ( segmentFlags & PathSegmentFlagWhiteConnectingLine )  //  there's a line between nodes, so follow it
 	{
-		RobotApproachBridge();
-		RobotLowerBridge();
-	}
-
-
-
-	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && followLines )
-	{
-		if ( RobotFindWhiteLine() )
+		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
     {
 		  if ( globalField.nodeInfo[segment.destination] & NodeFlagLineEnd )
 		  {
@@ -62,44 +91,55 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 		  if ( !success )
 		  {
-		    //  FIXME: go back to where we came from????????????????
+		    //  go back to the start node location
+		    RobotMoveToLocation(startNodeLocation, true, false);  //  backwards. don't avoid robots
 		  }
+	  }
+	  else  //  we couldn't find the line, so we must be completely and totally lost
+	  {
+	    for ( int i = 0; i < 10; i++ )
+	    {
+	      PlaySound(soundException);  //  play "Exception" 10 times
+	    }
+
+	    //  FIXME: what to do here??????????????????????????????????????????????????????????????
+	  }
 	}
-	else
+	else if ( segmentFlags & SegmentFlagPerpendicularWhiteLine )
 	{
-	  //  FIXME: what to do here????????????????????????????????????????????????????????????????????????????????????????????
-	}
-
-
-		////////////
+	  if ( RobotMoveUntilPerpendicularLine(distance, true);
+	  {
+	    //  FIXME: set location based on the line!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	    //  when we hit the line, we're kLightSensorDistanceFromCenter away from the node, so let's go the rest of the way
+	    RobotMoveToLocation(destination, false, false);
+	    success = true;
+	  }
+	  else
+	  {
+	    RobotMoveToLocation(startNodeLocation, true, false);  //  back up to the start node w/out caring about other bots
+	    success = false;
+	  }
 	}
 	else	//	there's no line to follow
 	{
-		//	FIXME: recalculate displacement
+		success = RobotMoveDistance(distance, true);	//	try to travel the distance
 
-		if ( !RobotMoveDistance(distance, true) )	//	try to travel the distance.  if it fails, go back to where we started
+		if ( !success ) //  if we failed, go back to where we started
 		{
-		  RobotMoveToLocation(startLocation, true, false);  //  FIXME: Is this good?????
-
-			success = false;
-		}
-		else
-		{
-			PlaySound(soundBeepBeep); //  let us know we got to the node
-			memcpy(&CurrentRobotPosition.location, &destination, sizeof(Vector));	//	tell it we're at the location of the node	//	FIXME: is this necessary?
-			success = true;
-		}
-
+		  RobotMoveToLocation(startLocation, true, false);  //  retrace steps
+    }
 	}
 
 
 	if ( success )
 	{
 		FieldAdvance();	//	tell the field we made it to the next node
+		PlaySound(soundBeepBeep); //  let us know we got to the node
 	}
 	else	//	if we failed, invalidate the segment
 	{
-			FieldTemporarilyInvalidatePathBetweenNodes(segment.source, segment.destination, kObstructedPathInvalidationTime);
+		FieldTemporarilyInvalidatePathBetweenNodes(segment.source, segment.destination, kObstructedPathInvalidationTime);
+		PlaySound(soundDownwardTones);  //  let us know we didn't get to the node
 	}
 
 	return success;
@@ -138,27 +178,3 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 
 	return FieldGetCurrentNode() == dest;	//	return true if we got where we were supposed to
 }
-
-
-
-
-
-
-
-/*
-
-
-float RobotGetTravelTimeFromNodeToNode(Node src, Node dest)
-{
-  float time = 0;
-
-
-
-
-
-}
-
-float RobotGetTravelTimeForSegment(PathSegment& segment);
-
-
-*/
