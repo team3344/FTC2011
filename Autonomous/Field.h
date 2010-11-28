@@ -100,8 +100,9 @@ typedef struct {
 
 
 typedef enum {
-	PathSegmentFlagBridgeEntrance		    = 1 << 0,
-	PathSegmentFlagWhiteConnectingLine	= 1 << 1
+	PathSegmentFlagBridgeEntrance		            = 1 << 0,
+	PathSegmentFlagWhiteConnectingLine	        = 1 << 1,
+	PathSegmentFlagPerpendicularWhiteLineAtEnd  = 1 << 2
 } PathSegmentFlags;
 
 

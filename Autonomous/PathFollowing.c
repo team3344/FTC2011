@@ -22,14 +22,14 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
 	bool success;
 
-	RobotPosition startPosition;
-	memcpy(startPosition, CurrentRobotPosition, sizeof(RobotPosition));
+	Vector startLocation;
+	memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
 
 	Vector destination;
 	FieldGetNodeLocation(segment.destination, destination);
 
 	Vector displacement;
-	VectorSubtract(destination, startPosition.location, displacement);
+	VectorSubtract(destination, startLocation, displacement);
 
 	float distance, angle;
 	distance = VectorGetMagnitude(displacement);

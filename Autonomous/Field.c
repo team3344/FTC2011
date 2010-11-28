@@ -713,6 +713,33 @@ void FieldInit()		//	sets values specific to our field.
 	ADD_WHITE_LINE(NodeLine6Bottom, NodeLine6Top);	//	line 6
 
 
+  #define ADD_LINE_END(n) globalField.nodeInfo[n].nodeFlags |= NodeFlagLineEnd
+	ADD_LINE_END(NodeLine1Bottom);
+	ADD_LINE_END(NodeLine2Bottom);
+	ADD_LINE_END(NodeLine3Bottom);
+	ADD_LINE_END(NodeLine4Top);
+	ADD_LINE_END(NodeLine5Top);
+	ADD_LINE_END(NodeLine6Top);
+
+
+
+  #define ADD_PERPINDICULAR_WHITE_LINE(n1, n2) globalField.segmentFlags[n1][n2] |= PathSegmentFlagPerpendicularWhiteLineAtEnd
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine1Bottom, NodeLine2Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine2Bottom, NodeLine1Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine2Bottom, NodeLine3Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine3Bottom, NodeLine2Bottom);
+
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine4Top, NodeLine5Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine4Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine6Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Top, NodeLine5Top);
+
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine1Top, NodeFoeBridgeCenter);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine4Bottom, NodeFoeBridgeCenter);
+
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine3Top, NodeFriendBridgeCenter);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Bottom, NodeFriendBridgeCenter);
+
 
 
 	//	Tell it where the bridge entrances are

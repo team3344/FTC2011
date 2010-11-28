@@ -57,6 +57,9 @@ bool RobotFindWhiteLine();	//	returns true if it finds it.  saves context to Cur
 void RobotRotateToOrientation(float orientation);
 bool RobotMoveDistance(float distance, bool avoidEnemies);				//	distance in inches.  Can be negative.
 
+bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies);
+
+
 
 void RobotApproachBridge();
 void RobotLowerBridge();

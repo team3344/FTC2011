@@ -311,6 +311,14 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 
 
+bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
+{
+  //  FIXME: MAKE THIS METHOD DO STUFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
+
+
+
+
 bool RobotMoveToLocation(Vector& location, bool backwards, bool avoidEnemies)
 {
   Vector startLocation;
