@@ -22,7 +22,7 @@ typedef struct {
 
 
 void VectorMake(float x, float y, float z, Vector& v);
-void Vector2DMake(float x, float y, Vector& v);
+//void Vector2DMake(float x, float y, Vector& v);
 
 
 

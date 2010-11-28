@@ -38,7 +38,6 @@
 void ff2() {}
 void ff3() {}
 void ff4() {}
-void ff10() {}
 
 
 
@@ -156,5 +155,4 @@ task main()
   ff2();
   ff3();
   ff4();
-  ff10();
 }

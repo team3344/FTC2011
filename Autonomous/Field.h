@@ -145,7 +145,7 @@ Node FieldGetNextNode();
 void FieldAdvance();										//	sets current node to the next node in the path
 
 
-void FieldReset();											//	sets cost from each node to itself to zero, and the rest to infinity.  clears all Nodes from nodes array.  clears cachedPath.
+//void FieldReset();											//	sets cost from each node to itself to zero, and the rest to infinity.  clears all Nodes from nodes array.  clears cachedPath.
 
 
 void FieldSetNodeCoordinates(Node n, float x, float y, float z);

@@ -80,7 +80,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	{
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
     {
-		  if ( globalField.nodeInfo[segment.destination] & NodeFlagLineEnd )
+		  if ( globalField.nodeInfo[segment.destination].flags & NodeFlagLineEnd )
 		  {
 		    success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
 		  }
@@ -105,9 +105,9 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	    //  FIXME: what to do here??????????????????????????????????????????????????????????????
 	  }
 	}
-	else if ( segmentFlags & SegmentFlagPerpendicularWhiteLine )
+	else if ( segmentFlags & PathSegmentFlagPerpendicularWhiteLineAtEnd )
 	{
-	  if ( RobotMoveUntilPerpendicularLine(distance, true);
+	  if ( RobotMoveUntilPerpendicularLine(distance, true) )
 	  {
 	    //  FIXME: set location based on the line!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	    //  when we hit the line, we're kLightSensorDistanceFromCenter away from the node, so let's go the rest of the way
@@ -126,7 +126,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 		if ( !success ) //  if we failed, go back to where we started
 		{
-		  RobotMoveToLocation(startLocation, true, false);  //  retrace steps
+		  RobotMoveToLocation(startNodeLocation, true, false);  //  retrace steps
     }
 	}
 
