@@ -37,7 +37,6 @@
 
 void ff2() {}
 void ff3() {}
-void ff4() {}
 
 
 
@@ -46,13 +45,7 @@ void initializeRobot()
 {
 	FieldInit();	//  initialize the map of the field
 
-	HTSMUXinit();             //  init the sensor multiplexor driver
-	HTSMUXscanPorts(SMUX1);   //  tell smuxi to detect connected sensors
-  HTSMUXscanPorts(SMUX2);   //
-
-  LSsetActive(LeftLightSensor);
-  LSsetActive(RightLightSensor);
-
+	SensorsInit();
 
   SMUXiInitialized();   //  makes an exception noise if the SMUXi aren't doin' good
 
@@ -154,5 +147,4 @@ task main()
 
   ff2();
   ff3();
-  ff4();
 }

@@ -36,7 +36,7 @@ bool EnemyRobotDetected();
 
 
 bool SMUXiInitialized();  //  plays sound "Exception" if they're not inited
-
+void SensorsInit();
 
 
 

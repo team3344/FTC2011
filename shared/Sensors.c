@@ -22,3 +22,13 @@ bool SMUXiInitialized()
 
   return initialized;
 }
+
+void SensorsInit()
+{
+  HTSMUXinit();             //  init the sensor multiplexor driver
+	HTSMUXscanPorts(SMUX1);   //  tell smuxi to detect connected sensors
+  HTSMUXscanPorts(SMUX2);   //
+
+  LSsetActive(LeftLightSensor);
+  LSsetActive(RightLightSensor);
+}
