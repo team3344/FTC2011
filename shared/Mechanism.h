@@ -47,8 +47,8 @@ static bool MechanismSlideIsMoving;
 #define kElevatorSpeed 30
 
 
-#define ElevatorIsAtTop (SensorValue[ElevatorTopStop] == 1)
-#define ElevatorIsAtBottom TSreadState(ElevatorBottomStop)
+#define ElevatorIsAtTop() (SensorValue[ElevatorTopStop] == 1)
+#define ElevatorIsAtBottom() TSreadState(ElevatorBottomStop)
 
 
 

@@ -60,11 +60,11 @@ void MechanismInit()
 
 
   //  calibrate elevator
-#if 0
+#if 1
   if ( SMUXiInitialized() ) //  only calibrate elevator if SMUXi are initialized
   {
     motor[Elevator] = -kElevatorSpeed;
-    while ( ElevatorIsAtTop ) {}
+    while ( !ElevatorIsAtBottom() ) {}
     motor[Elevator] = 0;
     nMotorEncoder[Elevator] = 0;
   }
@@ -108,11 +108,11 @@ void MechanismSetElevatorHeight(float height)
 
   if ( height < MechanismElevatorCurrentHeight() )
   {
-    while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom ) {} //  go until we're there or we hit the bottom
+    while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
   }
   else
   {
-    while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop ) {}  //  go until we're there of we hit the top
+    while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop() ) {}  //  go until we're there of we hit the top
   }
 
 

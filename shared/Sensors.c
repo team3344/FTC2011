@@ -5,6 +5,10 @@
 
 
 
+#define AbortIfNoSMUX() if ( !SMUXiInitialized() ) { wait1Msec(200); StopAllTasks(); }
+
+
+
 bool EnemyRobotDetected()
 {
 	return false; //SonarSensorGetDistance() > 8;	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
@@ -13,14 +17,9 @@ bool EnemyRobotDetected()
 
 bool SMUXiInitialized()
 {
-  short status = smuxData[SMUX1].status | smuxData[SMUX2].status;
-  short badFlags = HTSMUX_STAT_BATT | HTSMUX_STAT_HALT | HTSMUX_STAT_ERROR | HTSMUX_STAT_NOTHING;
-
-  bool initialized = ( status & badFlags > 0 );
-
-  if ( initialized ) PlaySound(soundException);
-
-  return initialized;
+  bool bad = (HTSMUXreadStatus(SMUX1) & HTSMUX_STAT_BATT) || (HTSMUXreadStatus(SMUX2) & HTSMUX_STAT_BATT);
+  if ( bad ) PlaySound(soundException);
+  return !bad;
 }
 
 void SensorsInit()

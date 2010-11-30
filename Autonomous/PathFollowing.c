@@ -41,7 +41,7 @@ bool _TravelSegment(PathSegment& segment, bool avoidEnemies, bool forward)
 
 
 
-
+static bool FollowLines = false;
 
 
 
@@ -76,7 +76,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	RobotRotateToOrientation(angle);
 
 
-	if ( segmentFlags & PathSegmentFlagWhiteConnectingLine )  //  there's a line between nodes, so follow it
+	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && FollowLines )  //  there's a line between nodes, so follow it
 	{
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
     {

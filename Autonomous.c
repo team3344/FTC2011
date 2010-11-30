@@ -44,13 +44,10 @@ void ff3() {}
 void initializeRobot()
 {
 	FieldInit();	//  initialize the map of the field
-
 	SensorsInit();
+  AbortIfNoSMUX();
 
-  SMUXiInitialized();   //  makes an exception noise if the SMUXi aren't doin' good
-
-
-	MechanismInit();
+	//MechanismInit();
 
 	FTCGetStartPosition();	//	ask the user where the robot is starting
 
@@ -65,10 +62,11 @@ task GetDoublerBaton()
 {
 	gettingDoubler = true;
 
+	//  where we are and where we're going
+	Node dest = NodeFriendDispenserCenter;
+	Node src = FieldGetCurrentNode();
 
-	Node d;// = FTCFieldGetKeyPointOfCenterDispenserForTeam(FTCTeamGetCurrent());	//	get key point of the dispenser
-	Node c = FieldGetCurrentNode();
-	if ( RobotTravelFromNodeToNode(d, c) )	// go to the dispenser
+	if ( RobotTravelFromNodeToNode(src, dest) )	// go to the dispenser
   {
     RobotRotateToOrientation(PI); //  turn towards dispenser
     MechanismSetElevatorHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
@@ -109,16 +107,16 @@ task main()
 {
 	initializeRobot();
 
-	waitForStart();		// Wait for the beginning of autonomous phase.
+	//waitForStart();	//  FIXME: add this back in!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	long startTime = nPgmTime;
 
 
-
-
+  //
+  //
 	//	FIXME: score preloads
-
-
+  //
+  //
 
 
 
