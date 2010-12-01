@@ -32,17 +32,21 @@ static bool MechanismSlideIsMoving;
 
 
 
-#define kKickerSpeed 170
+#define kKickerSpeed 255
+#define kKickerSpeedReverse 0
 #define kKickerStopped 128
 
 
 
 
-
+//	stomper
 #define kRightStomperUp 237
 #define kRightStomperDown 72
 #define kLeftStomperUp 0
 #define kLeftStomperDown 165
+
+
+
 
 #define kElevatorSpeed 30
 
@@ -64,7 +68,7 @@ void MechanismSetElevatorHeight(float height);
 
 
 
-static bool MechanismElevatorIsOscillating;	//	FIXME: implement these!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+static bool MechanismElevatorIsOscillating;	//	FIXME: implement these!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 task MechanismElevatorOscillate();
 
 

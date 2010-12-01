@@ -23,6 +23,8 @@ void _RobotZeroDriveEncoders()
 {
   nMotorEncoder[Left] = 0;
   nMotorEncoder[Right] = 0;
+  
+  wait1Msec(70);
 }
 
 
@@ -93,6 +95,8 @@ task FollowLine()
 
 bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
 {
+	_RobotZeroDriveEncoders();
+	
   memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
   StartTask(FollowLine);
 
@@ -102,9 +106,6 @@ bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance,
   //  go until we reach the distance
   while ( abs(nMotorEncoder[Left] + nMotorEncoder[Right]) < targetEncoder )
   {
-    int encoder = nMotorEncoder[Left];
-    nxtDisplayCenteredTextLine(5, (string)encoder);
-
     if ( EnemyRobotDetected() && avoidEnemies )
     {
       AbortLineFollowing = true;  //  abort
@@ -259,44 +260,60 @@ void RobotRotateToOrientation(float orientation)
 		if ( angle < 0 ) angle += 2 * PI;
 		else angle -= 2 * PI;
 	}
-
+	
+	
+	//	encoder
+	_RobotZeroDriveEncoders();
 	float wheelDistance = angle * (kRobotWidth / 2);
-
-
-	//	start rotating
-	motor[Left] = ( wheelDistance > 0 ) ? -kRobotRotateSpeed : kRobotRotateSpeed;
-	motor[Right] = -motor[Left];
-
 	int encoderPoints = DriveMotorConvertDistanceToEncoder(wheelDistance);
-	nMotorEncoder[Left] = 0;
 
-	while ( abs(nMotorEncoder[Left]) < abs(encoderPoints) ) {}	//	wait until we're done
+
+	//	set encoder targets
+	nMotorEncoderTarget[Right] = encoderPoints * SIGN(wheelDistance);
+	nMotorEncoderTarget[Left] = -nMotorEncoderTarget[Right];
+	
+	
+	//	start rotating
+	motor[Right] = kRobotRotateSpeed * SIGN(wheelDistance);
+	motor[Left] = -motor[Right];
+	
+	
+	//	wait
+	while( nMotorRunState[Left] != runStateIdle && nMotorRunState[Right] != runStateIdle ) {}	//	wait until we reach our target
+	
 
 	//	stop
-	motor[Left] = 0;
-	motor[Right] = 0;
+	RobotStop();
 
 
+	//	update bot orientation
 	CurrentRobotPosition.orientation = orientation;
 }
 
 
 
-bool RobotMoveDistance(float distance, bool avoidEnemies)	//	FIXME: update this method and the one above to use nMotorEncoderTarget[] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+bool RobotMoveDistance(float distance, bool avoidEnemies)
 {
 	_RobotZeroDriveEncoders();
 
 	int encoderPoints = DriveMotorConvertDistanceToEncoder(distance);
-
-
-	motor[Left] = ( distance > 0 ) ? kRobotMoveSpeed : -kRobotMoveSpeed;
+	
+	
+	//	set encoder targets
+	nMotorEncoderTarget[Left] = encoderPoints;
+	nMotorEncoderTarget[Right] = encoderPoints;
+	
+	
+	//	start moving
+	motor[Left] = kRobotMoveSpeed * SIGN(distance);
 	motor[Right] = motor[Left];
+
 
 	bool success;
 
 	while ( true )
 	{
-	  if ( abs(nMotorEncoder[Left]) >= abs(encoderPoints) ) //  if we're there
+	  if ( nMotorRunState[Left] != runStateIdle && nMotorRunState[Right] != runStateIdle ) //  if we're there
 	  {
 	    success = true;
 	    break;
@@ -311,8 +328,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)	//	FIXME: update this 
 
 	
 	//  stop
-	motor[Left] = 0;
-	motor[Right] = 0;
+	RobotStop();
 	
 	
 	//	update position
@@ -345,7 +361,7 @@ bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
 
   while ( true )
   {
-    if ( abs(nMotorEncoder[Left]) >= abs(targetEncoder) ) //  if we're at the max distance, ...
+    if ( abs(nMotorEncoder[Left]) >= abs(targetEncoder) ) //  if we're at the max distance, ...	//	FIXME: update this to use nMotorEncoderTarget[] ??????????????????????????????????????????????????????????????????
     {
       success = false;
       break;

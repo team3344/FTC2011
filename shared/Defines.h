@@ -31,6 +31,7 @@
 #define powf(a, x) exp(x * ln(a))
 #define MAX(a, b) ((a > b) ? a : b)
 #define MIN(a, b) ((a > b) ? b : a)
+#define SIGN(x) ((x < 0) ? -1 : 1)
 
 
 
