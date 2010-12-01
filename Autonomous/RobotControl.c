@@ -313,7 +313,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 	while ( true )
 	{
-	  if ( nMotorRunState[Left] != runStateIdle && nMotorRunState[Right] != runStateIdle ) //  if we're there
+	  if ( nMotorRunState[Left] == runStateIdle && nMotorRunState[Right] == runStateIdle ) //  if we're there
 	  {
 	    success = true;
 	    break;
