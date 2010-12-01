@@ -5,7 +5,7 @@
 
 
 
-//	All measurements are in inches	//
+/*	All measurements are in inches	*/
 
 
 

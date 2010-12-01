@@ -574,10 +574,6 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment)
 
 
 
-
-
-//	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:
-
 void FieldInit()		//	sets values specific to our field.
 {
 
@@ -605,8 +601,6 @@ void FieldInit()		//	sets values specific to our field.
 	globalField.currentNodeIndex = 0;	//	we're at the first node in the path
 
 
-
-	
 	
 	
 	/**********		Start Squares		**********/

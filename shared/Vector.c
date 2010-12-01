@@ -35,12 +35,6 @@ void Vector2DMake(float x, float y, Vector& v)
 
 
 
-
-
-
-
-
-
 float VectorGetMagnitude(Vector& v)
 {
 	return sqrt( powf(abs(v.x), 2) + powf(abs(v.y), 2) + powf(abs(v.z), 2) );
@@ -49,7 +43,7 @@ float VectorGetMagnitude(Vector& v)
 float VectorGetAngle(Vector& v)	//	note: ignores the z component
 {
 	float angle = atan(v.y / v.x);
-	if ( v.x < 0 ) angle += PI;	//	FIXME: is this right
+	if ( v.x < 0 ) angle += PI;	//	FIXME: is this right?
 	return angle;
 }
 

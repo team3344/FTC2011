@@ -19,8 +19,8 @@
 
 
 
-#define LEFT_LIGHT_SENSOR LSvalNorm(LeftLightSensor)
-#define RIGHT_LIGHT_SENSOR (LSvalNorm(RightLightSensor) + 3)
+#define LEFT_LIGHT_SENSOR() LSvalNorm(LeftLightSensor)
+#define RIGHT_LIGHT_SENSOR() (LSvalNorm(RightLightSensor) + 3)
 
 
 

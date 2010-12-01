@@ -53,8 +53,8 @@ task FollowLine()
 
   while ( true )
   {
-    float left = LEFT_LIGHT_SENSOR;
-    float right = RIGHT_LIGHT_SENSOR;
+    float left = LEFT_LIGHT_SENSOR();
+    float right = RIGHT_LIGHT_SENSOR();
     float error = left - right;
 
     nxtDisplayCenteredTextLine(0, (string)left);
@@ -132,8 +132,8 @@ bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
 
   while ( true )
   {
-    float left = LEFT_LIGHT_SENSOR;
-    float right = RIGHT_LIGHT_SENSOR;
+    float left = LEFT_LIGHT_SENSOR();
+    float right = RIGHT_LIGHT_SENSOR();
 
     float diff = left - right;
     bool same = abs(diff) < kBrightnessEqualityThreshold;
@@ -192,13 +192,13 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
   while ( abs(nMotorEncoder[Left]) < abs(scanEncoder) )
   {
-    _RecordLineBrightness(LEFT_LIGHT_SENSOR);
-    _RecordLineBrightness(RIGHT_LIGHT_SENSOR);
+    _RecordLineBrightness(LEFT_LIGHT_SENSOR());
+    _RecordLineBrightness(RIGHT_LIGHT_SENSOR());
 
     int contrast = CurrentLineFollowingContext.surroundingBrightness - CurrentLineFollowingContext.lineBrightness;
 
     int edge = (CurrentLineFollowingContext.lineBrightness + CurrentLineFollowingContext.surroundingBrightness) / 2;
-    bool leftOnEdge = abs(LEFT_LIGHT_SENSOR - edge) < kBrightnessEqualityThreshold;
+    bool leftOnEdge = abs(LEFT_LIGHT_SENSOR() - edge) < kBrightnessEqualityThreshold;
 
     if ( abs(contrast) > kMinLineSurroundingDifference && leftOnEdge )
     {
@@ -214,13 +214,13 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
   while ( abs(nMotorEncoder[Right]) < abs(scanEncoder * 2) )
   {
-    _RecordLineBrightness(LEFT_LIGHT_SENSOR);
-    _RecordLineBrightness(RIGHT_LIGHT_SENSOR);
+    _RecordLineBrightness(LEFT_LIGHT_SENSOR());
+    _RecordLineBrightness(RIGHT_LIGHT_SENSOR());
 
     int contrast = CurrentLineFollowingContext.surroundingBrightness - CurrentLineFollowingContext.lineBrightness;
 
     int edge = (CurrentLineFollowingContext.lineBrightness + CurrentLineFollowingContext.surroundingBrightness) / 2;
-    bool rightOnEdge = abs(RIGHT_LIGHT_SENSOR - edge) < kBrightnessEqualityThreshold;
+    bool rightOnEdge = abs(RIGHT_LIGHT_SENSOR() - edge) < kBrightnessEqualityThreshold;
 
     if ( abs(contrast) > kMinLineSurroundingDifference && rightOnEdge )
     {
@@ -373,7 +373,7 @@ bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
       break;
     }
 
-    int brightness = ((LEFT_LIGHT_SENSOR + RIGHT_LIGHT_SENSOR) / 2);  //  average of the left & right light sensors
+    int brightness = ((LEFT_LIGHT_SENSOR() + RIGHT_LIGHT_SENSOR()) / 2);  //  average of the left & right light sensors
     if ( brightness > brightnessThreshold ) //  see if we detected a line
     {
       success = true;
