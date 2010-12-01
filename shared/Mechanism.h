@@ -52,12 +52,20 @@ static bool MechanismSlideIsMoving;
 
 
 
-
 #define kElevatorHeightLowDispenser 1
 #define kElevatorHeightMidDispenser 4
 #define kElevatorHeightHighDispenser 10
 
+#define kElevatorHeightBridgeCrossing 5
+#define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
+
+
 void MechanismSetElevatorHeight(float height);
+
+
+
+static bool MechanismElevatorIsOscillating;	//	FIXME: implement these!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+task MechanismElevatorOscillate();
 
 
 

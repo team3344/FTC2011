@@ -14,30 +14,6 @@
 
 
 
-/*
-bool _TravelSegment(PathSegment& segment, bool avoidEnemies, bool forward)
-{
-  Vector startLocation;
-  memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
-
-  PathSegmentFlags segmentFlags = FieldGetSegmentFlags(segment);
-
-
-
-
-  if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && forward )
-  {
-
-  }
-  else
-
-
-
-
-}
-*/
-
-
 
 
 
@@ -50,23 +26,28 @@ bool RobotTravelPathSegment(PathSegment& segment)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
 	bool success;
-
-
+	
+	
 	//	if there's a bridge in front of us, GET OVER IT!
 	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
 	{
 		RobotApproachBridge();
 		RobotLowerBridge();
 	}
-
-
+	
+	
+	//	where we're at
 	Vector startLocation, startNodeLocation;
 	memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
-  FieldGetNodeLocation(segment.source, startNodeLocation);
+	FieldGetNodeLocation(segment.source, startNodeLocation);
+	
 
+	//	where we're going
 	Vector destination;
 	FieldGetNodeLocation(segment.destination, destination);
-
+	
+	
+	//	what we have to do to get there
 	Vector displacement;
 	VectorSubtract(destination, startLocation, displacement);
 
@@ -78,8 +59,10 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && FollowLines )  //  there's a line between nodes, so follow it
 	{
+		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+		
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
-    {
+		{
 		  if ( globalField.nodeInfo[segment.destination].flags & NodeFlagLineEnd )
 		  {
 		    success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
@@ -107,11 +90,14 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	}
 	else if ( segmentFlags & PathSegmentFlagPerpendicularWhiteLineAtEnd )
 	{
+		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+		
 	  if ( RobotMoveUntilPerpendicularLine(distance, true) )
 	  {
-	    //  FIXME: set location based on the line!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	    //  when we hit the line, we're kLightSensorDistanceFromCenter away from the node, so let's go the rest of the way
-	    RobotMoveToLocation(destination, false, false);
+	    RobotMoveDistance(kLightSensorDistanceFromCenter, false);
+		memcpy(CurrentRobotPosition.location, destination, sizeof(Vector));	//	set our new location
+		
 	    success = true;
 	  }
 	  else
@@ -127,7 +113,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		if ( !success ) //  if we failed, go back to where we started
 		{
 		  RobotMoveToLocation(startNodeLocation, true, false);  //  retrace steps
-    }
+		}
 	}
 
 

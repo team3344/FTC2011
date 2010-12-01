@@ -5,7 +5,6 @@
 
 
 
-#define kLightSensorDistanceFromCenter 5
 
 
 
@@ -23,8 +22,6 @@
 
 
 
-#define kRobotWidth 16.25
-
 
 #define kRobotWheelRadius 2			//	multiply this by a wheel's rotation in radians to get the distance travelled in inches
 #define kRobotWheelCircumference (2 * PI * kRobotWheelRadius)
@@ -37,8 +34,10 @@
 
 
 
+#define kLightSensorDistanceFromCenter 5
 #define kRobotRadius 13	//	FIXME: this is wrong for our bot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+#define kRobotWidth 16.25
+#define kRotationPointDistanceFromFront 10	//	FIXME: this is wrong!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 #endif

@@ -574,35 +574,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment)
 
 
 
-//	note: width is the dimension that runs along the x-axis, and length runs along the y-axis
 
-
-#define kFieldSize 144
-
-
-#define kDispenserPerpendicularDistance 10	//	distance from a dispenser to its corresponding node	//	//	///////////////////////////////
-#define kSideDispenserDistanceFromFieldEnd 36
-
-#define kStartSquareWidth 24
-
-
-#define kBridgeDistanceFromSide 24
-
-#define kBridgeHeight 4.06
-#define kBridgeWidth 24
-#define kBridgeLength 48
-
-
-#define kPitWidth 24
-#define kPitLength 24
-
-
-#define kMountainHeight 6
-#define kMountainLength 20.78
-#define kMountainWidth 42
-
-#define kLineDistanceFromFieldEnd 24
-#define kLineDistanceFromFieldSide ((kBridgeWidth / 2) + kBridgeDistanceFromSide)
 
 //	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:	FIXME: FIXME:
 
