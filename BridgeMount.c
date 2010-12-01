@@ -44,44 +44,10 @@ task main()
 
 
   RobotApproachBridge();
+  RobotLowerBridge();
+  RobotMoveDistance(20, false);
 
   wait10Msec(1000);
 
 
-
-  //nxtDisplayCenteredTextLine(4, (string)MechanismElevatorCurrentHeight());
-  //wait10Msec(1000);
-
-  //MechanismElevatorSetHeight(18);
-
-
-  /*
-  RobotRotateToOrientation(-PI/2);
-  PlaySound(soundBeepBeep);
-  wait10Msec(1000);
-  */
-
-
-
-  PlaySound(soundBeepBeep);
-
-  //motor[Elevator] = kElevatorSpeed;
-  //wait10Msec(5000);
-  //motor[Elevator] = 0;
-
-
-  MechanismElevatorSetHeight(10);
-
-
-
-  wait10Msec(5);
-
-  nxtDisplayCenteredTextLine(0, (string)MechanismElevatorCurrentHeight());
-
-  wait10Msec(1000);
-
-
-  //wait10Msec(1000);
-
-  //PlaySound(soundFastUpwardTones);
 }

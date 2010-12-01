@@ -5,6 +5,11 @@
 #endif
 
 
+#ifndef _Field_
+#include "Field.h"
+#endif
+
+
 #ifndef _Defines_
 #include "../shared/Defines.h"
 #endif
@@ -23,7 +28,7 @@ void _RobotZeroDriveEncoders()
 {
   nMotorEncoder[Left] = 0;
   nMotorEncoder[Right] = 0;
-  
+
   wait1Msec(70);
 }
 
@@ -96,7 +101,7 @@ task FollowLine()
 bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
 {
 	_RobotZeroDriveEncoders();
-	
+
   memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
   StartTask(FollowLine);
 
@@ -260,8 +265,8 @@ void RobotRotateToOrientation(float orientation)
 		if ( angle < 0 ) angle += 2 * PI;
 		else angle -= 2 * PI;
 	}
-	
-	
+
+
 	//	encoder
 	_RobotZeroDriveEncoders();
 	float wheelDistance = angle * (kRobotWidth / 2);
@@ -271,16 +276,16 @@ void RobotRotateToOrientation(float orientation)
 	//	set encoder targets
 	nMotorEncoderTarget[Right] = encoderPoints * SIGN(wheelDistance);
 	nMotorEncoderTarget[Left] = -nMotorEncoderTarget[Right];
-	
-	
+
+
 	//	start rotating
 	motor[Right] = kRobotRotateSpeed * SIGN(wheelDistance);
 	motor[Left] = -motor[Right];
-	
-	
+
+
 	//	wait
 	while( nMotorRunState[Left] != runStateIdle && nMotorRunState[Right] != runStateIdle ) {}	//	wait until we reach our target
-	
+
 
 	//	stop
 	RobotStop();
@@ -297,13 +302,13 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	_RobotZeroDriveEncoders();
 
 	int encoderPoints = DriveMotorConvertDistanceToEncoder(distance);
-	
-	
+
+
 	//	set encoder targets
 	nMotorEncoderTarget[Left] = encoderPoints;
 	nMotorEncoderTarget[Right] = encoderPoints;
-	
-	
+
+
 	//	start moving
 	motor[Left] = kRobotMoveSpeed * SIGN(distance);
 	motor[Right] = motor[Left];
@@ -326,11 +331,11 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	  }
 	}
 
-	
+
 	//  stop
 	RobotStop();
-	
-	
+
+
 	//	update position
 	float orientation = CurrentRobotPosition.orientation;
 	CurrentRobotPosition.location.x += distance * cos(orientation);
@@ -429,32 +434,26 @@ bool RobotMoveToLocation(Vector& location, bool backwards, bool avoidEnemies)
 
 
 
-
-
-
-
-
-
 void RobotApproachBridge()
 {
 	MechanismElevatorSetHeight(kElevatorHeightBridgeCrossing);
-	
-	int speed = kRobotMoveSpeed / 2;
-	
+
+	int speed = kRobotMoveSpeed;
+
 	motor[Left] = speed;
 	motor[Right] = speed;
-	
-	wait1Msec(600);
-	
-	
+
+	wait1Msec(1500);
+
+
 	float distanceFromCenter = (kBridgeLength / 2) + kRotationPointDistanceFromFront;
 	float center = kFieldSize / 2;
 	CurrentRobotPosition.location.y = center + ( (CurrentRobotPosition.location.y < center) ? -distanceFromCenter : distanceFromCenter );
-	
-	
+
+
 	RobotMoveDistance(-kRobotBridgeApproachDistance, false);	//	back up a bit
-	
-	
+
+
 }
 
 void RobotLowerBridge()
@@ -508,11 +507,11 @@ bool RobotMountCenterDispenser()
 
 void RobotBalance()
 {
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	//  FIXME: implement
 }
