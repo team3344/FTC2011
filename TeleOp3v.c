@@ -56,6 +56,8 @@ void initializeRobot()
   HTSMUXscanPorts(SMUX2);
 
 
+	AbortIfNoSMUX();
+
 	MechanismInit();
 
 	DrivePowerMultiplier = 1;

@@ -81,7 +81,6 @@ void MechanismInit()
 
 
 
-
 //  FIXME: these values are garbage!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #define kElevatorInitialAngle (-PI / 4)
 #define kElevatorInitialHeight 2.5
@@ -89,21 +88,19 @@ void MechanismInit()
 
 float MechanismElevatorCurrentHeight()
 {
-  //  FIXME: implement
-
   int encoder = nMotorEncoder[Elevator];
-
-
-  //float angle = kElevatorInitialAngle + !!!!!!!!!!!!!!!!!!!
-  return 0; //  FIXME: fix
+  float angle = kElevatorInitialAngle + ((encoder / (9 * kTetrixMotorEncoderPointsPerRotation)) * 2 * PI );
+  float height = ( kElevatorArmRadius * sin(angle) ) + kElevatorInitialHeight;
+  
+  
+  return height;
 }
 
 
 
-
-void MechanismSetElevatorHeight(float height)
+void MechanismSetElevatorHeight(float height)	//	FIXME: recheck this method???
 {
-  float angle = asin(height - kElevatorInitialHeight);
+	float angle = asin(height - kElevatorInitialHeight);
   int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
 
   if ( height < MechanismElevatorCurrentHeight() )

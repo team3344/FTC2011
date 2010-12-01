@@ -14,6 +14,11 @@
 
 
 
+
+
+
+
+
 #define LEFT_LIGHT_SENSOR LSvalNorm(LeftLightSensor)
 #define RIGHT_LIGHT_SENSOR (LSvalNorm(RightLightSensor) + 3)
 
@@ -34,6 +39,8 @@
 bool EnemyRobotDetected();
 
 
+
+#define AbortIfNoSMUX() if ( !SMUXiInitialized() ) { wait1Msec(200); StopAllTasks(); }
 
 bool SMUXiInitialized();  //  plays sound "Exception" if they're not inited
 void SensorsInit();

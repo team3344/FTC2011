@@ -5,7 +5,6 @@
 
 
 
-#define AbortIfNoSMUX() if ( !SMUXiInitialized() ) { wait1Msec(200); StopAllTasks(); }
 
 
 
