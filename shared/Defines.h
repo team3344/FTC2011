@@ -5,10 +5,9 @@
 
 
 
+//	All measurements are in inches	//
 
 
-
-//	All measurements are in inches
 
 #define kTetrixMotorEncoderPointsPerRotation 4. * 360.
 #define kNXTMotorEncoderPointsPerRotation 360.
@@ -23,7 +22,7 @@
 
 
 
-#define kRobotWheelRadius 2			//	multiply this by a wheel's rotation in radians to get the distance travelled in inches
+#define kRobotWheelRadius 2	//
 #define kRobotWheelCircumference (2 * PI * kRobotWheelRadius)
 
 
@@ -35,9 +34,10 @@
 
 
 
-#define kLightSensorDistanceFromCenter 5
-#define kRobotRadius 13	//	FIXME: this is wrong for our bot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define kRobotWidth 16.25
+#define kLightSensorDistanceFromCenter 5	//
+#define kRobotRadius 13						//	FIXME: this is wrong for our bot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#define kRobotWidth 16.25					//
+#define kRobotLength 18						//
 #define kRotationPointDistanceFromFront 10	//	FIXME: this is wrong!!!!!!!!!!!!!!!!!!!!!!!!!
 
 

@@ -22,7 +22,7 @@ static bool FollowLines = false;
 
 
 //	attempts to travel the segment.  returns success.  if successful, sets currentNode & CurrentRobotPosition to wherever it went
-bool RobotTravelPathSegment(PathSegment& segment)
+bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
 	bool success;
@@ -65,11 +65,11 @@ bool RobotTravelPathSegment(PathSegment& segment)
 		{
 		  if ( globalField.nodeInfo[segment.destination].flags & NodeFlagLineEnd )
 		  {
-		    success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, true);
+		    success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, avoidEnemies);
 		  }
 		  else
 		  {
-		    success = RobotFollowWhiteLineForDistance(CurrentLineFollowingContext, distance, true);
+		    success = RobotFollowWhiteLineForDistance(CurrentLineFollowingContext, distance, avoidEnemies);
 		  }
 
 		  if ( !success )
@@ -92,7 +92,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	{
 		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 		
-	  if ( RobotMoveUntilPerpendicularLine(distance, true) )
+	  if ( RobotMoveUntilPerpendicularLine(distance, avoidEnemies) )
 	  {
 	    //  when we hit the line, we're kLightSensorDistanceFromCenter away from the node, so let's go the rest of the way
 	    RobotMoveDistance(kLightSensorDistanceFromCenter, false);
@@ -108,7 +108,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 	}
 	else	//	there's no line to follow
 	{
-		success = RobotMoveDistance(distance, true);	//	try to travel the distance
+		success = RobotMoveDistance(distance, avoidEnemies);	//	try to travel the distance
 
 		if ( !success ) //  if we failed, go back to where we started
 		{
@@ -133,7 +133,7 @@ bool RobotTravelPathSegment(PathSegment& segment)
 
 
 
-bool RobotTravelFromNodeToNode(Node src, Node dest)
+bool RobotTravelFromNodeToNode(Node src, Node dest, bool avoidEnemies)
 {
 	FieldSetCurrentNode(src);
 	FieldSetGoalNode(dest);
@@ -156,7 +156,7 @@ bool RobotTravelFromNodeToNode(Node src, Node dest)
 		}
 		else
 		{
-			RobotTravelPathSegment(segment);
+			RobotTravelPathSegment(segment, avoidEnemies);
 		}
 	}
 

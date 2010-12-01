@@ -606,14 +606,15 @@ void FieldInit()		//	sets values specific to our field.
 
 
 
-
-
-
+	
+	
+	
 	/**********		Start Squares		**********/
-	FieldSetNodeCoordinates(NodeFriendStartSquareLeft, kStartSquareWidth / 2, kStartSquareWidth / 2, 0);
-	FieldSetNodeCoordinates(NodeFriendStartSquareRight, kFieldSize - (kStartSquareWidth / 2), kStartSquareWidth / 2, 0);
-	FieldSetNodeCoordinates(NodeFoeStartSquareLeft, kStartSquareWidth / 2, kFieldSize - (kStartSquareWidth / 2), 0);
-	FieldSetNodeCoordinates(NodeFoeStartSquareRight, kFieldSize - (kStartSquareWidth / 2), kFieldSize - (kStartSquareWidth / 2), 0);
+	#define kStartPointDistanceFromFieldEnd (((kRobotLength + kStartSquareWidth) / 2) - kRotationPointDistanceFromFront)
+	FieldSetNodeCoordinates(NodeFriendStartSquareLeft, kStartSquareWidth / 2, kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFriendStartSquareRight, kFieldSize - (kStartSquareWidth / 2), kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFoeStartSquareLeft, kStartSquareWidth / 2, kFieldSize - kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFoeStartSquareRight, kFieldSize - (kStartSquareWidth / 2), kFieldSize - kStartPointDistanceFromFieldEnd, 0);
 
 
 	/**********		Dispensers		**********/
