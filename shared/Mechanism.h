@@ -76,10 +76,17 @@ task MechanismElevatorOscillate();
 
 
 
-
+/*
 #define kFlapUpPosition 205
 #define kFlapDownPosition 80
 #define kFlapFlatPosition  140
+*/
+
+
+
+#define kGateDownPosition 100
+#define kGateUpPosition 100
+
 
 
 
