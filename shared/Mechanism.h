@@ -60,7 +60,7 @@ static bool MechanismSlideIsMoving;
 #define kElevatorHeightMidDispenser 4
 #define kElevatorHeightHighDispenser 10
 
-#define kElevatorHeightBridgeCrossing 5
+#define kElevatorHeightBridgeCrossing 10
 #define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
 
 
@@ -84,8 +84,8 @@ task MechanismElevatorOscillate();
 
 
 
-#define kGateDownPosition 100
-#define kGateUpPosition 100
+#define kGateDownPosition 41
+#define kGateUpPosition 159
 
 
 

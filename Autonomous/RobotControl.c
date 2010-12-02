@@ -15,8 +15,8 @@
 #endif
 
 
-
-
+#define kMotorDoneThreshold 20
+#define MotorDone(m, target) ((nMotorRunState[m] == runStateIdle) || (abs(target - nMotorEncoder[m]) < kMotorDoneThreshold))
 
 void RobotStop()
 {
@@ -100,6 +100,8 @@ task FollowLine()
 
 bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
 {
+  MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+
 	_RobotZeroDriveEncoders();
 
   memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
@@ -130,6 +132,8 @@ bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance,
 
 bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
 {
+  MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+
   memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
 
   StartTask(FollowLine);
@@ -183,6 +187,8 @@ void _RecordLineBrightness(int b)
 
 bool RobotFindWhiteLine()	//	returns true if it finds it
 {
+  MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+
   //  initial values
   CurrentLineFollowingContext.lineBrightness = 0;
   CurrentLineFollowingContext.surroundingBrightness = 100;
@@ -238,8 +244,11 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
   motor[Left] = kRobotLineScanPower;
   motor[Right] = -kRobotLineScanPower;
 
+  //  go back to the initial orientation
   _RobotZeroDriveEncoders();
   while ( abs(nMotorEncoder[Left]) < scanEncoder ) {}
+  RobotStop();
+
 
 	return false;
 }
@@ -274,8 +283,9 @@ void RobotRotateToOrientation(float orientation)
 
 
 	//	set encoder targets
-	nMotorEncoderTarget[Right] = encoderPoints * SIGN(wheelDistance);
-	nMotorEncoderTarget[Left] = -nMotorEncoderTarget[Right];
+	int rightEncoder = encoderPoints * SIGN(wheelDistance);
+	nMotorEncoderTarget[Right] = rightEncoder;
+	nMotorEncoderTarget[Left] = -rightEncoder;
 
 
 	//	start rotating
@@ -284,7 +294,7 @@ void RobotRotateToOrientation(float orientation)
 
 
 	//	wait
-	while( nMotorRunState[Left] != runStateIdle && nMotorRunState[Right] != runStateIdle ) {}	//	wait until we reach our target
+	while( !MotorDone(Left, -rightEncoder) || !MotorDone(Right, rightEncoder) ) {}	//	wait until we reach our target
 
 
 	//	stop
@@ -307,6 +317,11 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	//	set encoder targets
 	nMotorEncoderTarget[Left] = encoderPoints;
 	nMotorEncoderTarget[Right] = encoderPoints;
+  //wait1Msec(70);
+
+	//nxtDisplayCenteredTextLine(0, (string)encoderPoints);
+	//wait10Msec(100);
+
 
 
 	//	start moving
@@ -318,7 +333,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 	while ( true )
 	{
-	  if ( nMotorRunState[Left] == runStateIdle && nMotorRunState[Right] == runStateIdle ) //  if we're there
+	  if ( MotorDone(Left, encoderPoints) && MotorDone(Right, encoderPoints) ) //  if we're there
 	  {
 	    success = true;
 	    break;
@@ -326,6 +341,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 	  if ( avoidEnemies && EnemyRobotDetected() ) //  if we see an enemy, stop
 	  {
+	    PlaySound(soundLowBuzz);
 	    success = false;
 	    break;
 	  }
@@ -336,10 +352,12 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	RobotStop();
 
 
+
 	//	update position
 	float orientation = CurrentRobotPosition.orientation;
-	CurrentRobotPosition.location.x += distance * cos(orientation);
-	CurrentRobotPosition.location.y += distance * sin(orientation);
+	float travelled = DriveMotorConvertEncoderToDistance((nMotorEncoder[Left] + nMotorEncoder[Right]) / 2);
+	CurrentRobotPosition.location.x += travelled * cos(orientation);
+	CurrentRobotPosition.location.y += travelled * sin(orientation);
 
 
 	return success;

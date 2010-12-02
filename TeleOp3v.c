@@ -10,7 +10,7 @@
 #pragma config(Motor,  mtr_S1_C2_1,     Right,         tmotorNormal, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C2_2,     Elevator,      tmotorNormal, PIDControl, encoder)
 #pragma config(Servo,  srvo_S1_C3_1,    Kicker,               tServoContinuousRotation)
-#pragma config(Servo,  srvo_S1_C3_2,    Flap,            tServoStandard)
+#pragma config(Servo,  srvo_S1_C3_2,    Gate,            tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_3,    Slide,                tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_4,    RightStomper,         tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_5,    LeftStomper,          tServoStandard)
@@ -112,7 +112,7 @@ task vibrate()
   motor[Elevator] = -20;
   wait10Msec(1);
   motor[Elevator] = 20;
-  while ( !ElevatorIsAtTop ) {}
+  while ( !ElevatorIsAtTop() ) {}
   motor[Elevator] = 0;
 
   vibrating = false;
@@ -137,7 +137,7 @@ void MechanismControl(Controller& controller)
 
     if ( ControllerButtonIsPressed(controller, ControllerButtonR1) )
     {
-      if ( !vibrating ) StartTask(vibrate);
+      //if ( !vibrating ) StartTask(vibrate);
 
       servo[Kicker] = kKickerSpeed;
 
@@ -155,11 +155,11 @@ void MechanismControl(Controller& controller)
 
     if ( !vibrating )
     {
-      if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop )
+      if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
       {
         motor[Elevator] = kElevatorSpeed;
       }
-      else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom )
+      else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom() )
       {
         motor[Elevator] = -kElevatorSpeed;
       }
@@ -194,6 +194,19 @@ void MechanismControl(Controller& controller)
 	}
 
 
+
+	if ( controller.dPad.y == 1 )
+	{
+	  servo[Gate] = kGateUpPosition;
+	}
+	else if ( controller.dPad.y == -1 )
+	{
+	  servo[Gate] = kGateDownPosition;
+	}
+
+
+
+  /*
   //  trap door on magazine
 	if ( controller.dPad.y == -1 )
 	{
@@ -206,7 +219,7 @@ void MechanismControl(Controller& controller)
   else
   {
     servo[Flap] = kFlapFlatPosition;
-  }
+  }*/
 
 
 }

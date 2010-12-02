@@ -97,7 +97,7 @@ float MechanismElevatorCurrentHeight()
 }
 
 
-
+#define ElevatorIsSafe() (!ElevatorIsAtTop() && !ElevatorIsAtBottom())
 void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 {
 	//float angle = asin((kElevatorArmHeight - height - kToothHeightAboveElevator) / -kElevatorArmRadius);
@@ -107,19 +107,15 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
 
 
-	//nxtDisplayCenteredTextLine(0, (string)angle);
-	//nxtDisplayCenteredTextLine(1, (string)nMotorEncoder[Elevator]);
-	//nxtDisplayCenteredTextLine(2, (string)targetEncoder);
-	//wait10Msec(500);
-
-
-
 	nMotorEncoderTarget[Elevator] = targetEncoder;
 
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
-
-	if ( height < MechanismElevatorCurrentHeight() )
+  if ( abs(height - MechanismElevatorCurrentHeight()) < .25 )
+  {
+    //  don't do anything.  we're basically there
+  }
+	else if ( height < MechanismElevatorCurrentHeight() )
 	{
 		while ( nMotorRunState[Elevator] != runStateIdle && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
 	}

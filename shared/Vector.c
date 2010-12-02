@@ -25,12 +25,12 @@ void VectorMake(float x, float y, float z, Vector& v)
 	v.z = z;
 }
 
-/*
+
 void Vector2DMake(float x, float y, Vector& v)
 {
 	VectorMake(x, y, 0, v);
 }
-*/
+
 
 
 
