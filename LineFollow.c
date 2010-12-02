@@ -52,6 +52,5 @@ task main()
 
 
   RobotFindWhiteLine();
-  RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, false);
-
+  RobotFollowWhiteLineToEnd(false);
 }

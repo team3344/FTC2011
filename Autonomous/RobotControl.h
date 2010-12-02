@@ -47,8 +47,8 @@ LineFollowingContext CurrentLineFollowingContext;
 
 
 
-bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies);
-bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies);
+bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies);
+bool RobotFollowWhiteLineToEnd(bool avoidEnemies);
 
 bool RobotFindWhiteLine();	//	returns true if it finds it.  saves context to CurrentLineFollowingContext
 

@@ -100,30 +100,21 @@ float MechanismElevatorCurrentHeight()
 #define ElevatorIsSafe() (!ElevatorIsAtTop() && !ElevatorIsAtBottom())
 void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 {
-	//float angle = asin((kElevatorArmHeight - height - kToothHeightAboveElevator) / -kElevatorArmRadius);
-
-  float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
+	float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
 
 	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
-
-
 	nMotorEncoderTarget[Elevator] = targetEncoder;
 
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
-  if ( abs(height - MechanismElevatorCurrentHeight()) < .25 )
-  {
-    //  don't do anything.  we're basically there
-  }
-	else if ( height < MechanismElevatorCurrentHeight() )
+  if ( targetEncoder < nMotorEncoder[Elevator] )
 	{
-		while ( nMotorRunState[Elevator] != runStateIdle && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
+		while ( !MotorDone(Elevator, targetEncoder) && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
 	}
 	else
 	{
-		while ( nMotorRunState[Elevator] != runStateIdle && !ElevatorIsAtTop() ) {}  //  go until we're there of we hit the top
+		while ( !MotorDone(Elevator, targetEncoder) && !ElevatorIsAtTop() ) {}  //  go until we're there of we hit the top
 	}
-
 
 	motor[Elevator] = 0;  //  stop
 }

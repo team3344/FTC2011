@@ -79,10 +79,8 @@ task FollowLine()
   }
 
   //  stop
-  motor[Left] = 0;
-  motor[Right] = 0;
-  PlaySound(soundDownwardTones);
-  wait10Msec(100);
+  RobotStop();
+  //PlaySound(soundDownwardTones);
 
   //  update the position of the robot
   int encoder = (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2;
@@ -98,13 +96,12 @@ task FollowLine()
 
 
 
-bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance, bool avoidEnemies)
+bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 {
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
 	_RobotZeroDriveEncoders();
 
-  memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
   StartTask(FollowLine);
 
   int targetEncoder = DriveMotorConvertDistanceToEncoder(distance);
@@ -130,11 +127,9 @@ bool RobotFollowWhiteLineForDistance(LineFollowingContext& ctxt, float distance,
 
 #define kBrightnessEqualityThreshold 3 //  if brightnesses are less than this much different, they're the same
 
-bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
+bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this method!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
-
-  memcpy(CurrentLineFollowingContext, ctxt, sizeof(LineFollowingContext));
 
   StartTask(FollowLine);
 
@@ -146,7 +141,7 @@ bool RobotFollowWhiteLineToEnd(LineFollowingContext& ctxt, bool avoidEnemies)
 
     float diff = left - right;
     bool same = abs(diff) < kBrightnessEqualityThreshold;
-    bool notLine = ( ((left + right) / 2) - ctxt.surroundingBrightness) < kBrightnessEqualityThreshold;
+    bool notLine = ( ((left + right) / 2) - CurrentLineFollowingContext.surroundingBrightness) < kBrightnessEqualityThreshold;
 
 
     if ( same && notLine )

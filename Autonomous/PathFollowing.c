@@ -26,27 +26,27 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 {
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
 	bool success;
-	
-	
+
+
 	//	if there's a bridge in front of us, GET OVER IT!
 	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
 	{
 		RobotApproachBridge();
 		RobotLowerBridge();
 	}
-	
-	
+
+
 	//	where we're at
 	Vector startLocation, startNodeLocation;
 	memcpy(startLocation, CurrentRobotPosition.location, sizeof(Vector));
 	FieldGetNodeLocation(segment.source, startNodeLocation);
-	
+
 
 	//	where we're going
 	Vector destination;
 	FieldGetNodeLocation(segment.destination, destination);
-	
-	
+
+
 	//	what we have to do to get there
 	Vector displacement;
 	VectorSubtract(destination, startLocation, displacement);
@@ -60,16 +60,16 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && FollowLines )  //  there's a line between nodes, so follow it
 	{
 		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
-		
+
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
 		{
 		  if ( globalField.nodeInfo[segment.destination].flags & NodeFlagLineEnd )
 		  {
-		    success = RobotFollowWhiteLineToEnd(CurrentLineFollowingContext, avoidEnemies);
+		    success = RobotFollowWhiteLineToEnd(avoidEnemies);
 		  }
 		  else
 		  {
-		    success = RobotFollowWhiteLineForDistance(CurrentLineFollowingContext, distance, avoidEnemies);
+		    success = RobotFollowWhiteLineForDistance(distance, avoidEnemies);
 		  }
 
 		  if ( !success )
@@ -91,13 +91,13 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	else if ( segmentFlags & PathSegmentFlagPerpendicularWhiteLineAtEnd )
 	{
 		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
-		
+
 	  if ( RobotMoveUntilPerpendicularLine(distance, avoidEnemies) )
 	  {
 	    //  when we hit the line, we're kLightSensorDistanceFromCenter away from the node, so let's go the rest of the way
 	    RobotMoveDistance(kLightSensorDistanceFromCenter, false);
 		memcpy(CurrentRobotPosition.location, destination, sizeof(Vector));	//	set our new location
-		
+
 	    success = true;
 	  }
 	  else
