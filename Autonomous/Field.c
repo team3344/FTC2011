@@ -391,7 +391,7 @@ void _FieldPrintPath()
 //	Field
 
 
-void FieldConnectNodesAutomatically(Node n1, Node n2)
+void FieldConnectNodesAutomatically(Node n1, Node n2, bool bidirectional)
 {
  Vector v1;
  memcpy(v1, globalField.nodeInfo[n1].location, sizeof(Vector));
@@ -406,15 +406,8 @@ void FieldConnectNodesAutomatically(Node n1, Node n2)
 	float distance = VectorGetMagnitude(diff);
 
 	globalField.pathCosts[n1][n2] = distance;
-	globalField.pathCosts[n2][n1] = distance;
+	if ( bidirectional ) globalField.pathCosts[n2][n1] = distance;
 }
-
-/*
-void FieldConnectNodes(Node n1, Node n2, float cost)
-{
-	globalField.pathCosts[n1][n2] = cost;
-}
-*/
 
 
 bool FieldNodesAreConnected(Node n1, Node n2)
@@ -650,33 +643,48 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		White Lines		**********/
-	FieldSetNodeCoordinates(NodeLine1Bottom, kLineDistanceFromFieldSide, kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter, 0);				//	line 1
+	//FieldSetNodeCoordinates(NodeLine1Bottom, kLineDistanceFromFieldSide, kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter, 0);				//	line 1
 	FieldSetNodeCoordinates(NodeLine1Top, kLineDistanceFromFieldSide, ((kFieldSize  - kBridgeLength) / 2) - kRobotRadius, 0);
+	FieldSetNodeCoordinates(NodeLine1BottomEnd, kLineDistanceFromFieldSide, kLineDistanceFromFieldEnd, 0);
 
 	FieldSetNodeCoordinates(NodeLine2Bottom, kFieldSize / 2, kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter, 0);							//	line 2
 	FieldSetNodeCoordinates(NodeLine2Top, kFieldSize / 2, ((kFieldSize - kMountainLength) / 2) - kRobotRadius, 0);
+	FieldSetNodeCoordinates(NodeLine2BottomEnd, kFieldSize / 2, kLineDistanceFromFieldEnd, 0);
 
-	FieldSetNodeCoordinates(NodeLine3Bottom, kFieldSize - kLineDistanceFromFieldSide, kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter, 0);	//	line 3
+	//FieldSetNodeCoordinates(NodeLine3Bottom, kFieldSize - kLineDistanceFromFieldSide, kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter, 0);	//	line 3
 	FieldSetNodeCoordinates(NodeLine3Top, kFieldSize - kLineDistanceFromFieldSide, ((kFieldSize  - kBridgeLength) / 2) - kRobotRadius, 0);
+  FieldSetNodeCoordinates(NodeLine3BottomEnd, kFieldSize - kLineDistanceFromFieldSide, kLineDistanceFromFieldEnd, 0);
 
 	FieldSetNodeCoordinates(NodeLine4Bottom, kLineDistanceFromFieldSide, ((kFieldSize + kBridgeLength) / 2) + kRobotRadius, 0);							//	line 4
 	FieldSetNodeCoordinates(NodeLine4Top, kLineDistanceFromFieldSide, kFieldSize - (kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter), 0);
+  FieldSetNodeCoordinates(NodeLine4TopEnd, kLineDistanceFromFieldSide, kFieldSize - kLineDistanceFromFieldEnd, 0);
 
-	FieldSetNodeCoordinates(NodeLine5Bottom, kFieldSize / 2, ((kFieldSize + kMountainLength) / 2) + kRobotRadius, 0);									//	line 5
+	//FieldSetNodeCoordinates(NodeLine5Bottom, kFieldSize / 2, ((kFieldSize + kMountainLength) / 2) + kRobotRadius, 0);									//	line 5
 	FieldSetNodeCoordinates(NodeLine5Top, kFieldSize / 2, kFieldSize - (kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter), 0);
+  FieldSetNodeCoordinates(NodeLine5TopEnd, kFieldSize / 2, kFieldSize - kLineDistanceFromFieldEnd, 0);
 
 	FieldSetNodeCoordinates(NodeLine6Bottom, kFieldSize - kLineDistanceFromFieldSide, ((kFieldSize + kBridgeLength) / 2) + kRobotRadius, 0);			//	line 6
 	FieldSetNodeCoordinates(NodeLine6Top, kFieldSize - kLineDistanceFromFieldSide, kFieldSize - (kLineDistanceFromFieldEnd + kLightSensorDistanceFromCenter), 0);
-
+  FieldSetNodeCoordinates(NodeLine6TopEnd, kFieldSize - kLineDistanceFromFieldSide, kFieldSize - kLineDistanceFromFieldEnd, 0);
 
 
 	//	Tell it where the white lines are
-	#define ADD_WHITE_LINE(n1, n2) globalField.segmentFlags[n1][n2] |= PathSegmentFlagWhiteConnectingLine; globalField.segmentFlags[n2][n1] |= PathSegmentFlagWhiteConnectingLine
-	ADD_WHITE_LINE(NodeLine1Bottom, NodeLine1Top);	//	line 1
-	ADD_WHITE_LINE(NodeLine2Bottom, NodeLine2Top);	//	line 2
+	#define ADD_WHITE_LINE(n1, n2) globalField.segmentFlags[n1][n2] |= PathSegmentFlagWhiteConnectingLine
+	ADD_WHITE_LINE(NodeLine1BottomEnd, NodeLine1Top);	//	line 1
+	ADD_WHITE_LINE(NodeLine2BottomEnd, NodeLine2Bottom);	//	line 2
+	
+	ADD_WHITE_LINE(NodeLine2BottomEnd, NodeLine2Bottom);
+	ADD_WHITE_LINE(NodeLine2Bottom, NodeLine2Top);
+	ADD_WHITE_LILNE(NodeLine2Top, NodeLine2Bottom);
+
 	ADD_WHITE_LINE(NodeLine3Bottom, NodeLine3Top);	//	line 3
 	ADD_WHITE_LINE(NodeLine4Bottom, NodeLine4Top);	//	line 4
 	ADD_WHITE_LINE(NodeLine5Bottom, NodeLine5Top);	//	line 5
+
+	ADD_WHITE_LINE(NodeLine4TopEnd, NodeLine4Top);
+	ADD_WHITE_LINE(NodeLine4Top, NodeLine4Bottom);
+	ADD_WHITE_LINE(NodeLine4Bottom, NodeLine4Top);
+
 	ADD_WHITE_LINE(NodeLine6Bottom, NodeLine6Top);	//	line 6
 
 
@@ -691,15 +699,15 @@ void FieldInit()		//	sets values specific to our field.
 
 
   #define ADD_PERPINDICULAR_WHITE_LINE(n1, n2) globalField.segmentFlags[n1][n2] |= PathSegmentFlagPerpendicularWhiteLineAtEnd
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine1Bottom, NodeLine2Bottom);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine2Bottom, NodeLine1Bottom);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine2Bottom, NodeLine3Bottom);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine3Bottom, NodeLine2Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine1Top, NodeLine2Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine2Bottom, NodeLine1Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine2Bottom, NodeLine3Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine3Top, NodeLine2Bottom);
 
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine4Top, NodeLine5Top);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine4Top);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine6Top);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Top, NodeLine5Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine4Bottom, NodeLine5Top);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine4Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine6Bottom);
+	ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Bottom, NodeLine5Top);
 
 	//  NOTE: I commented out the ones for the bridge because the contrast between the white tape
 	//  and the color of the bridges wasn't enough to be able to differentiate b/w the 2
@@ -726,76 +734,79 @@ void FieldInit()		//	sets values specific to our field.
 	/******************************		Connections between Nodes ******************************/
 
 
+//	FIXME: change everything that references line nodes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 	/**********		Start Squares **********/
-	FieldConnectNodesAutomatically(NodeFriendStartSquareLeft, NodeFoeDispenserLeft);
-	FieldConnectNodesAutomatically(NodeFriendStartSquareLeft, NodeFoeDispenserCenter);
-	FieldConnectNodesAutomatically(NodeFriendStartSquareLeft, NodeLine1Bottom);
+	FieldConnectNodesAutomatically(NodeFriendStartSquareLeft, NodeFoeDispenserLeft, true);
+	FieldConnectNodesAutomatically(NodeFriendStartSquareLeft, NodeFoeDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeFriendStartSquareLeft, NodeLine1Bottom, true);
 
-	FieldConnectNodesAutomatically(NodeFriendStartSquareRight, NodeFoeDispenserCenter);
-	FieldConnectNodesAutomatically(NodeFriendStartSquareRight, NodeFoeDispenserRight);
-	FieldConnectNodesAutomatically(NodeFriendStartSquareRight, NodeLine3Bottom);
+	FieldConnectNodesAutomatically(NodeFriendStartSquareRight, NodeFoeDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeFriendStartSquareRight, NodeFoeDispenserRight, true);
+	FieldConnectNodesAutomatically(NodeFriendStartSquareRight, NodeLine3Bottom, true);
 
 
-	FieldConnectNodesAutomatically(NodeFoeStartSquareLeft, NodeFriendDispenserLeft);
-	FieldConnectNodesAutomatically(NodeFoeStartSquareLeft, NodeFriendDispenserCenter);
-	FieldConnectNodesAutomatically(NodeFoeStartSquareLeft, NodeLine4Top);
+	FieldConnectNodesAutomatically(NodeFoeStartSquareLeft, NodeFriendDispenserLeft, true);
+	FieldConnectNodesAutomatically(NodeFoeStartSquareLeft, NodeFriendDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeFoeStartSquareLeft, NodeLine4Top, true);
 
-	FieldConnectNodesAutomatically(NodeFoeStartSquareRight, NodeFriendDispenserCenter);
-	FieldConnectNodesAutomatically(NodeFoeStartSquareRight, NodeFriendDispenserRight);
-	FieldConnectNodesAutomatically(NodeFoeStartSquareRight, NodeLine6Top);
+	FieldConnectNodesAutomatically(NodeFoeStartSquareRight, NodeFriendDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeFoeStartSquareRight, NodeFriendDispenserRight, true);
+	FieldConnectNodesAutomatically(NodeFoeStartSquareRight, NodeLine6Top, true);
 
 
 	/**********		Bridge Centers		**********/
-	FieldConnectNodesAutomatically(NodeFriendBridgeCenter, NodeLine6Bottom);
-	FieldConnectNodesAutomatically(NodeFriendBridgeCenter, NodeLine3Top);
+	FieldConnectNodesAutomatically(NodeFriendBridgeCenter, NodeLine6Bottom, true);
+	FieldConnectNodesAutomatically(NodeFriendBridgeCenter, NodeLine3Top, true);
 
-	FieldConnectNodesAutomatically(NodeFoeBridgeCenter, NodeLine4Bottom);
-	FieldConnectNodesAutomatically(NodeFoeBridgeCenter, NodeLine1Top);
+	FieldConnectNodesAutomatically(NodeFoeBridgeCenter, NodeLine4Bottom, true);
+	FieldConnectNodesAutomatically(NodeFoeBridgeCenter, NodeLine1Top, true);
 
 
 	/**********		Mountain	**********/
-	//FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterTopEdge);
-	//FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterBottomEdge);
+	//FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterTopEdge, true);
+	//FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterBottomEdge, true);
 
 
 	/**********		Pits	**********/
-	//FieldConnectNodesAutomatically(NodeFriendPitCenter, NodeFoeDispenserRight);
-	//FieldConnectNodesAutomatically(NodeFoePitCenter, NodeFriendDispenserLeft);
+	//FieldConnectNodesAutomatically(NodeFriendPitCenter, NodeFoeDispenserRight, true);
+	//FieldConnectNodesAutomatically(NodeFoePitCenter, NodeFriendDispenserLeft, true);
 
 
-	/**********		White Lines	**********/
-	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeLine1Top);
-	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeFoeDispenserLeft);
-	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeLine2Bottom);
-	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeFoeDispenserCenter);
-	FieldConnectNodesAutomatically(NodeLine1Top, NodeFoeDispenserLeft);
+	/**********		White Lines	**********/	//	FIXME: redo these connections to respect the new design
+	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeLine1Top, true);
+	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeFoeDispenserLeft, true);
+	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeLine2Bottom, true);
+	FieldConnectNodesAutomatically(NodeLine1Bottom, NodeFoeDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeLine1Top, NodeFoeDispenserLeft, true);
 
-	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeLine2Top);
-	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeFoeDispenserCenter);
-	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeLine1Top);
-	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeLine3Top);
+	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeLine2Top, true);
+	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeFoeDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeLine1Top, true);
+	FieldConnectNodesAutomatically(NodeLine2Bottom, NodeLine3Top, true);
 
-	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeLine3Top);
-	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeFoeDispenserRight);
-	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeLine2Bottom);
-	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeFoeDispenserCenter);
-	FieldConnectNodesAutomatically(NodeLine3Top, NodeFoeDispenserRight);
+	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeLine3Top, true);
+	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeFoeDispenserRight, true);
+	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeLine2Bottom, true);
+	FieldConnectNodesAutomatically(NodeLine3Bottom, NodeFoeDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeLine3Top, NodeFoeDispenserRight, true);
 
 
-	FieldConnectNodesAutomatically(NodeLine4Top, NodeLine4Bottom);
-	FieldConnectNodesAutomatically(NodeLine4Top, NodeFriendDispenserLeft);
-	FieldConnectNodesAutomatically(NodeLine4Top, NodeLine5Top);
-	FieldConnectNodesAutomatically(NodeLine4Top, NodeFriendDispenserCenter);
-	FieldConnectNodesAutomatically(NodeLine4Bottom, NodeFriendDispenserLeft);
+	FieldConnectNodesAutomatically(NodeLine4Top, NodeLine4Bottom, true);
+	FieldConnectNodesAutomatically(NodeLine4Top, NodeFriendDispenserLeft, true);
+	FieldConnectNodesAutomatically(NodeLine4Top, NodeLine5Top, true);
+	FieldConnectNodesAutomatically(NodeLine4Top, NodeFriendDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeLine4Bottom, NodeFriendDispenserLeft, true);
 
-	FieldConnectNodesAutomatically(NodeLine5Top, NodeLine5Bottom);
-	FieldConnectNodesAutomatically(NodeLine5Top, NodeFriendDispenserCenter);
-	FieldConnectNodesAutomatically(NodeLine5Top, NodeLine4Bottom);
-	FieldConnectNodesAutomatically(NodeLine5Top, NodeLine6Bottom);
+	FieldConnectNodesAutomatically(NodeLine5Top, NodeLine5Bottom, true);
+	FieldConnectNodesAutomatically(NodeLine5Top, NodeFriendDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeLine5Top, NodeLine4Bottom, true);
+	FieldConnectNodesAutomatically(NodeLine5Top, NodeLine6Bottom, true);
 
-	FieldConnectNodesAutomatically(NodeLine6Top, NodeLine6Bottom);
-	FieldConnectNodesAutomatically(NodeLine6Top, NodeFriendDispenserRight);
-	FieldConnectNodesAutomatically(NodeLine6Top, NodeLine5Top);
-	FieldConnectNodesAutomatically(NodeLine6Top, NodeFriendDispenserCenter);
-	FieldConnectNodesAutomatically(NodeLine6Bottom, NodeFriendDispenserRight);
+	FieldConnectNodesAutomatically(NodeLine6Top, NodeLine6Bottom, true);
+	FieldConnectNodesAutomatically(NodeLine6Top, NodeFriendDispenserRight, true);
+	FieldConnectNodesAutomatically(NodeLine6Top, NodeLine5Top, true);
+	FieldConnectNodesAutomatically(NodeLine6Top, NodeFriendDispenserCenter, true);
+	FieldConnectNodesAutomatically(NodeLine6Bottom, NodeFriendDispenserRight, true);
 }

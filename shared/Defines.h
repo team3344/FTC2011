@@ -39,7 +39,7 @@
 
 
 #define kLightSensorDistanceFromCenter 9.5
-#define kRobotRadius 13
+#define kRobotRadius 14.5
 #define kRobotWidth 16.25
 #define kRobotLength 17.25
 #define kRotationPointDistanceFromFront kLightSensorDistanceFromCenter - 2

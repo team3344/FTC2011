@@ -10,7 +10,7 @@
 
 
 
-#define kNodeCount 25
+#define kNodeCount 29
 
  typedef enum {
 	NodeZero = -1,
@@ -57,21 +57,27 @@
 
 	//	white lines	//
 	NodeLine1Top,
-	NodeLine1Bottom,
+	//NodeLine1Bottom,
+	NodeLine1BottomEnd,
 
 	NodeLine2Top,
 	NodeLine2Bottom,
+	NodeLine2BottomEnd,
 
 	NodeLine3Top,
-	NodeLine3Bottom,
+	//NodeLine3Bottom,
+	NodeLine3BottomEnd,
 
-	NodeLine4Top,
+	//NodeLine4Top,
+	NodeLine4TopEnd,
 	NodeLine4Bottom,
 
 	NodeLine5Top,
+	NodeLine5TopEnd,
 	NodeLine5Bottom,
 
-	NodeLine6Top,
+	//NodeLine6Top,
+	NodeLine6TopEnd,
 	NodeLine6Bottom
 
 } Node;
@@ -132,7 +138,7 @@ void FieldRecalculatePath();
 
 bool FieldNodesAreConnected(Node n1, Node n2);				//	note: order matters
 //void FieldConnectNodes(Node n1, Node n2, float cost);		//	tell it the distance between the two given nodes
-void FieldConnectNodesAutomatically(Node n1, Node n2);		//	calculates the distance between the nodes using their locations. note: order doesn't matter
+void FieldConnectNodesAutomatically(Node n1, Node n2, bool bidirectional);		//	calculates the distance between the nodes using their locations. note: order doesn't matter
 void FieldInvalidatePathFromNodeToNode(Node n1, Node n2);	//	tell it there is no path between the two given nodes.  order MATTERS
 void FieldTemporarilyInvalidatePathBetweenNodes(Node n1, Node n2, int time);	//	tell it there is no path between the two given nodes.  order DOESN'T matter.  time = time in msec until it's validation
 //bool FieldPathBetweenNodesIsValid(Node n1, Node n2);
