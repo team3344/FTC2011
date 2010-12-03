@@ -623,7 +623,7 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		Bridges		**********/
-	FieldSetNodeCoordinates(NodeFriendBridgeCenter, kFieldSize - kLineDistanceFromFieldSide), kFieldSize / 2, kBridgeHeight);
+	FieldSetNodeCoordinates(NodeFriendBridgeCenter, kFieldSize - kLineDistanceFromFieldSide, kFieldSize / 2, kBridgeHeight);
 	FieldSetNodeCoordinates(NodeFoeBridgeCenter, kLineDistanceFromFieldSide, kFieldSize / 2, kBridgeHeight);
 
 

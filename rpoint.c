@@ -46,14 +46,29 @@ task main()
   FieldInit();
 
 
+  Node start = NodeFriendStartSquareRight;
+  Node end = NodeLine6Bottom;
+
+
+  RobotMoveDistance(-20, false);
+  wait10Msec(1000);
+
+
+  //PlaySound(soundBeepBeep);
+  //RobotMoveDistance(-20, false);
+
+
+  //motor[Left] = 30;
+  //motor[Right] = motor[Left];
+  //wait10Msec(1000);
 
 
 
   CurrentRobotPosition.orientation = PI / 2.0;
-  FieldGetNodeLocation(NodeFriendStartSquareRight, CurrentRobotPosition.location);
+  FieldGetNodeLocation(start, CurrentRobotPosition.location);
 
 
-  RobotTravelFromNodeToNode(NodeFriendStartSquareRight, NodeLine6Bottom, false);
+  RobotTravelFromNodeToNode(start, end, false);
 
 
 

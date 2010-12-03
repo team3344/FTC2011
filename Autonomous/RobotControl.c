@@ -31,7 +31,8 @@ void _RobotZeroDriveEncoders()
 }
 
 
-
+#define MotorCloseThreshold 720
+#define MotorClose(m, e) ( (abs(nMotorEncoder[m] - e) < MotorCloseThreshold) || abs(nMotorEncoder[m]) < MotorCloseThreshold)
 
 
 
@@ -257,13 +258,19 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
 
-#define kRobotMoveSpeed 60
-#define kRobotRotateSpeed kRobotMoveSpeed
+#define kRobotMoveSpeed 50
+#define kRobotRotateSpeed 30
 
 
 void RobotRotateToOrientation(float orientation)
 {
   nxtDisplayCenteredTextLine(0, "rotating");
+  PlaySound(soundShortBlip);
+  PlaySound(soundDownwardTones);
+  PlaySound(soundFastUpwardTones);
+  wait1Msec(200);
+
+
 
 	float currentOrientation = CurrentRobotPosition.orientation;
 	float angle = orientation - currentOrientation;
@@ -338,6 +345,17 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	while ( true )
 	{
 	  bool left = false, right = false;
+
+	  if ( MotorClose(Left, encoderPoints) )
+	    motor[Left] = kRobotMoveSpeed / 3 * SIGN(encoderPoints);
+	  else
+	    motor[Left] = kRobotMoveSpeed * SIGN(encoderPoints);
+
+	  if ( MotorClose(Right, encoderPoints) )
+	    motor[Right] = kRobotMoveSpeed / 3 * SIGN(encoderPoints);
+	  else
+	    motor[Right] = kRobotMoveSpeed * SIGN(encoderPoints);
+
 
 	  if ( abs(nMotorEncoder[Left]) > abs(encoderPoints) )
 	  {
@@ -478,6 +496,7 @@ void RobotMountBridge()
 	float distanceFromCenter = (kBridgeLength / 2) + kRotationPointDistanceFromFront;
 	float center = kFieldSize / 2;
 	CurrentRobotPosition.location.y = center + ( (CurrentRobotPosition.location.y < center) ? -distanceFromCenter : distanceFromCenter );
+  CurrentRobotPosition.orientation = ( CurrentRobotPosition.location.y < center ) ? PI / 2 : -PI / 2;
 
 	RobotMoveDistance(-kRobotBridgeApproachDistance, false);	//	back up a bit
 

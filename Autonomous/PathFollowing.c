@@ -51,6 +51,13 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	FieldGetNodeLocation(segment.destination, destination);
 
 
+
+	//  FIXME: log $#%! herae so we can see why it's turning once it gets on the bridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
 	//	what we have to do to get there
 	Vector displacement;
 	VectorSubtract(destination, startLocation, displacement);
