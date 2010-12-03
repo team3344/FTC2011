@@ -17,7 +17,7 @@
 
 
 
-static bool FollowLines = false;
+static bool FollowLines = true;
 
 
 

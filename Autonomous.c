@@ -22,15 +22,15 @@
 #define RightLightSensor msensor_S4_4
 
 
-//  SMUX2
+//  SMUX2 //  FIXME: set port numbers !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #define ElevatorBottomStop msensor_S3_1
 #define IR msensor_S3_2
-#define Sonar msensor_S3_3
+#define Sonar msensor_S3_4
 #define Accelerometer msensor_S3_2
 
 
 
-#include "JoystickDriver.c"
+//#include "JoystickDriver.c"
 #include "shared/include.c"
 #include "Autonomous/include.c"
 
@@ -64,7 +64,7 @@ task GetDoublerBaton()
 	Node dest = NodeFriendDispenserCenter;
 	Node src = FieldGetCurrentNode();
 
-	if ( RobotTravelFromNodeToNode(src, dest) )	// go to the dispenser
+	if ( RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
   {
     RobotRotateToOrientation(PI); //  turn towards dispenser
     MechanismSetElevatorHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
@@ -93,7 +93,7 @@ void GetToBridgeAndBalance()
 {
 	Node bridgeID = NodeFriendBridgeCenter;	//	FIXME:  id of closest bridge???
 	Node currentID = FieldGetCurrentNode();
-	RobotTravelFromNodeToNode(currentID, bridgeID);	//	go to the bridge
+	RobotTravelFromNodeToNode(currentID, bridgeID, true);	//	go to the bridge
 
 	RobotBalance();	//	use the accelerometor to balance the bot
 }

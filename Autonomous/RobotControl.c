@@ -39,12 +39,10 @@ void _RobotZeroDriveEncoders()
 //===========================================================================================================
 
 #define kLineFollowerMotorPower 30
-#define kLineFollowerTurnRange (kLineFollowerMotorPower * (2.0 / 3.0))
+#define kLineFollowerTurnRange (kLineFollowerMotorPower * .85)
 
 
-static bool FollowingLine;
-static bool AbortLineFollowing;
-
+/*
 task FollowLine()
 {
   FollowingLine = true;
@@ -90,7 +88,7 @@ task FollowLine()
 
   FollowingLine = false;
 }
-
+*/
 
 
 
@@ -101,27 +99,48 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 	_RobotZeroDriveEncoders();
 
 
-  StartTask(FollowLine);
+	bool success = true;
+
+  float brightnessRange = CurrentLineFollowingContext.lineBrightness - CurrentLineFollowingContext.surroundingBrightness;
+  float gain = kLineFollowerTurnRange / brightnessRange;
 
   int targetEncoder = DriveMotorConvertDistanceToEncoder(distance);
   nxtDisplayCenteredTextLine(4, (string)targetEncoder);
 
   //  go until we reach the distance
-  while ( abs(nMotorEncoder[Left] + nMotorEncoder[Right]) < targetEncoder )
+  while ( (abs(nMotorEncoder[Left] + nMotorEncoder[Right]) / 2) < targetEncoder )
   {
+    float left = LEFT_LIGHT_SENSOR();
+    float right = RIGHT_LIGHT_SENSOR();
+    float error = left - right;
+
+    nxtDisplayCenteredTextLine(0, (string)left);
+    nxtDisplayCenteredTextLine(1, (string)right);
+
+    float turn = error * gain;
+
+    motor[Left] = kLineFollowerMotorPower - turn;
+    motor[Right] = kLineFollowerMotorPower + turn;
+
+
     if ( EnemyRobotDetected() && avoidEnemies )
     {
-      AbortLineFollowing = true;  //  abort
-      while ( FollowingLine ) {}  //  wait until it's stopped
-
-      return false;
+      success = false;
+      break;
     }
   }
 
-  AbortLineFollowing = true;
-  while ( FollowingLine ) {}
 
-	return true;
+  //  update the position of the robot
+  int encoder = (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2;
+  int distTravelled = DriveMotorConvertEncoderToDistance(encoder);
+
+  float orientation = CurrentRobotPosition.orientation;
+  CurrentRobotPosition.location.x += distTravelled * cos(orientation);
+  CurrentRobotPosition.location.y += distTravelled * sin(orientation);
+
+
+	return success;
 }
 
 #define kBrightnessEqualityThreshold 3 //  if brightnesses are less than this much different, they're the same
@@ -130,52 +149,75 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 {
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
+  _RobotZeroDriveEncoders();
 
-  StartTask(FollowLine);
+
+  float brightnessRange = CurrentLineFollowingContext.lineBrightness - CurrentLineFollowingContext.surroundingBrightness;
+  float gain = kLineFollowerTurnRange / brightnessRange;
+
+
+  bool success = true;
 
   while ( true )
   {
     float left = LEFT_LIGHT_SENSOR();
     float right = RIGHT_LIGHT_SENSOR();
+    float error = left - right;
 
 
-    /*
-    float diff = left - right;
-    bool same = abs(diff) < kBrightnessEqualityThreshold;
+    bool same = abs(error) < kBrightnessEqualityThreshold;
     bool notLine = ( ((left + right) / 2) - CurrentLineFollowingContext.surroundingBrightness) < kBrightnessEqualityThreshold;
-    */
 
-    /*
     if ( same && notLine )
     {
-      AbortLineFollowing = true;    //  abort line following
-      while ( FollowingLine ) {}    //  wait until it stops
-
-      return true;
+      break;
     }
-    */
+
 
 
 
     //  abort if a robot is in the way
     if ( EnemyRobotDetected() && avoidEnemies )
     {
-      AbortLineFollowing = true;   //  abort line following
-      while ( FollowingLine ) {}  //  wait until it stops
-
-      return false;
+      success = false;
+      break;
     }
+
+
+    float turn = error * gain;
+
+    motor[Left] = kLineFollowerMotorPower - turn;
+    motor[Right] = kLineFollowerMotorPower + turn;
   }
 
+
+
+  //  stop
+  RobotStop();
+
+  //  update the position of the robot
+  int encoder = (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2;
+  int distance = DriveMotorConvertEncoderToDistance(encoder);
+
+  float orientation = CurrentRobotPosition.orientation;
+  CurrentRobotPosition.location.x += distance * cos(orientation);
+  CurrentRobotPosition.location.y += distance * sin(orientation);
+
+
+  return success;
 }
 
 
 #define kWhiteLineScanAngle PI / 4
 #define kRobotLineScanPower 20
-#define kMinLineSurroundingDifference 15
+#define kMinLineSurroundingDifference 10
 
 void _RecordLineBrightness(int b)
 {
+  nxtDisplayCenteredTextLine(0, (string)CurrentLineFollowingContext.surroundingBrightness);
+  nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.lineBrightness);
+
+
   if ( CurrentLineFollowingContext.lineBrightness < b )
     CurrentLineFollowingContext.lineBrightness = b;
   else if ( CurrentLineFollowingContext.surroundingBrightness > b )
@@ -490,7 +532,7 @@ bool RobotMountCenterDispenser()
 {
   bool success = true;
 
-  while ( SonarSensorDistance()  > kMidDispenserMountDistance )
+  while ( SonarSensorDistance() > kMidDispenserMountDistance )
   {
     if ( IRSensorValue == 0 )
     {
@@ -503,9 +545,9 @@ bool RobotMountCenterDispenser()
     }
 
 
-    float speed = ( SonarSensorDistance() > 12 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
+    float speed = ( SonarSensorDistance() > 18 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
     float errorRange = 4;
-    float turnRange = speed;
+    float turnRange = speed * .9;
     float gain = turnRange / errorRange;
 
     float error = 5 - IRSensorValue;

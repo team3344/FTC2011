@@ -29,10 +29,8 @@
 #define Accelerometer msensor_S3_2
 
 
-//#include "JoystickDriver.c"
 #include "shared/include.c"
 #include "Autonomous/include.c"
-
 
 
 task main()
@@ -41,19 +39,7 @@ task main()
   MechanismInit();
 
 
-  RobotFindWhiteLine();
-  PlaySound(soundBeepBeep);
-  RobotFollowWhiteLineToEnd(false);
+  RobotMountCenterDispenser();
+
   PlaySound(soundUpwardTones);
 }
-
-
-
-/*
-
-bool EnemyRobotDetected() //  FIXME: adjust this method's constants!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-{
-  float distance = SonarSensorDistance();
-	return (distance < 10) && (distance > 3);	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
-}
-*/
