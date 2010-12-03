@@ -27,7 +27,7 @@ void _RobotZeroDriveEncoders()
   nMotorEncoder[Left] = 0;
   nMotorEncoder[Right] = 0;
 
-  wait1Msec(70);
+  wait1Msec(55);
 }
 
 
@@ -42,59 +42,11 @@ void _RobotZeroDriveEncoders()
 #define kLineFollowerTurnRange (kLineFollowerMotorPower * .85)
 
 
-/*
-task FollowLine()
-{
-  FollowingLine = true;
-
-  _RobotZeroDriveEncoders();
-
-  float brightnessRange = CurrentLineFollowingContext.lineBrightness - CurrentLineFollowingContext.surroundingBrightness;
-  float gain = kLineFollowerTurnRange / brightnessRange;
-
-  while ( true )
-  {
-    float left = LEFT_LIGHT_SENSOR();
-    float right = RIGHT_LIGHT_SENSOR();
-    float error = left - right;
-
-    nxtDisplayCenteredTextLine(0, (string)left);
-    nxtDisplayCenteredTextLine(1, (string)right);
-
-    float turn = error * gain;
-
-    motor[Left] = kLineFollowerMotorPower - turn;
-    motor[Right] = kLineFollowerMotorPower + turn;
-
-    if ( AbortLineFollowing )
-    {
-      PlaySound(soundBeepBeep);
-      AbortLineFollowing = false;
-      break;  //  abort
-    }
-  }
-
-  //  stop
-  RobotStop();
-  //PlaySound(soundDownwardTones);
-
-  //  update the position of the robot
-  int encoder = (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2;
-  int distance = DriveMotorConvertEncoderToDistance(encoder);
-
-  float orientation = CurrentRobotPosition.orientation;
-  CurrentRobotPosition.location.x += distance * cos(orientation);
-  CurrentRobotPosition.location.y += distance * sin(orientation);
-
-  FollowingLine = false;
-}
-*/
-
-
 
 bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 {
-  nxtDisplayCenteredTextLine(0, "following line");
+  nxtDisplayCenteredTextLine(0, "folw line fo dist");
+  nxtDisplayCenteredTextLine(1, (string)distance);
 
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
@@ -110,7 +62,7 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
   nxtDisplayCenteredTextLine(4, (string)targetEncoder);
 
   //  go until we reach the distance
-  while ( (abs(nMotorEncoder[Left] + nMotorEncoder[Right]) / 2) < targetEncoder )
+  while ( ((nMotorEncoder[Left] + nMotorEncoder[Right]) / 2) < targetEncoder )
   {
     float left = LEFT_LIGHT_SENSOR();
     float right = RIGHT_LIGHT_SENSOR();
@@ -131,6 +83,9 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
       break;
     }
   }
+
+
+  RobotStop();
 
 
   //  update the position of the robot
@@ -302,7 +257,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
 
-#define kRobotMoveSpeed 25
+#define kRobotMoveSpeed 60
 #define kRobotRotateSpeed kRobotMoveSpeed
 
 
@@ -314,7 +269,7 @@ void RobotRotateToOrientation(float orientation)
 	float angle = orientation - currentOrientation;
 
 	//	reduce angle
-	if ( abs(angle) > 2 * PI )
+	if ( abs(angle) > 2 * PI )  //  FIXME: what if it's < -2PI ????????????
 	{
 		if ( angle < 0 ) angle += 2 * PI;
 		else angle -= 2 * PI;
@@ -329,8 +284,6 @@ void RobotRotateToOrientation(float orientation)
 
 	//	set encoder targets
 	int rightEncoder = encoderPoints * SIGN(wheelDistance);
-	nMotorEncoderTarget[Right] = rightEncoder;
-	nMotorEncoderTarget[Left] = -rightEncoder;
 
 
 	//	start rotating
@@ -339,11 +292,25 @@ void RobotRotateToOrientation(float orientation)
 
 
 	//	wait
-	while( !MotorDone(Left, -rightEncoder) || !MotorDone(Right, rightEncoder) ) {}	//	wait until we reach our target
+	while( true )
+	{
+	  bool right = false, left = false;
 
+	  if ( abs(nMotorEncoder[Left]) > abs(rightEncoder) )
+	  {
+	    left = true;
+	    motor[Left] = 0;
+	  }
+	  if ( abs(nMotorEncoder[Right]) > abs(rightEncoder) )
+	  {
+	    right = true;
+	    motor[Right] = 0;
+	  }
 
-	//	stop
-	RobotStop();
+	  if ( left && right ) break;
+	}
+
+  //  we're already stopped
 
 
 	//	update bot orientation
@@ -361,18 +328,8 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	int encoderPoints = DriveMotorConvertDistanceToEncoder(distance);
 
 
-	//	set encoder targets
-	nMotorEncoderTarget[Left] = encoderPoints;
-	nMotorEncoderTarget[Right] = encoderPoints;
-  //wait1Msec(70);
-
-	//nxtDisplayCenteredTextLine(0, (string)encoderPoints);
-	//wait10Msec(100);
-
-
-
 	//	start moving
-	motor[Left] = kRobotMoveSpeed * SIGN(distance);
+	motor[Left] = kRobotMoveSpeed * SIGN(encoderPoints);
 	motor[Right] = motor[Left];
 
 
@@ -380,24 +337,36 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 	while ( true )
 	{
-	  if ( MotorDone(Left, encoderPoints) && MotorDone(Right, encoderPoints) ) //  if we're there
+	  bool left = false, right = false;
+
+	  if ( abs(nMotorEncoder[Left]) > abs(encoderPoints) )
+	  {
+	    left = true;
+	    motor[Left] = 0;
+	  }
+	  if ( abs(nMotorEncoder[Right]) > abs(encoderPoints) )
+	  {
+	    right = true;
+	    motor[Right] = 0;
+	  }
+
+	  if ( left && right )
 	  {
 	    success = true;
 	    break;
 	  }
 
+
 	  if ( avoidEnemies && EnemyRobotDetected() ) //  if we see an enemy, stop
 	  {
 	    PlaySound(soundLowBuzz);
 	    success = false;
+	    RobotStop();
 	    break;
 	  }
 	}
 
-
-	//  stop
-	RobotStop();
-
+  //  we're already stopped
 
 
 	//	update position
@@ -405,7 +374,6 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	float travelled = DriveMotorConvertEncoderToDistance((nMotorEncoder[Left] + nMotorEncoder[Right]) / 2);
 	CurrentRobotPosition.location.x += travelled * cos(orientation);
 	CurrentRobotPosition.location.y += travelled * sin(orientation);
-
 
 	return success;
 }
@@ -501,40 +469,35 @@ bool RobotMoveToLocation(Vector& location, bool backwards, bool avoidEnemies)
 
 
 
-void RobotApproachBridge()
+void RobotMountBridge()
 {
 	MechanismElevatorSetHeight(kElevatorHeightBridgeCrossing);
 
-	int speed = kRobotMoveSpeed;
-
-	motor[Left] = speed;
-	motor[Right] = speed;
-
-	wait1Msec(1500);
-
+	RobotMoveDistance(6, false);  //  get flush against the bridge
 
 	float distanceFromCenter = (kBridgeLength / 2) + kRotationPointDistanceFromFront;
 	float center = kFieldSize / 2;
 	CurrentRobotPosition.location.y = center + ( (CurrentRobotPosition.location.y < center) ? -distanceFromCenter : distanceFromCenter );
 
-
 	RobotMoveDistance(-kRobotBridgeApproachDistance, false);	//	back up a bit
 
 
-}
 
-void RobotLowerBridge()
-{
-  servo[LeftStomper] = kLeftStomperDown;
+	//  push it down
+	servo[LeftStomper] = kLeftStomperDown;
   servo[RightStomper] = kRightStomperDown;
 
   wait1Msec(300);
 
+  //  drive up on it a little
   RobotMoveDistance(3, false);
 
+
+  //  retract the stompers
   servo[LeftStomper] = kLeftStomperUp;
   servo[RightStomper] = kRightStomperUp;
 }
+
 
 bool RobotMountCenterDispenser()
 {

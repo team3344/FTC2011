@@ -13,8 +13,10 @@
 
 bool EnemyRobotDetected() //  FIXME: adjust this method's constants!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
-  float distance = SonarSensorDistance();
-	return (distance < 20.0) && (distance > 8.0);	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
+  return false;
+
+  //float distance = SonarSensorDistance();
+	//return (distance < 20.0) && (distance > 8.0);	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
 }
 
 

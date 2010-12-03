@@ -60,9 +60,8 @@ bool RobotMoveDistance(float distance, bool avoidEnemies);				//	distance in inc
 bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies);
 
 
-#define kRobotBridgeApproachDistance 1.5 //	distance away from the bridge that the bot is once it approaches the bridge
-void RobotApproachBridge();
-void RobotLowerBridge();
+#define kRobotBridgeApproachDistance 1 //	distance away from the bridge that the bot is once it approaches the bridge
+void RobotMountBridge();
 bool RobotMountCenterDispenser();	//	we're right in front of it.  drive up close to it and get in position to dispense
 
 

@@ -177,7 +177,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment);
 #define kStartSquareWidth 24
 
 
-#define kBridgeDistanceFromSide 24
+#define kBridgeDistanceFromSide 25
 
 #define kBridgeHeight 4.06
 #define kBridgeWidth 24
@@ -192,7 +192,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment);
 #define kMountainLength 20.78
 #define kMountainWidth 42
 
-#define kLineDistanceFromFieldEnd 24
+#define kLineDistanceFromFieldEnd 22.75
 #define kLineDistanceFromFieldSide ((kBridgeWidth / 2) + kBridgeDistanceFromSide)
 
 

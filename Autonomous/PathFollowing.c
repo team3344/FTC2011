@@ -35,8 +35,8 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	//	if there's a bridge in front of us, GET OVER IT!
 	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
 	{
-		RobotApproachBridge();
-		RobotLowerBridge();
+	  RobotMoveDistance(-3, false);
+		RobotMountBridge();
 	}
 
 
@@ -67,6 +67,9 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
 		{
+		  //  since we're lined up with the line, we know our orientation
+		  CurrentRobotPosition.orientation = ( displacement.y > 0 ) ? PI / 2 : -PI / 2;
+
 		  if ( globalField.nodeInfo[segment.destination].flags & NodeFlagLineEnd )
 		  {
 		    success = RobotFollowWhiteLineToEnd(avoidEnemies);
@@ -100,7 +103,7 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	  {
 	    //  when we hit the line, we're kLightSensorDistanceFromCenter away from the node, so let's go the rest of the way
 	    RobotMoveDistance(kLightSensorDistanceFromCenter, false);
-		memcpy(CurrentRobotPosition.location, destination, sizeof(Vector));	//	set our new location
+		  memcpy(CurrentRobotPosition.location, destination, sizeof(Vector));	//	set our new location
 
 	    success = true;
 	  }
@@ -162,6 +165,9 @@ bool RobotTravelFromNodeToNode(Node src, Node dest, bool avoidEnemies)
 		{
 			RobotTravelPathSegment(segment, avoidEnemies);
 		}
+
+		wait10Msec(300);  //  FIXME: remove this trash!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	}
 
 	AbortPathFollowing = false;	//	unabort so the next task actually runs

@@ -38,11 +38,11 @@
 
 
 
-#define kLightSensorDistanceFromCenter 5	//
-#define kRobotRadius 13						//	FIXME: this is wrong for our bot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define kRobotWidth 16.25					//
-#define kRobotLength 18						//
-#define kRotationPointDistanceFromFront 10	//	FIXME: this is wrong!!!!!!!!!!!!!!!!!!!!!!!!!
+#define kLightSensorDistanceFromCenter 9.5
+#define kRobotRadius 13
+#define kRobotWidth 16.25
+#define kRobotLength 17.25
+#define kRotationPointDistanceFromFront kLightSensorDistanceFromCenter - 2
 
 
 #endif

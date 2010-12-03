@@ -117,15 +117,6 @@ task main()
   //
 
 
-
-	RobotRotateToOrientation( 9.5 / 4.0);
-	PlaySound(soundBeepBeep);
-
-	wait10Msec(1000);
-
-
-
-
 	StartTask(GetDoublerBaton); //  get doubler & make a mess
 
 	while ( true )
