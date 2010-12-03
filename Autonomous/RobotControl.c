@@ -15,8 +15,6 @@
 #endif
 
 
-#define kMotorDoneThreshold 20
-#define MotorDone(m, target) ((nMotorRunState[m] == runStateIdle) || (abs(target - nMotorEncoder[m]) < kMotorDoneThreshold))
 
 void RobotStop()
 {
@@ -102,6 +100,7 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 
 	_RobotZeroDriveEncoders();
 
+
   StartTask(FollowLine);
 
   int targetEncoder = DriveMotorConvertDistanceToEncoder(distance);
@@ -131,19 +130,22 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 {
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
-  StartTask(FollowLine);
 
+  StartTask(FollowLine);
 
   while ( true )
   {
     float left = LEFT_LIGHT_SENSOR();
     float right = RIGHT_LIGHT_SENSOR();
 
+
+    /*
     float diff = left - right;
     bool same = abs(diff) < kBrightnessEqualityThreshold;
     bool notLine = ( ((left + right) / 2) - CurrentLineFollowingContext.surroundingBrightness) < kBrightnessEqualityThreshold;
+    */
 
-
+    /*
     if ( same && notLine )
     {
       AbortLineFollowing = true;    //  abort line following
@@ -151,6 +153,8 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 
       return true;
     }
+    */
+
 
 
     //  abort if a robot is in the way
@@ -486,7 +490,7 @@ bool RobotMountCenterDispenser()
 {
   bool success = true;
 
-  while ( SonarSensorDistance  > kMidDispenserMountDistance )
+  while ( SonarSensorDistance()  > kMidDispenserMountDistance )
   {
     if ( IRSensorValue == 0 )
     {
@@ -499,7 +503,7 @@ bool RobotMountCenterDispenser()
     }
 
 
-    float speed = ( SonarSensorDistance > 12 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
+    float speed = ( SonarSensorDistance() > 12 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
     float errorRange = 4;
     float turnRange = speed;
     float gain = turnRange / errorRange;

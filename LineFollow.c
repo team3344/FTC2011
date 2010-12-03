@@ -22,10 +22,10 @@
 #define RightLightSensor msensor_S4_4
 
 
-//  SMUX2
+//  SMUX2 //  FIXME: set port numbers !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #define ElevatorBottomStop msensor_S3_1
 #define IR msensor_S3_2
-#define Sonar msensor_S3_3
+#define Sonar msensor_S3_4
 #define Accelerometer msensor_S3_2
 
 
@@ -40,17 +40,31 @@ task main()
   SensorsInit();
   MechanismInit();
 
-  /*
-  motor[Elevator] = 30;
-  wait10Msec(50);
-  while ( ElevatorIsSafe() ) {}
 
-  motor[Elevator] = 0;
-  PlaySound(soundBeepBeep);
-  wait10Msec(1000);
+
+
+
+  /*
+  while ( true )
+  {
+    nxtDisplayCenteredTextLine(0, (string)SonarSensorDistance());
+    if ( EnemyRobotDetected() ) PlaySound(soundLowBuzzShort);
+    wait10Msec(100);
+  }
   */
 
-
   RobotFindWhiteLine();
+
   RobotFollowWhiteLineToEnd(false);
 }
+
+
+
+/*
+
+bool EnemyRobotDetected() //  FIXME: adjust this method's constants!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+{
+  float distance = SonarSensorDistance();
+	return (distance < 10) && (distance > 3);	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
+}
+*/

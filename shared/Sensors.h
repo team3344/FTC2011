@@ -26,7 +26,7 @@
 
 #define IRSensorValue HTIRS2readACDir(IR)
 
-#define SonarSensorDistance (USreadDist(Sonar) / 2.54)  //  distance in inches
+#define SonarSensorDistance() (USreadDist(Sonar) / 2.54)  //  distance in inches
 
 
 

@@ -3,6 +3,10 @@
 #include "Sensors.h"
 #endif
 
+#ifndef _RobotControl_
+#include "../Autonomous/RobotControl.h"
+#endif
+
 
 
 
@@ -10,7 +14,7 @@
 bool EnemyRobotDetected() //  FIXME: adjust this method's constants!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
   float distance = SonarSensorDistance();
-	return (distance < 10) && (distance > 3);	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
+	return (distance < 20.0) && (distance > 8.0);	//	if the sonar detects something w/in 8 inches, we'll assume it's another bot
 }
 
 
@@ -29,4 +33,8 @@ void SensorsInit()
 
   LSsetActive(LeftLightSensor);
   LSsetActive(RightLightSensor);
+
+  //  set default values
+  CurrentLineFollowingContext.surroundingBrightness = 29;
+  CurrentLineFollowingContext.lineBrightness = 49;
 }
