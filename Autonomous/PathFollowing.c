@@ -24,6 +24,10 @@ static bool FollowLines = true;
 //	attempts to travel the segment.  returns success.  if successful, sets currentNode & CurrentRobotPosition to wherever it went
 bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 {
+  string str;
+  StringFormat(str, "Travelling from %d to %d", segment.source, segment.destination);
+  nxtDisplayCenteredTextLine(0, str);
+
 	PathSegmentFlags segmentFlags = FieldGetPathSegmentFlags(segment);
 	bool success;
 

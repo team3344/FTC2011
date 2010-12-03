@@ -67,7 +67,7 @@ task GetDoublerBaton()
 	if ( RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
   {
     RobotRotateToOrientation(PI); //  turn towards dispenser
-    MechanismSetElevatorHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
+    MechanismElevatorSetHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
 
     if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
     {
@@ -118,12 +118,24 @@ task main()
 
 
 
+	RobotRotateToOrientation( 9.5 / 4.0);
+	PlaySound(soundBeepBeep);
+
+	wait10Msec(1000);
+
+
+
 
 	StartTask(GetDoublerBaton); //  get doubler & make a mess
 
 	while ( true )
 	{
 	  int elapsedTime = nPgmTime - startTime;
+
+	  string str;
+	  StringFormat(str, "nPgmTime = %d", nPgmTime);
+	  //nxtDisplayCenteredTextLine(0, str);
+
 
 	  if ( elapsedTime > 25000 )    //  if 25 seconds have passed, abort getting doubler
 	  {

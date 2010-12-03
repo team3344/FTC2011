@@ -41,6 +41,19 @@ task main()
   MechanismInit();
 
 
+
+  while ( true )
+  {
+    nxtDisplayCenteredTextLine(0, (string)LEFT_LIGHT_SENSOR());
+    nxtDisplayCenteredTextLine(1, (string)RIGHT_LIGHT_SENSOR());
+  }
+
+
+
+
+
+
+
   RobotFindWhiteLine();
   PlaySound(soundBeepBeep);
   RobotFollowWhiteLineToEnd(false);

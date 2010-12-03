@@ -64,7 +64,7 @@ static bool MechanismSlideIsMoving;
 #define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
 
 
-void MechanismSetElevatorHeight(float height);
+void MechanismElevatorSetHeight(float height);
 
 
 

@@ -601,8 +601,8 @@ void FieldInit()		//	sets values specific to our field.
 	globalField.currentNodeIndex = 0;	//	we're at the first node in the path
 
 
-	
-	
+
+
 	/**********		Start Squares		**********/
 	#define kStartPointDistanceFromFieldEnd (((kRobotLength + kStartSquareWidth) / 2) - kRotationPointDistanceFromFront)
 	FieldSetNodeCoordinates(NodeFriendStartSquareLeft, kStartSquareWidth / 2, kStartPointDistanceFromFieldEnd, 0);
@@ -701,11 +701,13 @@ void FieldInit()		//	sets values specific to our field.
 	ADD_PERPINDICULAR_WHITE_LINE(NodeLine5Top, NodeLine6Top);
 	ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Top, NodeLine5Top);
 
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine1Top, NodeFoeBridgeCenter);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine4Bottom, NodeFoeBridgeCenter);
+	//  NOTE: I commented out the ones for the bridge because the contrast between the white tape
+	//  and the color of the bridges wasn't enough to be able to differentiate b/w the 2
+	//ADD_PERPINDICULAR_WHITE_LINE(NodeLine1Top, NodeFoeBridgeCenter);
+	//ADD_PERPINDICULAR_WHITE_LINE(NodeLine4Bottom, NodeFoeBridgeCenter);
 
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine3Top, NodeFriendBridgeCenter);
-	ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Bottom, NodeFriendBridgeCenter);
+	//ADD_PERPINDICULAR_WHITE_LINE(NodeLine3Top, NodeFriendBridgeCenter);
+	//ADD_PERPINDICULAR_WHITE_LINE(NodeLine6Bottom, NodeFriendBridgeCenter);
 
 
 

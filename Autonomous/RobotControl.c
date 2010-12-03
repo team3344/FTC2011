@@ -94,6 +94,8 @@ task FollowLine()
 
 bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 {
+  nxtDisplayCenteredTextLine(0, "following line");
+
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
 	_RobotZeroDriveEncoders();
@@ -147,6 +149,8 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 
 bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this method!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
+  nxtDisplayCenteredTextLine(0, "following line");
+
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
   _RobotZeroDriveEncoders();
@@ -214,10 +218,6 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 
 void _RecordLineBrightness(int b)
 {
-  nxtDisplayCenteredTextLine(0, (string)CurrentLineFollowingContext.surroundingBrightness);
-  nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.lineBrightness);
-
-
   if ( CurrentLineFollowingContext.lineBrightness < b )
     CurrentLineFollowingContext.lineBrightness = b;
   else if ( CurrentLineFollowingContext.surroundingBrightness > b )
@@ -228,6 +228,8 @@ void _RecordLineBrightness(int b)
 
 bool RobotFindWhiteLine()	//	returns true if it finds it
 {
+  nxtDisplayCenteredTextLine(0, "finding line");
+
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
 
   //  initial values
@@ -306,6 +308,8 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 void RobotRotateToOrientation(float orientation)
 {
+  nxtDisplayCenteredTextLine(0, "rotating");
+
 	float currentOrientation = CurrentRobotPosition.orientation;
 	float angle = orientation - currentOrientation;
 
@@ -350,6 +354,8 @@ void RobotRotateToOrientation(float orientation)
 
 bool RobotMoveDistance(float distance, bool avoidEnemies)
 {
+  nxtDisplayCenteredTextLine(0, "moving distance");
+
 	_RobotZeroDriveEncoders();
 
 	int encoderPoints = DriveMotorConvertDistanceToEncoder(distance);
@@ -410,6 +416,8 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
 {
+  nxtDisplayCenteredTextLine(0, "move until line");
+
    _RobotZeroDriveEncoders();
 
   int targetEncoder = DriveMotorConvertDistanceToEncoder(maxDistance);
