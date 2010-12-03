@@ -532,12 +532,14 @@ bool RobotMountCenterDispenser()
 {
   bool success = true;
 
+  MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+
   while ( SonarSensorDistance() > kMidDispenserMountDistance )
   {
-    if ( IRSensorValue == 0 )
+    if ( IRSensorValue() == 0 )
     {
       wait1Msec(250); //  wait 1/4 second
-      if ( IRSensorValue == 0 ) //  if we still can't see anything, abort
+      if ( IRSensorValue() == 0 ) //  if we still can't see anything, abort
       {
         success = false;
         break;
@@ -550,7 +552,7 @@ bool RobotMountCenterDispenser()
     float turnRange = speed * .9;
     float gain = turnRange / errorRange;
 
-    float error = 5 - IRSensorValue;
+    float error = 5 - IRSensorValue();
     float turn = error * gain;
 
     motor[Left] = speed - turn;

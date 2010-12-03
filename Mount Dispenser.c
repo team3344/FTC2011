@@ -38,8 +38,25 @@ task main()
   SensorsInit();
   MechanismInit();
 
+  /*
+  while ( true )
+  {
+  }*/
+
+
+  MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+
+  while ( true )
+  {
+    nxtDisplayCenteredTextLine(0, (string)SonarSensorDistance());
+    nxtDisplayCenteredTextLine(1, (string)IRSensorValue());
+  }
+
+
+
 
   RobotMountCenterDispenser();
 
   PlaySound(soundUpwardTones);
+  wait10Msec(100);
 }
