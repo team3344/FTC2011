@@ -31,7 +31,7 @@ void _RobotZeroDriveEncoders()
 }
 
 
-#define MotorCloseThreshold 720
+#define MotorCloseThreshold 1000
 #define MotorClose(m, e) ( (abs(nMotorEncoder[m] - e) < MotorCloseThreshold) || abs(nMotorEncoder[m]) < MotorCloseThreshold)
 
 
@@ -39,7 +39,7 @@ void _RobotZeroDriveEncoders()
 //	Line Following
 //===========================================================================================================
 
-#define kLineFollowerMotorPower 30
+#define kLineFollowerMotorPower 20
 #define kLineFollowerTurnRange (kLineFollowerMotorPower * .85)
 
 
@@ -168,7 +168,7 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 }
 
 
-#define kWhiteLineScanAngle PI / 4
+#define kWhiteLineScanAngle PI / 4.0
 #define kRobotLineScanPower 20
 #define kMinLineSurroundingDifference 10
 
@@ -258,7 +258,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
 
-#define kRobotMoveSpeed 50
+#define kRobotMoveSpeed 45
 #define kRobotRotateSpeed 30
 
 
@@ -276,10 +276,10 @@ void RobotRotateToOrientation(float orientation)
 	float angle = orientation - currentOrientation;
 
 	//	reduce angle
-	if ( abs(angle) > 2 * PI )  //  FIXME: what if it's < -2PI ????????????
+	if ( abs(angle) > 2.0 * PI )  //  FIXME: what if it's < -2PI ????????????
 	{
-		if ( angle < 0 ) angle += 2 * PI;
-		else angle -= 2 * PI;
+		if ( angle < 0 ) angle += 2.0 * PI;
+		else angle -= 2.0 * PI;
 	}
 
 
@@ -347,12 +347,12 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	  bool left = false, right = false;
 
 	  if ( MotorClose(Left, encoderPoints) )
-	    motor[Left] = kRobotMoveSpeed / 3 * SIGN(encoderPoints);
+	    motor[Left] = kRobotMoveSpeed / 2 * SIGN(encoderPoints);
 	  else
 	    motor[Left] = kRobotMoveSpeed * SIGN(encoderPoints);
 
 	  if ( MotorClose(Right, encoderPoints) )
-	    motor[Right] = kRobotMoveSpeed / 3 * SIGN(encoderPoints);
+	    motor[Right] = kRobotMoveSpeed / 2 * SIGN(encoderPoints);
 	  else
 	    motor[Right] = kRobotMoveSpeed * SIGN(encoderPoints);
 
@@ -491,12 +491,12 @@ void RobotMountBridge()
 {
 	MechanismElevatorSetHeight(kElevatorHeightBridgeCrossing);
 
-	RobotMoveDistance(6, false);  //  get flush against the bridge
+	RobotMoveDistance(8, false);  //  get flush against the bridge  //  FIXME: is our angle bad when we're here???????
 
 	float distanceFromCenter = (kBridgeLength / 2) + kRotationPointDistanceFromFront;
 	float center = kFieldSize / 2;
 	CurrentRobotPosition.location.y = center + ( (CurrentRobotPosition.location.y < center) ? -distanceFromCenter : distanceFromCenter );
-  CurrentRobotPosition.orientation = ( CurrentRobotPosition.location.y < center ) ? PI / 2 : -PI / 2;
+  CurrentRobotPosition.orientation = ( CurrentRobotPosition.location.y < center ) ? PI / 2.0 : -PI / 2.0;
 
 	RobotMoveDistance(-kRobotBridgeApproachDistance, false);	//	back up a bit
 

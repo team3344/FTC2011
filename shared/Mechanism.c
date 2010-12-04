@@ -60,11 +60,26 @@ void MechanismInit()
   servo[LeftStomper] = kLeftStomperUp;
 
 
+  servo[Kicker] = kKickerStopped;
+
+
 
   //  calibrate elevator
 #if 1
   motor[Elevator] = -kElevatorSpeed;
-  while ( !ElevatorIsAtBottom() ) {}	//	lower the elevator until it hits the bottom
+  int time = nPgmTime;
+  while ( !ElevatorIsAtBottom() )	//	lower the elevator until it hits the bottom
+  {
+    if ( nPgmTime > time + 4000 ) //  if it takes longer than 4 seconds, stop so we don't kill it
+    {
+      PlaySound(soundException);
+      PlaySound(soundException);
+      PlaySound(soundException);
+
+      break;
+    }
+  }
+
   motor[Elevator] = 0;
   nMotorEncoder[Elevator] = 0;	//	reset the encoder
 #endif
@@ -103,17 +118,16 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 	float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
 
 	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
-	nMotorEncoderTarget[Elevator] = targetEncoder;
 
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
   if ( targetEncoder < nMotorEncoder[Elevator] )
 	{
-		while ( !MotorDone(Elevator, targetEncoder) && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
+		while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
 	}
 	else
 	{
-		while ( !MotorDone(Elevator, targetEncoder) && !ElevatorIsAtTop() ) {}  //  go until we're there of we hit the top
+		while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop() ) {}  //  go until we're there of we hit the top
 	}
 
 	motor[Elevator] = 0;  //  stop

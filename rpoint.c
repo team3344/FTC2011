@@ -39,33 +39,64 @@
 
 
 
+
+
+task log()
+{
+  while ( true )
+  {
+    nxtDisplayCenteredTextLine(4, (string)CurrentRobotPosition.location.x);
+    nxtDisplayCenteredTextLine(5, (string)CurrentRobotPosition.location.y);
+    nxtDisplayCenteredTextLine(6, (string)CurrentRobotPosition.orientation);
+    nxtDisplayCenteredTextLine(7, (string)FieldGetCurrentNode());
+  }
+}
+
+
+
+
+
 task main()
 {
   SensorsInit();
   MechanismInit();
   FieldInit();
 
-
-  Node start = NodeFriendStartSquareRight;
-  Node end = NodeLine6Bottom;
-
-
-  RobotMoveDistance(-20, false);
-  wait10Msec(1000);
-
-
-  //PlaySound(soundBeepBeep);
-  //RobotMoveDistance(-20, false);
+  /*
+  while ( true )
+  {
+    nxtDisplayCenteredTextLine(0, (string)LEFT_LIGHT_SENSOR());
+    nxtDisplayCenteredTextLine(1, (string)RIGHT_LIGHT_SENSOR());
+  }
+  */
 
 
-  //motor[Left] = 30;
-  //motor[Right] = motor[Left];
+  StartTask(log);
+
+
+  Node start = NodeLine3BottomEnd;
+  Node end = NodeFriendBridgeCenter;
+
+
+
+  //RobotFindWhiteLine();
   //wait10Msec(1000);
 
 
 
+  ///RobotFindWhiteLine();
+  //RobotFollowWhiteLineForDistance(15, false);
+
+  //wait10Msec(1000);
+
+
   CurrentRobotPosition.orientation = PI / 2.0;
   FieldGetNodeLocation(start, CurrentRobotPosition.location);
+
+
+  //wait10Msec(1000);
+
+
 
 
   RobotTravelFromNodeToNode(start, end, false);

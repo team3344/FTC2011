@@ -75,7 +75,7 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
 		{
 		  //  since we're lined up with the line, we know our orientation
-		  CurrentRobotPosition.orientation = ( displacement.y > 0 ) ? PI / 2 : -PI / 2;
+		  CurrentRobotPosition.orientation = ( displacement.y > 0 ) ? PI / 2.0 : -PI / 2.0;
 
 		  if ( globalField.nodeInfo[segment.destination].flags & NodeFlagLineEnd )
 		  {

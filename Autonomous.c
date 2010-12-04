@@ -40,6 +40,41 @@ void ff3() {}
 
 
 
+bool vibrating = false;
+task vibrate()
+{
+  vibrating = true;
+
+  /*
+  motor[Elevator] = -20;
+  wait10Msec(1);
+  motor[Elevator] = 20;
+  while ( !ElevatorIsAtTop() ) {}
+  motor[Elevator] = 0;
+  */
+
+  int encoder = 20;
+
+  //nMotorEncoder[Left] = 0;
+  motor[Left] = 20;
+  while ( nMotorEncoder[Left] < encoder ) {}
+
+  //nMotorEncoder[Left] = 0;
+  motor[Left] = -25;
+  while ( nMotorEncoder[Left] > 0 ) {}
+
+
+
+  motor[Left] = 0;
+
+
+
+  vibrating = false;
+}
+
+
+
+
 
 void initializeRobot()
 {
@@ -53,12 +88,131 @@ void initializeRobot()
 }
 
 
-
-static bool gettingDoubler;	//	global variable that tells whether or not the GetDoublerBaton task is running
-
-task GetDoublerBaton()
+void Dispense5Batons()
 {
-	gettingDoubler = true;
+  //  put the elevator up to the top
+  motor[Elevator] = kElevatorSpeed;
+  while ( !ElevatorIsAtTop() ) {}
+  motor[Elevator] = 0;
+
+  //  position slide
+  servo[Slide] = kSlideLongPosition;
+
+  //  kick batons out
+  servo[Kicker] = kKickerSpeed;
+  int endTime = nPgmTime + 10000;  //go for 9 seconds
+
+  nMotorEncoder[Left] = 0;  //  reset encoder so vibrate works ok
+  while ( nPgmTime < endTime )
+  {
+    if ( !vibrating ) StartTask(vibrate); //  vibrate to make sure the batons come out
+  }
+
+  servo[Slide] = kSlideMaxPosition;
+  wait10Msec(20);
+
+  servo[Kicker] = kKickerStopped;
+}
+
+
+
+task main()
+{
+	initializeRobot();
+
+	//waitForStart();	//  FIXME: add this back in!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	long startTime = nPgmTime;
+
+
+  servo[Slide] = kSlideLongPosition;  //  extend the slide out
+
+
+	/**********   Preloads   **********/
+
+  //
+  //
+	//	FIXME: score preloads
+  //
+  //
+
+
+
+
+
+	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
+	{
+	  RobotTravelFromNodeToNode(FieldGetCurrentNode(), NodeLine1BottomEnd, false);
+
+
+
+
+
+	  //  FIXME: line up
+
+
+
+
+
+
+	  Dispense5Batons();
+
+
+
+
+	  //  go back to the node
+	  Vector location;
+	  FieldGetNodeLocation(NodeLine1BottomEnd, location);
+	  RobotMoveToLocation(location, true, false);
+	}
+	else
+	{
+	  RobotRotateToOrientation(3.0159423);
+	  RobotMoveDistance(21, false);
+
+	  RobotRotateToOrientation(PI / 3.5);
+	  //RobotMoveDistance(2, false);
+
+
+	  //  FIXME: line up
+
+
+
+
+
+	  Dispense5Batons();
+
+
+
+	  wait10Msec(1000); //  FIXME: remoave this wait
+
+
+
+	  //  go back to the node
+	  Vector location;
+	  FieldGetNodeLocation(NodeLine3BottomEnd, location);
+	  RobotMoveToLocation(location, true, false);
+	}
+
+	servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
+
+
+
+
+
+
+	/********** End Preloads  **********/
+
+
+
+	PlaySound(soundUpwardTones);
+	wait10Msec(10000);
+
+
+
+
+
+	/**********  Mission   **********/
 
 	//  where we are and where we're going
 	Node dest = NodeFriendDispenserCenter;
@@ -84,66 +238,24 @@ task GetDoublerBaton()
 	//	FIXME: backup to node
   //  FIXME: set elevator to reasonable height
 
-	gettingDoubler = false;
-}
 
 
 
-void GetToBridgeAndBalance()
-{
-	Node bridgeID = NodeFriendBridgeCenter;	//	FIXME:  id of closest bridge???
-	Node currentID = FieldGetCurrentNode();
-	RobotTravelFromNodeToNode(currentID, bridgeID, true);	//	go to the bridge
-
-	RobotBalance();	//	use the accelerometor to balance the bot
-}
+  /**********   End Mission   **********/
 
 
 
 
-task main()
-{
-	initializeRobot();
+  /**********   Balance   **********/
 
-	//waitForStart();	//  FIXME: add this back in!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	long startTime = nPgmTime;
-
-
-  //
-  //
-	//	FIXME: score preloads
-  //
-  //
-
-
-	StartTask(GetDoublerBaton); //  get doubler & make a mess
-
-	while ( true )
+  if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
 	{
-	  int elapsedTime = nPgmTime - startTime;
+	  Node bridgeID = NodeFriendBridgeCenter;	//	FIXME:  id of closest bridge???
+	  Node currentID = FieldGetCurrentNode();
+	  RobotTravelFromNodeToNode(currentID, bridgeID, true);	//	go to the bridge
 
-	  string str;
-	  StringFormat(str, "nPgmTime = %d", nPgmTime);
-	  //nxtDisplayCenteredTextLine(0, str);
-
-
-	  if ( elapsedTime > 25000 )    //  if 25 seconds have passed, abort getting doubler
-	  {
-	    AbortPathFollowing = true;  //  abort
-	    while ( gettingDoubler ) {} //  wait until the task aborts
-	    break;                      //  quit looping
-	  }
-
-	  if ( !gettingDoubler ) break; //  quit looping if we got the doubler & accomplished the task
+	  RobotBalance();	//	use the accelerometor to balance the bot
 	}
 
-	if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
-	{
-	  GetToBridgeAndBalance();
-	}
-
-
-  ff2();
-  ff3();
+	/**********   End Balance **********/
 }
