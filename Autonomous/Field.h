@@ -185,7 +185,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment);
 
 #define kBridgeDistanceFromSide 25
 
-#define kBridgeHeight 4.06
+#define kBridgeHeight 1
 #define kBridgeWidth 24
 #define kBridgeLength 48
 

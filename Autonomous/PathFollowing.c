@@ -65,7 +65,33 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	float distance, angle;
 	distance = VectorGetMagnitude(displacement);
 	angle = VectorGetAngle(displacement);
+
+
+
+
+	/*
+	//  FIXME: remove this trash
+	nxtDisplayCenteredTextLine(0, (string)startLocation.x);
+	nxtDisplayCenteredTextLine(1, (string)startLocation.y);
+	nxtDisplayCenteredTextLine(2, (string)CurrentRobotPosition.orientation);
+
+	nxtDisplayCenteredTextLine(4, (string)destination.x);
+	nxtDisplayCenteredTextLine(5, (string)destination.y);
+	nxtDisplayCenteredTextLine(6, (string)angle);
+	while ( nNxtButtonPressed == kNoButton ) {}
+	*/
+
+
 	RobotRotateToOrientation(angle);
+
+
+
+
+
+
+
+
+
 
 
 	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && FollowLines )  //  there's a line between nodes, so follow it
@@ -173,8 +199,8 @@ bool RobotTravelFromNodeToNode(Node src, Node dest, bool avoidEnemies)
 			RobotTravelPathSegment(segment, avoidEnemies);
 		}
 
-		wait10Msec(300);  //  FIXME: remove this trash!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+		//wait10Msec(300);  //  FIXME: remove this trash!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    wait1Msec(200);
 	}
 
 	AbortPathFollowing = false;	//	unabort so the next task actually runs

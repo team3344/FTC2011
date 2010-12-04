@@ -266,14 +266,6 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 void RobotRotateToOrientation(float orientation)
 {
-  nxtDisplayCenteredTextLine(0, "rotating");
-  PlaySound(soundShortBlip);
-  PlaySound(soundDownwardTones);
-  PlaySound(soundFastUpwardTones);
-  wait1Msec(200);
-
-
-
 	float currentOrientation = CurrentRobotPosition.orientation;
 	float angle = orientation - currentOrientation;
 
@@ -524,9 +516,23 @@ bool RobotMountCenterDispenser()
 {
   bool success = true;
 
-  MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+  motor[Elevator] = kElevatorSpeed;
+  while ( !ElevatorIsAtTop() ) {}
+  motor[Elevator] = 0;
 
-  while ( SonarSensorDistance() > kMidDispenserMountDistance )
+
+
+
+
+
+  _RobotZeroDriveEncoders();
+
+
+  int distance = kDispenserPerpendicularDistance - 10;
+  int encoder = DriveMotorConvertDistanceToEncoder(distance);
+
+
+  while ( ( (nMotorEncoder[Left] + nMotorEncoder[Right]) / 2 ) < encoder )
   {
     if ( IRSensorValue() == 0 )
     {
@@ -537,7 +543,6 @@ bool RobotMountCenterDispenser()
         break;
       }
     }
-
 
     float speed = ( SonarSensorDistance() > 18 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
     float errorRange = 4;
@@ -554,6 +559,22 @@ bool RobotMountCenterDispenser()
   //  stop
   motor[Left] = 0;
   motor[Right] = 0;
+
+  MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+
+
+  RobotMoveDistance(14, false); //  get pressed up against the dispenser
+
+  float approachDistance = 2;
+
+  RobotMoveDistance(-approachDistance, false);
+
+
+  //  update position
+  CurrentRobotPosition.location.y = kFieldSize - approachDistance;
+  CurrentRobotPosition.location.x = kFieldSize / 2;
+  CurrentRobotPosition.orientation = PI / 2.0;
+
 
   return success;
 }

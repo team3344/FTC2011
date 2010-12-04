@@ -102,9 +102,9 @@ void Dispense5Batons()
 
 
 #define DEBUG 1
-#define PRELOADS 1
-#define MISSION 0
-#define BALANCE 1
+#define PRELOADS 0
+#define MISSION 1
+#define BALANCE 0
 
 
 
@@ -122,11 +122,12 @@ task main()
 	long startTime = nPgmTime;
 
 
-  servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
 
 	/**********   Preloads   **********/
 #if PRELOADS == 1
+
+  servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
 	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
 	{
@@ -161,7 +162,7 @@ task main()
 	  Dispense5Batons();
 
 
-	  wait10Msec(500); //  FIXME: remove this wait
+	  //wait10Msec(500); //  FIXME: remove this wait
 
 
 
@@ -205,7 +206,7 @@ task main()
 
     if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
     {
-      MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);  //  FIXME: is this good
+      MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);  //  FIXME: is this good???????
 
       //  FIXME: DO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -234,7 +235,7 @@ task main()
   /**********   Balance   **********/
 #if BALANCE == 1
 
-  if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
+  if ( (nPgmTime - startTime ) > 3000 )  //  balance on the bridge if there's more than 3 seconds left
 	{
 	  Node currentID = FieldGetCurrentNode();
 	  RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
