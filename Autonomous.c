@@ -36,10 +36,6 @@
 #include "Autonomous/include.c"
 
 
-void ff2() {}
-void ff3() {}
-
-
 
 bool vibrating = false;
 task vibrate()
@@ -47,11 +43,12 @@ task vibrate()
   vibrating = true;
 
   int encoder = 20;
+  int speed = 18;
 
-  motor[Left] = 20;
+  motor[Left] = speed;
   while ( nMotorEncoder[Left] < encoder ) {}
 
-  motor[Left] = -25;
+  motor[Left] = -speed;
   while ( nMotorEncoder[Left] > 0 ) {}
 
 
@@ -130,7 +127,10 @@ task main()
 
 	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
 	{
-	  RobotTravelFromNodeToNode(FieldGetCurrentNode(), NodeLine1BottomEnd, false);
+	  RobotRotateToOrientation(0.1256504);
+	  RobotMoveDistance(21, false);
+
+	  RobotRotateToOrientation(PI / 3.5);
 
 
 
@@ -151,7 +151,7 @@ task main()
 	  //  go back to the node
 	  Vector location;
 	  FieldGetNodeLocation(NodeLine1BottomEnd, location);
-	  RobotMoveToLocation(location, true, false);
+	  RobotMoveToLocation(location, false, false);
 	}
 	else
 	{
@@ -159,7 +159,6 @@ task main()
 	  RobotMoveDistance(21, false);
 
 	  RobotRotateToOrientation(PI / 3.5);
-	  //RobotMoveDistance(2, false);
 
 
 	  //  FIXME: line up
@@ -179,7 +178,7 @@ task main()
 	  //  go back to the node
 	  Vector location;
 	  FieldGetNodeLocation(NodeLine3BottomEnd, location);
-	  RobotMoveToLocation(location, true, false);
+	  RobotMoveToLocation(location, false, false);
 	}
 
 	servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
