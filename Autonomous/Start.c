@@ -86,7 +86,6 @@ int NXTShowMenu(NXTMenu& menu)
     {
       ++selectedIndex;
     }
-
   }
 }
 

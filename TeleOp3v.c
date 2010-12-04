@@ -18,16 +18,16 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_4
-#define Sonar msensor_S4_3
-#define Accelerometer msensor_S4_2
+#define Magnet msensor_S4_2 //  FIXME: this isn't right port
+#define LeftLightSensor msensor_S4_4
+#define RightLightSensor msensor_S4_3
 
 
 //  SMUX2
 #define ElevatorTopStop msensor_S3_1
 #define IR msensor_S3_2
-#define LeftLightSensor msensor_S3_3
-#define RightLightSensor msensor_S3_4
+#define Accelerometer msensor_S3_4
+#define Sonar msensor_S3_3
 
 
 

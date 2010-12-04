@@ -18,20 +18,19 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_4
-#define Sonar msensor_S4_3
-#define Accelerometer msensor_S4_2
+#define Magnet msensor_S4_2 //  FIXME: this isn't right port
+#define LeftLightSensor msensor_S4_4
+#define RightLightSensor msensor_S4_3
 
 
 //  SMUX2
 #define ElevatorTopStop msensor_S3_1
 #define IR msensor_S3_2
-#define LeftLightSensor msensor_S3_3
-#define RightLightSensor msensor_S3_4
+#define Accelerometer msensor_S3_4
+#define Sonar msensor_S3_3
 
 
-
-//#include "JoystickDriver.c"
+//#include "JoystickDriver.c" //  FIXME: uncomment this !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #include "shared/include.c"
 #include "Autonomous/include.c"
 
@@ -43,7 +42,7 @@ task vibrate()
   vibrating = true;
 
   int encoder = 10;
-  int speed = 18;
+  int speed = 15;
 
   motor[Left] = speed;
   while ( nMotorEncoder[Left] < encoder ) {}
@@ -66,6 +65,7 @@ void initializeRobot()
 	FieldInit();	//  initialize the map of the field
 	SensorsInit();
   MechanismInit();
+
 
 	FTCGetStartPosition();	//	ask the user where the robot is starting
 
@@ -99,10 +99,10 @@ void Dispense5Batons()
   servo[Kicker] = kKickerStopped;
 }
 
-
+#define DEBUG 1
 #define PRELOADS 1
 #define MISSION 0
-#define BALANCE 0
+#define BALANCE 1
 
 
 
@@ -110,7 +110,9 @@ task main()
 {
 	initializeRobot();
 
-	//waitForStart();	//  FIXME: add this back in!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#if DEBUG == 0
+	waitForStart();
+#endif
 
 	long startTime = nPgmTime;
 
@@ -125,25 +127,32 @@ task main()
 	{
 	  RobotRotateToOrientation(0.13);
 	  RobotMoveDistance(20, false);
-	  RobotRotateToOrientation(-1.5 + (PI / 8.5));
-
-
-
-
-
-	  //  FIXME: line up
-
-
-
-
-
+	  RobotRotateToOrientation(-1.5 + (PI / 11));
 
 	  Dispense5Batons();
 
 
 
 
-	  wait10Msec(1000); //  FIXME: remove this wait
+	  //  FIXME: push mobile goal out of the way!!!
+	  wait10Msec(500); //  FIXME: remove this wait
+
+
+
+
+
+
+
+	  //  push the goal out of the way
+	  RobotRotateToOrientation(PI / 6);
+	  RobotMoveDistance(12, false);
+	  RobotMoveDistance(-13, false);
+
+
+
+
+
+
 
 
 	  //  go back to the node
@@ -154,23 +163,19 @@ task main()
 	}
 	else
 	{
+	  //  go to mobile goal & line up next to it
 	  RobotRotateToOrientation(3.0159423);
 	  RobotMoveDistance(21, false);
-
 	  RobotRotateToOrientation(PI / 3.5);
-
-
-	  //  FIXME: line up
-
-
-
-
 
 	  Dispense5Batons();
 
 
+	  //  FIXME: push mobile goal out of the way!!!
+	  wait10Msec(500); //  FIXME: remove this wait
 
-	  wait10Msec(1000); //  FIXME: remove this wait
+
+
 
 
 
@@ -182,7 +187,6 @@ task main()
 	}
 
 	servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
-
 
 
 
