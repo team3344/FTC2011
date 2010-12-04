@@ -230,6 +230,7 @@ task main()
 
 
 
+
   /**********   Balance   **********/
 #if BALANCE == 1
 
@@ -238,7 +239,9 @@ task main()
 	  Node currentID = FieldGetCurrentNode();
 	  RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
 
-	  RobotBalance();	//	use the accelerometor to balance the bot
+	  RobotMoveDistance(2.5 , false);
+
+	  //RobotBalance();	//	use the accelerometor to balance the bot
 	}
 
 #endif
