@@ -119,16 +119,34 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 
 	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
 
+	int endTime = nPgmTime + 4000;  //  4 seconds from now
+
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
   if ( targetEncoder < nMotorEncoder[Elevator] )
 	{
-		while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom() ) {} //  go until we're there or we hit the bottom
+		while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom() )  //  go until we're there or we hit the bottom
+		{
+		  if ( nPgmTime > endTime )
+	    {
+	      PlaySound(soundException);
+	      PlaySound(soundException);
+	      break;
+	    }
+		}
 	}
 	else
 	{
-		while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop() ) {}  //  go until we're there of we hit the top
-	}
+		while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop() )  //  go until we're there of we hit the top
+	  {
+	    if ( nPgmTime > endTime )
+	    {
+	      PlaySound(soundException);
+	      PlaySound(soundException);
+	      break;
+	    }
+	  }
+  }
 
 	motor[Elevator] = 0;  //  stop
 }

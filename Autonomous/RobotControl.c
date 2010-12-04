@@ -516,6 +516,7 @@ bool RobotMountCenterDispenser()
 {
   bool success = true;
 
+  //  bring elevator to top
   motor[Elevator] = kElevatorSpeed;
   while ( !ElevatorIsAtTop() ) {}
   motor[Elevator] = 0;
@@ -523,12 +524,10 @@ bool RobotMountCenterDispenser()
 
 
 
-
-
   _RobotZeroDriveEncoders();
 
 
-  int distance = kDispenserPerpendicularDistance - 10;
+  int distance = kDispenserPerpendicularDistance - 8;
   int encoder = DriveMotorConvertDistanceToEncoder(distance);
 
 

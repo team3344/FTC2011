@@ -18,7 +18,7 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_2 //  FIXME: this isn't right port
+#define Magnet msensor_S4_1 //  FIXME: this isn't right port?
 #define LeftLightSensor msensor_S4_4
 #define RightLightSensor msensor_S4_3
 
@@ -30,7 +30,7 @@
 #define Sonar msensor_S3_3
 
 
-//#include "JoystickDriver.c" //  FIXME: uncomment this !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#include "JoystickDriver.c"
 #include "shared/include.c"
 #include "Autonomous/include.c"
 
@@ -101,10 +101,10 @@ void Dispense5Batons()
 
 
 
-#define DEBUG 1
-#define PRELOADS 0
-#define MISSION 1
-#define BALANCE 0
+#define DEBUG 0
+#define PRELOADS 1
+#define MISSION 0
+#define BALANCE 1
 
 
 
@@ -206,18 +206,35 @@ task main()
 
     if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
     {
-      MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);  //  FIXME: is this good???????
+      for ( int i = 0; i < 3; i++ )
+      {
+        MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);
+        wait10Msec(100);
+
+        RobotMoveDistance(-.5, false);
+        wait10Msec(20);
+
+        RobotMoveDistance(-.5, false);
+        wait10Msec(20);
+
+        RobotMoveDistance(-.5, false);
+        wait10Msec(20);
+
+
+        MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+
+        RobotMoveDistance(1.5, false);
+      }
+
+
 
       //  FIXME: DO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-      //  FIXME: put the elevator back down????
     }
 
 
     servo[Gate] = kGateDownPosition;
-
-
   }
 
   Vector location;

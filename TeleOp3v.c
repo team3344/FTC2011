@@ -18,7 +18,7 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_2 //  FIXME: this isn't right port
+#define Magnet msensor_S4_1 //  FIXME: this isn't right port?
 #define LeftLightSensor msensor_S4_4
 #define RightLightSensor msensor_S4_3
 
@@ -30,17 +30,6 @@
 #define Sonar msensor_S3_3
 
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//                           Tele-Operation Mode Code Template
-//
-// This file contains a template for simplified creation of an tele-op program for an FTC
-// competition.
-//
-// You need to customize two functions with code unique to your specific robot.
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

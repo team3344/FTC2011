@@ -177,7 +177,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment);
 #define kFieldSize 144
 
 
-#define kDispenserPerpendicularDistance 10	//	distance from a dispenser to its corresponding node	//	//	///////////////////////////////
+#define kDispenserPerpendicularDistance kRobotRadius + 5	//	distance from a dispenser to its corresponding node	//	//	///////////////////////////////
 #define kSideDispenserDistanceFromFieldEnd 36
 
 #define kStartSquareWidth 24
