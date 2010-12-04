@@ -1,5 +1,5 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  none)
-#pragma config(Sensor, S2,     ElevatorTopStop,     sensorTouch)
+#pragma config(Sensor, S2,     ElevatorBottomStop,     sensorTouch)
 #pragma config(Sensor, S3,     SMUX2,               sensorI2CCustom)
 #pragma config(Sensor, S4,     SMUX1,               sensorI2CCustom)
 #pragma config(Motor,  motorA,          IndicatorLight, tmotorNormal, openLoop)
@@ -24,7 +24,7 @@
 
 
 //  SMUX2
-#define ElevatorBottomStop msensor_S3_1
+#define ElevatorTopStop msensor_S3_1
 #define IR msensor_S3_2
 #define LeftLightSensor msensor_S3_3
 #define RightLightSensor msensor_S3_4
@@ -104,19 +104,27 @@ void DriveControl(Controller& controller)
 }
 
 
+
+
 bool vibrating = false;
 task vibrate()
 {
   vibrating = true;
 
-  motor[Elevator] = -20;
-  wait10Msec(1);
-  motor[Elevator] = 20;
-  while ( !ElevatorIsAtTop() ) {}
-  motor[Elevator] = 0;
+  int encoder = 20;
+
+  motor[Left] = 20;
+  while ( nMotorEncoder[Left] < encoder ) {}
+
+  motor[Left] = -25;
+  while ( nMotorEncoder[Left] > 0 ) {}
+
+
+  motor[Left] = 0;
 
   vibrating = false;
 }
+
 
 
 
@@ -153,20 +161,17 @@ void MechanismControl(Controller& controller)
     }
 
 
-    if ( !vibrating )
+    if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
     {
-      if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
-      {
-        motor[Elevator] = kElevatorSpeed;
-      }
-      else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom() )
-      {
-        motor[Elevator] = -kElevatorSpeed;
-      }
-      else
-      {
-        motor[Elevator] = 0;
-      }
+      motor[Elevator] = kElevatorSpeed;
+    }
+    else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom() )
+    {
+      motor[Elevator] = -kElevatorSpeed;
+    }
+    else
+    {
+      motor[Elevator] = 0;
     }
 
 	//  magnet slide position
