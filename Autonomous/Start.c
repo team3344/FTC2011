@@ -126,7 +126,7 @@ void FTCGetStartPosition()
 
 	//	set the start position
 	FieldGetNodeLocation(startNode, CurrentRobotPosition.location);
-	CurrentRobotPosition.orientation = PI / 2;
+	CurrentRobotPosition.orientation = PI / 2.0;
 
 
 

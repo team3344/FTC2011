@@ -205,7 +205,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment);
 
 
 
-
+#define kStartPointDistanceFromFieldEnd 13.75
 
 
 

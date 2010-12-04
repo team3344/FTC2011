@@ -42,7 +42,7 @@ task vibrate()
 {
   vibrating = true;
 
-  int encoder = 20;
+  int encoder = 10;
   int speed = 18;
 
   motor[Left] = speed;
@@ -85,7 +85,7 @@ void Dispense5Batons()
 
   //  kick batons out
   servo[Kicker] = kKickerSpeed;
-  int endTime = nPgmTime + 10000;  //go for 9 seconds
+  int endTime = nPgmTime + 8000;  //go for 8 seconds
 
   nMotorEncoder[Left] = 0;  //  reset encoder so vibrate works ok
   while ( nPgmTime < endTime )
@@ -98,6 +98,11 @@ void Dispense5Batons()
 
   servo[Kicker] = kKickerStopped;
 }
+
+
+#define PRELOADS 1
+#define MISSION 0
+#define BALANCE 0
 
 
 
@@ -114,23 +119,13 @@ task main()
 
 
 	/**********   Preloads   **********/
-
-  //
-  //
-	//	FIXME: score preloads
-  //
-  //
-
-
-
-
+#if PRELOADS == 1
 
 	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
 	{
-	  RobotRotateToOrientation(0.1256504);
-	  RobotMoveDistance(21, false);
-
-	  RobotRotateToOrientation(PI / 3.5);
+	  RobotRotateToOrientation(0.13);
+	  RobotMoveDistance(20, false);
+	  RobotRotateToOrientation(-1.5 + (PI / 8.5));
 
 
 
@@ -148,10 +143,14 @@ task main()
 
 
 
+	  wait10Msec(1000); //  FIXME: remove this wait
+
+
 	  //  go back to the node
 	  Vector location;
 	  FieldGetNodeLocation(NodeLine1BottomEnd, location);
 	  RobotMoveToLocation(location, false, false);
+	  FieldSetCurrentNode(NodeLine1BottomEnd);
 	}
 	else
 	{
@@ -171,7 +170,7 @@ task main()
 
 
 
-	  wait10Msec(1000); //  FIXME: remoave this wait
+	  wait10Msec(1000); //  FIXME: remove this wait
 
 
 
@@ -179,58 +178,66 @@ task main()
 	  Vector location;
 	  FieldGetNodeLocation(NodeLine3BottomEnd, location);
 	  RobotMoveToLocation(location, false, false);
+	  FieldSetCurrentNode(NodeLine3BottomEnd);
 	}
 
 	servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
 
 
 
+
+#endif
 	/********** End Preloads  **********/
 
-
-
-	PlaySound(soundUpwardTones);
-	wait10Msec(10000);
 
 
 
 
 
 	/**********  Mission   **********/
+#if MISSION == 1
 
 	//  where we are and where we're going
-	Node dest = NodeFriendDispenserCenter;
 	Node src = FieldGetCurrentNode();
+	Node dest = NodeFriendDispenserCenter;
 
 	if ( RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
   {
-    RobotRotateToOrientation(PI); //  turn towards dispenser
+    RobotRotateToOrientation(PI / 2.0); //  turn towards dispenser
+
+    servo[Gate] = kGateUpPosition;
+
     MechanismElevatorSetHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
 
     if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
     {
-	    //  FIXME: get 5 batons
-	    //  FIXME: make a mess with the rest
+      MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);  //  FIXME: is this good
+
+      //  FIXME: DO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+      //  FIXME: put the elevator back down????
     }
 
 
-
+    servo[Gate] = kGateDownPosition;
 
 
   }
 
-	//	FIXME: backup to node
-  //  FIXME: set elevator to reasonable height
+  Vector location;
+  FieldGetNodeLocation(NodeFriendDispenserCenter, location);
+  RobotMoveToLocation(location, true, false);   //  backup to the node
 
 
-
-
+#endif
   /**********   End Mission   **********/
 
 
 
 
   /**********   Balance   **********/
+#if BALANCE == 1
 
   if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
 	{
@@ -241,5 +248,6 @@ task main()
 	  RobotBalance();	//	use the accelerometor to balance the bot
 	}
 
+#endif
 	/**********   End Balance **********/
 }
