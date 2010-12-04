@@ -30,9 +30,9 @@
 
 
 
-#define kMagnetSensorNormal 300
-#define kMagnetThreshold 50
-#define MagnetBatonPresent (abs(HTMAGreadVal(Magnet) - kMagnetSensorNormal) > kMagnetThreshold)
+#define kMagnetSensorNormal -4
+#define kMagnetThreshold 20
+#define MagnetBatonPresent() (abs(HTMAGreadVal(Magnet) - kMagnetSensorNormal) > kMagnetThreshold)
 
 
 

@@ -18,7 +18,7 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_1 //  FIXME: this isn't right port?
+#define Magnet msensor_S4_2 //  FIXME: this isn't right port?
 #define LeftLightSensor msensor_S4_4
 #define RightLightSensor msensor_S4_3
 
@@ -75,6 +75,8 @@ void initializeRobot()
 
 void Dispense5Batons()
 {
+  PlaySound(soundFastUpwardTones);
+
   //  put the elevator up to the top
   motor[Elevator] = kElevatorSpeed;
   while ( !ElevatorIsAtTop() ) {}
@@ -85,7 +87,7 @@ void Dispense5Batons()
 
   //  kick batons out
   servo[Kicker] = kKickerSpeed;
-  int endTime = nPgmTime + 8000;  //go for 8 seconds
+  long endTime = nPgmTime + 8000;  //go for 8 seconds
 
   nMotorEncoder[Left] = 0;  //  reset encoder so vibrate works ok
   while ( nPgmTime < endTime )
@@ -127,10 +129,12 @@ task main()
 	/**********   Preloads   **********/
 #if PRELOADS == 1
 
-  servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
 	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
 	{
+
+    servo[Slide] = kSlideLongPosition;  //  extend the slide out
+
 	  RobotRotateToOrientation(0.13);
 	  RobotMoveDistance(20, false);
 	  RobotRotateToOrientation(-1.5 + (PI / 11));
@@ -157,7 +161,13 @@ task main()
 	  //  go to mobile goal & line up next to it
 	  RobotRotateToOrientation(3.0159423);
 	  RobotMoveDistance(21, false);
+
+
+    servo[Slide] = kSlideLongPosition;  //  extend the slide out
+
 	  RobotRotateToOrientation(PI / 3.5);
+
+
 
 	  Dispense5Batons();
 
@@ -244,6 +254,15 @@ task main()
 
 #endif
   /**********   End Mission   **********/
+
+
+
+
+
+  //  put elevator at bottom
+  motor[Elevator] = -kElevatorSpeed;
+  while ( !ElevatorIsAtBottom() ) {}
+  motor[Elevator] = 0;
 
 
 

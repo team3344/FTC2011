@@ -67,7 +67,7 @@ void MechanismInit()
   //  calibrate elevator
 #if 1
   motor[Elevator] = -kElevatorSpeed;
-  int time = nPgmTime;
+  long time = nPgmTime;
   while ( !ElevatorIsAtBottom() )	//	lower the elevator until it hits the bottom
   {
     if ( nPgmTime > time + 4000 ) //  if it takes longer than 4 seconds, stop so we don't kill it
@@ -119,7 +119,7 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 
 	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
 
-	int endTime = nPgmTime + 4000;  //  4 seconds from now
+	long endTime = nPgmTime + 4000;  //  4 seconds from now
 
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 

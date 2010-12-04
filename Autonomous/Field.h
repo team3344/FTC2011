@@ -123,7 +123,7 @@ typedef struct {
 	bool cached;											//	tracks whether or not the path has been calculated between the currentNode and goalNode
 	int currentNodeIndex;									//	the index in cachedPath of the node the bot is currently at
 	float pathCosts[kNodeCount][kNodeCount];				//	cost value associated with each path segment.  may not be equal to the distance between the nodes, but it usually is.
-	int validationTimes[kNodeCount][kNodeCount];			//	If nPgmTime is greater than the validation time b/w nodes, the node is valid
+	long validationTimes[kNodeCount][kNodeCount];			//	If nPgmTime is greater than the validation time b/w nodes, the node is valid
 } Field;
 
 

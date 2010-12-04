@@ -18,7 +18,7 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_1 //  FIXME: this isn't right port?
+#define Magnet msensor_S4_2 //  FIXME: this isn't right port?
 #define LeftLightSensor msensor_S4_4
 #define RightLightSensor msensor_S4_3
 
@@ -28,9 +28,6 @@
 #define IR msensor_S3_2
 #define Accelerometer msensor_S3_4
 #define Sonar msensor_S3_3
-
-
-
 
 
 #include "shared/include.c"
@@ -237,7 +234,9 @@ task main()
 		MechanismControl(secondary);
 
 
-		if ( MagnetBatonPresent )
+		nxtDisplayCenteredTextLine(0, (string)HTMAGreadVal(Magnet));
+
+		if ( MagnetBatonPresent() )
 		{
 			motor[IndicatorLight] = 100;  //  turn the light on
 		}
