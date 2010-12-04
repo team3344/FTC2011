@@ -99,6 +99,8 @@ void Dispense5Batons()
   servo[Kicker] = kKickerStopped;
 }
 
+
+
 #define DEBUG 1
 #define PRELOADS 1
 #define MISSION 0
@@ -109,6 +111,9 @@ void Dispense5Batons()
 task main()
 {
 	initializeRobot();
+
+	Node targetBridge = (FieldGetCurrentNode() == NodeFriendStartSquareLeft) ? NodeFoeBridgeCenter : NodeFriendBridgeCenter;
+
 
 #if DEBUG == 0
 	waitForStart();
@@ -133,25 +138,10 @@ task main()
 
 
 
-
-	  //  FIXME: push mobile goal out of the way!!!
-	  wait10Msec(500); //  FIXME: remove this wait
-
-
-
-
-
-
-
 	  //  push the goal out of the way
 	  RobotRotateToOrientation(PI / 6);
 	  RobotMoveDistance(12, false);
 	  RobotMoveDistance(-13, false);
-
-
-
-
-
 
 
 
@@ -171,11 +161,11 @@ task main()
 	  Dispense5Batons();
 
 
-	  //  FIXME: push mobile goal out of the way!!!
 	  wait10Msec(500); //  FIXME: remove this wait
 
 
 
+	  //  FIXME: push mobile goal out of the way!!!
 
 
 
@@ -245,9 +235,8 @@ task main()
 
   if ( (nPgmTime - startTime ) > 10000 )  //  balance on the bridge if there's more than 10 seconds left
 	{
-	  Node bridgeID = NodeFriendBridgeCenter;	//	FIXME:  id of closest bridge???
 	  Node currentID = FieldGetCurrentNode();
-	  RobotTravelFromNodeToNode(currentID, bridgeID, true);	//	go to the bridge
+	  RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
 
 	  RobotBalance();	//	use the accelerometor to balance the bot
 	}

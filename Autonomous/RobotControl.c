@@ -184,6 +184,8 @@ void _RecordLineBrightness(int b)
 
 bool RobotFindWhiteLine()	//	returns true if it finds it
 {
+  _RobotZeroDriveEncoders();
+
   nxtDisplayCenteredTextLine(0, "finding line");
 
   MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
@@ -491,7 +493,7 @@ void RobotMountBridge()
 {
 	MechanismElevatorSetHeight(kElevatorHeightBridgeCrossing);
 
-	RobotMoveDistance(8, false);  //  get flush against the bridge  //  FIXME: is our angle bad when we're here???????
+	RobotMoveDistance(9, false);  //  get flush against the bridge  //  FIXME: is our angle bad when we're here???????
 
 	float distanceFromCenter = (kBridgeLength / 2) + kRotationPointDistanceFromFront;
 	float center = kFieldSize / 2;
