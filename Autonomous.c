@@ -87,7 +87,7 @@ void Dispense5Batons()
 
   //  kick batons out
   servo[Kicker] = kKickerSpeed;
-  long endTime = nPgmTime + 8000;  //go for 8 seconds
+  long endTime = nPgmTime + 9500;  //go for 9.5 seconds
 
   nMotorEncoder[Left] = 0;  //  reset encoder so vibrate works ok
   while ( nPgmTime < endTime )
