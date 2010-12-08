@@ -1,6 +1,5 @@
 
 
-
 #ifndef _Field_
 #include "Field.h"
 #endif
@@ -30,30 +29,94 @@ kRightButton
 TButtons NXTGetButtonPress()
 {
 	TButtons button;
-	do
-	{
+	do {
 		button = nNxtButtonPressed;
 	} while ( button == kNoButton );
   return button;
 }
 
 
+//  returns bit mask of checked items
+int NXTShowChecklistMenu(NXTMenu& menu, int checkedItems)
+{
+  //  FIXME: implement this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-int NXTShowMenu(NXTMenu& menu)
+  int selectedIndex = 0;
+
+  while ( true )
+  {
+    eraseDisplay();
+    nxtDisplayCenteredTextLine(0, menu.title);
+
+
+
+
+    //  FIXME: draw it & wait for input
+
+
+
+
+
+
+    //  FIXME: draw checkmarks!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+    //  wait until button press
+    TButtons button = NXTGetButtonPress();
+    PlaySound(soundBlip);
+    while ( nNxtButtonPressed != kNoButton ){}  //  wait until button release
+
+    if ( button == 3 )  //  center button
+    {
+      checkedItems ^= selectedIndex;  //  toggle the bit for the selected item
+    }
+    else if ( button == kLeftButton )
+    {
+      --selectedIndex;
+    }
+    else if ( button == kRightButton )
+    {
+      ++selectedIndex;
+    }
+
+
+
+
+    //  FIXME: how do you exit the menu????????????????????????????????????????????????????????????????????????????
+
+
+
+
+  }
+
+
+
+
+
+
+
+  return checkedItems;
+}
+
+
+
+
+//  returns index of selected item
+int NXTShowSelectionMenu(NXTMenu& menu)
 {
   int selectedIndex = 0;
 
   while ( true )
   {
     eraseDisplay();
-
     nxtDisplayCenteredTextLine(0, menu.title);
 
 
     //  show the menu
     for ( int i = 0; i < menu.itemCount; i++ )
     {
-      //nxtDisplayCenteredTextLine(i + 2, menu.items[i]);
       nxtDisplayStringAt(20, (6 - i) * 8, menu.items[i]);
     }
 
@@ -62,8 +125,7 @@ int NXTShowMenu(NXTMenu& menu)
     else if ( selectedIndex >= menu.itemCount ) selectedIndex = menu.itemCount - 1;
 
 
-    //  draw the selection indicator
-
+    //  draw the selection indicator - a small, filled circle
     int y = 8 * (5 - selectedIndex);
     int x = 0;
     nxtFillEllipse(x, y, x + 8, y + 8);
@@ -98,17 +160,20 @@ int NXTShowMenu(NXTMenu& menu)
 
 
 
-void FTCGetStartPosition()
+void FTCGetStartInfo()
 {
 	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
 
+	/*
 	NXTMenu teamMenu;
 	teamMenu.title = "Select Team";
 	teamMenu.items[0] = "Red";
 	teamMenu.items[1] = "Blue";
 	teamMenu.itemCount = 2;
+	*/
+	//int team = NXTShowMenu(teamMenu);	//	FIXME: is it necessary to get the team color?
 
-	int team = NXTShowMenu(teamMenu);	//	FIXME: is it necessary to get the team color?
+
 
 	NXTMenu sideMenu;
 	sideMenu.title = "Select Side";
@@ -116,7 +181,7 @@ void FTCGetStartPosition()
 	sideMenu.items[1] = "Right";
 	sideMenu.itemCount = 2;
 
-	int side = NXTShowMenu(sideMenu);
+	int side = NXTShowSelectionMenu(sideMenu);
 
 
 	//  set the start node
@@ -126,6 +191,20 @@ void FTCGetStartPosition()
 	//	set the start position
 	FieldGetNodeLocation(startNode, CurrentRobotPosition.location);
 	CurrentRobotPosition.orientation = PI / 2.0;
+
+
+	//  goals for autonomous period
+	NXTMenu autonomousMenu;
+	autonomousMenu.title = "Select Goals";
+	autonomousMenu.items[0] = "Preloads";
+	autonomousMenu.items[1] = "Mission";
+	autonomousMenu.items[2] = "Balance";
+
+	int goals = NXTShowChecklistMenu(autonomousMenu, 0);
+
+	//  FIXME: do something with the return value goals!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	//  FIXME: setup status string to display!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 

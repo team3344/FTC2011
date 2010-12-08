@@ -67,7 +67,7 @@ void initializeRobot()
   MechanismInit();
 
 
-	FTCGetStartPosition();	//	ask the user where the robot is starting
+	FTCGetStartInfo();	//	ask the user where the robot is starting
 
 	PlaySound(soundUpwardTones);
 }
