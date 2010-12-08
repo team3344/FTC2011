@@ -10,43 +10,6 @@
 
 
 
-#define kSlidePositionIncrement 1
-#define kSlideAdjustmentWait 70
-
-
-task MechanismSlideIncrementPosition()
-{
-  MechanismSlideIsMoving = true;
-
-  short pos = servo[Slide];
-
-
-  pos += kSlidePositionIncrement;
-  if ( pos > kSlideMaxPosition ) pos = kSlideMaxPosition; //  limit position
-  servo[Slide] = pos;
-  wait1Msec(kSlideAdjustmentWait);
-
-  MechanismSlideIsMoving = false;
-}
-
-task MechanismSlideDecrementPosition()
-{
-  MechanismSlideIsMoving = true;
-
-  short pos = servo[Slide];
-  pos -= kSlidePositionIncrement;
-  if ( pos < kSlideMinPosition ) pos = kSlideMinPosition;
-  servo[Slide] = kSlideMinPosition;
-  wait1Msec(kSlideAdjustmentWait);
-
-  MechanismSlideIsMoving = false;
-}
-
-
-
-
-
-
 void MechanismInit()
 {
   AbortIfNoSMUX();
@@ -65,7 +28,7 @@ void MechanismInit()
 
 
   //  calibrate elevator
-#if 1
+#if 0
   motor[Elevator] = -kElevatorSpeed;
   long time = nPgmTime;
   while ( !ElevatorIsAtBottom() )	//	lower the elevator until it hits the bottom

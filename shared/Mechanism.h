@@ -23,9 +23,6 @@ void MechanismInit();
 #define kSlideRegularPosition 85
 #define kSlideLongPosition 110
 
-task MechanismSlideIncrementPosition();
-task MechanismSlideDecrementPosition();
-
 static bool MechanismSlideIsMoving;
 
 

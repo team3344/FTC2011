@@ -60,8 +60,8 @@ task main()
 
 
 	short position = 255 / 2;
-	int lastUpdate;
-	int updateInterval = 30;
+	long lastUpdate;
+	long updateInterval = 30;
 	Controller controller;
 
 	while (true)

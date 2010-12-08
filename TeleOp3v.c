@@ -113,18 +113,18 @@ task vibrate()
 
 
 
+long lastMessage = 0;
 
+#define kSlideIncrement 1
 
 void MechanismControl(Controller& controller)
 {
-    //  slide adjustment
-    if ( controller.dPad.x == -1 && !MechanismSlideIsMoving)
+    if ( ntotalMessageCount > lastMessage )
     {
-		  StartTask(MechanismSlideIncrementPosition);
-    }
-    else if ( controller.dPad.x == 1 && !MechanismSlideIsMoving )
-    {
-		  StartTask(MechanismSlideDecrementPosition);
+      lastMessage = ntotalMessageCount;
+
+      if ( controller.dPad.x == -1 ) servo[Slide] += kSlideIncrement;
+      else if ( controller.dPad.x == 1 ) servo[Slide] -= kSlideIncrement;
     }
 
 
