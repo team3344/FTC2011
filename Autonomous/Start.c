@@ -36,17 +36,37 @@ TButtons NXTGetButtonPress()
 }
 
 
+
+
+
+
+#define kMenuBlinkInterval 300  //  time in ms between blinks
+
 //  returns bit mask of checked items
 int NXTShowChecklistMenu(NXTMenu& menu, int checkedItems)
 {
   //  FIXME: implement this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   int selectedIndex = 0;
+  int doneIndex = menu.itemCount + 2;
 
   while ( true )
   {
+
+    if ( selectedIndex < 0 ) selectedIndex = 0;
+    else if ( selectedIndex > doneIndex ) selectedIndex = doneIndex;
+
     eraseDisplay();
     nxtDisplayCenteredTextLine(0, menu.title);
+
+
+    for ( int i = 0; i < menu.itemCount; i++ )
+    {
+      nxtDisplayCenteredTextLine(i + 1, menu.items[i]);
+    }
+
+    nxtDisplayCenteredTextLine(doneIndex, "Done");
+
 
 
 
@@ -70,7 +90,14 @@ int NXTShowChecklistMenu(NXTMenu& menu, int checkedItems)
 
     if ( button == 3 )  //  center button
     {
-      checkedItems ^= selectedIndex;  //  toggle the bit for the selected item
+      if ( selectedIndex == doneIndex )
+      {
+        return checkedItems;
+      }
+      else
+      {
+        checkedItems ^= selectedIndex;  //  toggle the bit for the selected item
+      }
     }
     else if ( button == kLeftButton )
     {
@@ -80,27 +107,10 @@ int NXTShowChecklistMenu(NXTMenu& menu, int checkedItems)
     {
       ++selectedIndex;
     }
-
-
-
-
-    //  FIXME: how do you exit the menu????????????????????????????????????????????????????????????????????????????
-
-
-
-
   }
-
-
-
-
-
-
 
   return checkedItems;
 }
-
-
 
 
 //  returns index of selected item
@@ -150,10 +160,6 @@ int NXTShowSelectionMenu(NXTMenu& menu)
     }
   }
 }
-
-
-
-
 
 
 
