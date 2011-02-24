@@ -75,14 +75,10 @@ float MechanismElevatorCurrentHeight()
 }
 
 
-#define ElevatorIsSafe() (!ElevatorIsAtTop() && !ElevatorIsAtBottom())
-void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
+
+void MechanismElevatorTarget(int targetEncoder)
 {
-	float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
-
-	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
-
-	long endTime = nPgmTime + 4000;  //  4 seconds from now
+  long endTime = nPgmTime + 4000;  //  4 seconds from now
 
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
@@ -112,4 +108,15 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
   }
 
 	motor[Elevator] = 0;  //  stop
+}
+
+
+#define ElevatorIsSafe() (!ElevatorIsAtTop() && !ElevatorIsAtBottom())
+void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
+{
+	float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
+
+	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
+
+	MechanismElevatorTarget(targetEncoder);
 }
