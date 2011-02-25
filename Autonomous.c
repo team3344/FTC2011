@@ -37,29 +37,6 @@
 
 
 
-bool vibrating = false;
-task vibrate()
-{
-  vibrating = true;
-
-  int encoder = 10;
-  int speed = 15;
-
-  motor[Left] = speed;
-  while ( nMotorEncoder[Left] < encoder ) {}
-
-  motor[Left] = -speed;
-  while ( nMotorEncoder[Left] > 0 ) {}
-
-
-  motor[Left] = 0;
-
-  vibrating = false;
-}
-
-
-
-
 
 void initializeRobot()
 {
@@ -67,53 +44,140 @@ void initializeRobot()
 	SensorsInit();
   MechanismInit();
 
-
-	FTCGetStartInfo();	//	ask the user where the robot is starting
-
 	PlaySound(soundUpwardTones);
 }
 
 
-void Dispense5Batons()
+void DispenseBatons(int count)
 {
   PlaySound(soundFastUpwardTones);
 
   //  put the elevator up to the top
-  motor[Elevator] = kElevatorSpeed;
+  motor[Elevator] = kElevatorSpeed; //  FIXME: remove this to a separate thread?
   while ( !ElevatorIsAtTop() ) {}
   motor[Elevator] = 0;
 
   //  position slide
-  servo[Slide] = kSlideLongPosition;
+  servo[Slide] = kSlideRegularPosition;
 
-  //  kick batons out
-  servo[Kicker] = kKickerSpeed;
-  long endTime = nPgmTime + 9500;  //go for 9.5 seconds
-
-  nMotorEncoder[Left] = 0;  //  reset encoder so vibrate works ok
-  while ( nPgmTime < endTime )
+  //  kick batons out - go 1 more time than necessary
+  for ( int i = 0; i <= count; i++ )
   {
-    if ( !vibrating ) StartTask(vibrate); //  vibrate to make sure the batons come out
+    StartTask(MechanismKickerKick);       //  start kicking
+    while ( MechanismKickerIsKicking ) {} //  wait 'til we're done
   }
 
+  //  put the slide out all the way to make sure batons slid off
   servo[Slide] = kSlideMaxPosition;
   wait10Msec(20);
-
-  servo[Kicker] = kKickerStopped;
 }
 
 
 
-#define DEBUG 0
-#define PRELOADS 1
-#define MISSION 0
-#define BALANCE 1
+
+
+
+#define DEBUG 1
+
 
 
 
 task main()
 {
 	initializeRobot();
+
+	//  different things to do in autonomous
+	bool score_preloads;
+	bool balance;
+	int preload_count;
+	bool get_doubler;
+	bool block_center;
+
+
+	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
+
+
+	NXTMenu sideMenu;
+	sideMenu.title = "Select Side";
+	sideMenu.items[0] = "Left";
+	sideMenu.items[1] = "Right";
+	sideMenu.itemCount = 2;
+
+	int side = NXTShowSelectionMenu(sideMenu);
+
+
+	//  set the start node
+	Node startNode = ( side == 0 ) ? NodeFriendStartSquareLeft : NodeFriendStartSquareRight;
+	FieldSetCurrentNode(startNode);
+
+	//	set the start position
+	FieldGetNodeLocation(startNode, CurrentRobotPosition.location);
+	CurrentRobotPosition.orientation = PI / 2.0;
+
+
+	//  get doubler?
+	NXTMenu autonomousMenu;
+	autonomousMenu.title = "Get Doubler?";
+	autonomousMenu.items[0] = "No";
+	autonomousMenu.items[1] = "Yes";
+	autonomousMenu.itemCount = 2;
+
+	get_doubler = NXTShowSelectionMenu(autonomousMenu);
+
+
+
+	if ( !get_doubler )
+	{
+	  autonomousMenu.title = "Score Preloads?";
+	  autonomousMenu.items[0] = "No";
+	  autonomousMenu.items[1] = "Yes";
+	  autonomousMenu.itemCount = 2;
+
+	  score_preloads = NXTShowSelectionMenu(autonomousMenu);
+
+
+	  if ( score_preloads )
+	  {
+	    autonomousMenu.title = "How Many?";
+	    autonomousMenu.items[0] = "1";
+	    autonomousMenu.items[1] = "2";
+	    autonomousMenu.items[2] = "3";
+	    autonomousMenu.items[3] = "4";
+	    autonomousMenu.items[4] = "5";
+	    autonomousMenu.itemCount = 5;
+
+	    preload_count = NXTShowSelectionMenu(autonomousMenu) + 1;
+	  }
+
+	  autonomousMenu.title = "What Next?";
+	  autonomousMenu.items[0] = "Balance";
+	  autonomousMenu.items[1] = "Block Center";
+	  autonomousMenu.itemCount = 2;
+
+	  if ( NXTShowSelectionMenu(autonomousMenu) == 0 )
+	  {
+	    balance = true;
+	    block_center = false;
+	  }
+	  else
+	  {
+	    balance = false;
+	    block_center = true;
+	  }
+	}
+
+
+	eraseDisplay();
+	releaseCPU();	//	'unhog' the CPU so other tasks can run
+
+	/********************   Menu Above  ********************/
+
+
+
+
+
+
+
 
 	Node targetBridge = (FieldGetCurrentNode() == NodeFriendStartSquareLeft) ? NodeFoeBridgeCenter : NodeFriendBridgeCenter;
 
@@ -128,8 +192,8 @@ task main()
 
 
 	/**********   Preloads   **********/
-#if PRELOADS == 1
-
+if ( score_preloads )
+{
 
 	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
 	{
@@ -140,7 +204,7 @@ task main()
 	  RobotMoveDistance(20, false);
 	  RobotRotateToOrientation(-1.5 + (PI / 11));
 
-	  Dispense5Batons();
+	  DispenseBatons(preload_count);
 
 
 
@@ -170,7 +234,7 @@ task main()
 
 
 
-	  Dispense5Batons();
+	  DispenseBatons(preload_count);
 
 
 	  //wait10Msec(500); //  FIXME: remove this wait
@@ -186,13 +250,13 @@ task main()
 	  FieldGetNodeLocation(NodeLine3BottomEnd, location);
 	  RobotMoveToLocation(location, false, false);
 	  FieldSetCurrentNode(NodeLine3BottomEnd);
-	}
+
 
 	servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
 
 
 
-#endif
+}
 	/********** End Preloads  **********/
 
 
@@ -201,7 +265,8 @@ task main()
 
 
 	/**********  Mission   **********/
-#if MISSION == 1
+if ( get_doubler )
+{
 
 	//  where we are and where we're going
 	Node src = FieldGetCurrentNode();
@@ -211,7 +276,7 @@ task main()
   {
     RobotRotateToOrientation(PI / 2.0); //  turn towards dispenser
 
-    servo[Gate] = kGateUpPosition;
+    //servo[Gate] = kGateUpPosition;
 
     MechanismElevatorSetHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
 
@@ -245,7 +310,7 @@ task main()
     }
 
 
-    servo[Gate] = kGateDownPosition;
+    //servo[Gate] = kGateDownPosition;
   }
 
   Vector location;
@@ -253,7 +318,7 @@ task main()
   RobotMoveToLocation(location, true, false);   //  backup to the node
 
 
-#endif
+}
   /**********   End Mission   **********/
 
 
@@ -270,8 +335,8 @@ task main()
 
 
   /**********   Balance   **********/
-#if BALANCE == 1
-
+if ( balance )  //  FIXME: implement a better balancing system that actually uses the accelerometer
+{
   if ( (nPgmTime - startTime ) > 3000 )  //  balance on the bridge if there's more than 3 seconds left
 	{
 	  Node currentID = FieldGetCurrentNode();
@@ -282,6 +347,14 @@ task main()
 	  //RobotBalance();	//	use the accelerometor to balance the bot
 	}
 
-#endif
+}
 	/**********   End Balance **********/
+
+if ( block_center )
+{
+  Node currentID = FieldGetCurrentNode();
+  RobotTravelFromNodeToNode(currentID, NodeFriendDispenserCenter);
+}
+
+
 }

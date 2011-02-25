@@ -543,7 +543,7 @@ bool RobotMountCenterDispenser()
       }
     }
 
-    float speed = ( SonarSensorDistance() > 18 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
+    float speed = kRobotMoveSpeed * .7;
     float errorRange = 4;
     float turnRange = speed * .9;
     float gain = turnRange / errorRange;

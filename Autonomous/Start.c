@@ -166,7 +166,7 @@ int NXTShowSelectionMenu(NXTMenu& menu)
 
 
 
-void FTCGetStartInfo()
+void FTCGetStartInfo()  //  FIXME: is this function obsolete???
 {
 	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
 

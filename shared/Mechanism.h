@@ -34,9 +34,9 @@ static bool MechanismSlideIsMoving;
 
 //	stomper
 #define kRightStomperUp 0
-#define kRightStomperDown 144
+#define kRightStomperDown 155
 #define kLeftStomperUp 248
-#define kLeftStomperDown 98
+#define kLeftStomperDown 87
 
 
 
