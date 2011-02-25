@@ -57,38 +57,7 @@ void initializeRobot()
 
 void DriveControl(Controller& controller)
 {
-    //  power - hold L1 to go fast, hold L2 to go slow
-    if ( ControllerButtonIsPressed(controller, ControllerButtonR1) )
-    {
-		  DrivePowerMultiplier = kDrivePowerHigh;
-    }
-    else if ( ControllerButtonIsPressed(controller, ControllerButtonL1) )
-    {
-		  DrivePowerMultiplier = kDrivePowerLow;
-    }
-    else
-    {
-		  DrivePowerMultiplier = kDrivePowerNormal;
-    }
 
-
-    //  hold L2 or R2 to stomp - let go and they go back up
-    if ( ControllerButtonIsPressed(controller, ControllerButtonR2) ||
-          ControllerButtonIsPressed(controller, ControllerButtonL2) )
-    {
-      servo[RightStomper] = kRightStomperDown;
-      servo[LeftStomper] = kLeftStomperDown;
-    }
-    else
-    {
-      servo[RightStomper] = kRightStomperUp;
-      servo[LeftStomper] = kLeftStomperUp;
-    }
-
-
-    //  tank drive
-    SetMotorPower(Left, controller.leftJoystick.y);
-    SetMotorPower(Right, controller.rightJoystick.y);
 }
 
 
@@ -97,15 +66,6 @@ void DriveControl(Controller& controller)
 
 void MechanismControl(Controller& controller)
 {
-    //  slide adjustment w/horizontal of DPad
-    if ( controller.isFresh )
-    {
-      if ( controller.dPad.x == -1 ) servo[Slide] += kSlideIncrement;
-      else if ( controller.dPad.x == 1 ) servo[Slide] -= kSlideIncrement;
-    }
-
-
-
     //  intake
     if ( controller.leftJoystick.y > .25 )
     {
@@ -122,24 +82,6 @@ void MechanismControl(Controller& controller)
 
 
 
-
-
-    if ( ControllerButtonIsPressed(controller, ControllerButtonR1) )
-    {
-      if ( !MechanismKickerIsKicking )
-      {
-        StartTask(MechanismKickerKick);
-        PlaySoundFile("ChaChing.rso");
-      }
-    }
-
-
-    //  FIXME: slide positions
-
-
-//#define ABORT_ELEVATOR_TARGET() StopTask(MechanismElevatorTargetTask)
-
-
     if ( MechanismElevatorIsTargeting == false )
     {
       if ( ControllerButtonIsPressed(controller, ControllerButton2) )
@@ -148,66 +90,7 @@ void MechanismControl(Controller& controller)
         MechanismElevatorTargetEncoder = kElevatorTargetMidDispenser;
         StartTask(MechanismElevatorTargetTask);
       }
-      /*
-      else if ( ControllerButtonIsPressed(controller, ControllerButton3) )
-      {
-        ABORT_ELEVATOR_TARGET();
-        MechanismElevatorTargetEncoder = kElevatorTargetHighDispenser;
-        StartTask(MechanismElevatorTargetTask);
-      }
-      else if ( ControllerButtonIsPressed(controller, ControllerButton4) )
-      {
-        ABORT_ELEVATOR_TARGET();
-        MechanismElevatorTargetEncoder = kElevatorTargetLineFollowing;
-        StartTask(MechanismElevatorTargetTask);
-      }*/
     }
-
-
-    /*  //  uncomment this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //  elevator up/down control with L1 & L2
-    if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
-    {
-      ABORT_ELEVATOR_TARGET();
-      motor[Elevator] = kElevatorSpeed;
-    }
-    else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom() )
-    {
-      ABORT_ELEVATOR_TARGET();
-      motor[Elevator] = -kElevatorSpeed;
-    }
-    else if ( !MechanismElevatorIsTargeting )
-    {
-      motor[Elevator] = true;
-    }
-    */
-
-
-    /*
-	//  magnet slide position
-	if ( ControllerButtonIsPressed(controller, ControllerButton4) )
-	{
-		servo[Slide] = kSlideMagnetPosition;
-	}
-
-	//  regular slide position
-	if ( ControllerButtonIsPressed(controller, ControllerButton2) )
-	{
-		servo[Slide] = kSlideRegularPosition;
-	}
-
-	//  down position
-	if ( ControllerButtonIsPressed(controller, ControllerButton3) )
-	{
-	  servo[Slide] = kSlideDownPosition;
-	}
-
-	//  long position
-	if ( ControllerButtonIsPressed(controller, ControllerButton1) )
-	{
-		servo[Slide] = kSlideLongPosition;
-	}
-  */
 }
 
 
@@ -217,20 +100,6 @@ task main()
 	initializeRobot();
 
 	waitForStart();   // wait for start of tele-op phase
-
-
-	//  FIXME: this worked!!!
-	//MechanismElevatorTargetEncoder = kElevatorTargetMidDispenser;
-	//StartTask(MechanismElevatorTargetTask);
-	//wait10Msec(1000);
-
-
-
-	//  FIXME: remove below 2 trash lines!!!
-	//MechanismElevatorTarget(kElevatorTargetMidDispenser);   //  THIS WORKS FINE
-	//wait10Msec(1000);
-
-
 
 	while (true)
 	{
@@ -244,11 +113,12 @@ task main()
 		  MechanismControl(secondary);
     }
 
-		nxtDisplayCenteredTextLine(0, (string)nMotorEncoder[Elevator]);
+		//nxtDisplayCenteredTextLine(0, (string)nMotorEncoder[Elevator]);
 
 
 		//nxtDisplayCenteredTextLine(0, (string)HTMAGreadVal(Magnet));
 
+    /*
 		if ( MagnetBatonPresent() )
 		{
 			motor[IndicatorLight] = 100;  //  turn the light on
@@ -257,5 +127,6 @@ task main()
 		{
 			motor[IndicatorLight] = 0;
 		}
+		*/
 	}
 }
