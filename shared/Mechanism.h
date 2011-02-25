@@ -49,16 +49,12 @@ static bool MechanismSlideIsMoving;
 
 
 
-#define kElevatorHeightLowDispenser 1 //  FIXME: change these
-#define kElevatorHeightMidDispenser 4
-#define kElevatorHeightHighDispenser 10
-
 #define kElevatorHeightBridgeCrossing 10  //  FIXME: fix
 #define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
 
 
 
-//  FIXME: fix these
+
 #define kElevatorTargetBridgeCrossing 2207
 #define kElevatorTargetLineFollowing 30
 #define kElevatorTargetHighDispenser 1010
@@ -68,13 +64,12 @@ static bool MechanismSlideIsMoving;
 
 
 
-void MechanismElevatorTarget(int targetEncoder);
-//void MechanismElevatorSetHeight(float height);
+void MechanismElevatorTarget(int targetEncoder);  //  synchronous
 
 //  to move elevator asynchronously, set MechanismElevatorTarget,
 //  then call the task.  watch MechanismElevatorIsTargeting to see if
 //  it's still going or if it's finished
-task MechanismElevatorTargetTask();
+task MechanismElevatorTargetTask(); //  asynchronous
 static int MechanismElevatorTargetEncoder;
 static bool MechanismElevatorIsTargeting;
 
