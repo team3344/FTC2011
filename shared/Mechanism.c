@@ -133,11 +133,9 @@ task MechanismKickerKick()
   MechanismKickerIsKicking = true;
 
   servo[Kicker] = kKickerUp;
-  wait1Msec(300);
+  wait1Msec(800);
   servo[Kicker] = kKickerDown;
-  wait1Msec(100);
-
-
+  wait1Msec(300);
 
   MechanismKickerIsKicking = false;
 }

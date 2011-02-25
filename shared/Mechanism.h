@@ -27,13 +27,6 @@ static bool MechanismSlideIsMoving;
 
 
 
-
-
-//#define kKickerSpeed 255
-//#define kKickerSpeedReverse 0
-//#define kKickerStopped 128
-
-
 #define kKickerUp 165
 #define kKickerDown 80
 

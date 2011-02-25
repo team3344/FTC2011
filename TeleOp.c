@@ -155,21 +155,11 @@ void MechanismControl(Controller& controller)
     {
       if ( !MechanismKickerIsKicking )
       {
-        StartTask(MechanismElevatorKick());
+        StartTask(MechanismKickerKick);
         PlaySoundFile("ChaChing.rso");
       }
     }
 
-    /*
-    else if ( ControllerButtonIsPressed(controller, ControllerButtonR2) )
-    {
-      servo[Kicker] = kKickerStopped - kKickerSpeed;
-    }
-    else
-    {
-      servo[Kicker] = kKickerStopped;
-    }
-    */
 
 
     if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
