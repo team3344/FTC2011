@@ -84,7 +84,7 @@ static bool MechanismKickerIsKicking;
 
 #define kIntakeOn 255
 #define kIntakeOff 127
-
+#define kIntakeReverse 0
 
 
 #endif

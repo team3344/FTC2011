@@ -117,10 +117,11 @@ task vibrate()
 
 long lastMessage = 0;
 
-#define kSlideIncrement 1
+#define kSlideIncrement -1
 
 void MechanismControl(Controller& controller)
 {
+    //  slide adjustment w/horizontal of DPad
     if ( ntotalMessageCount > lastMessage )
     {
       lastMessage = ntotalMessageCount;
@@ -131,7 +132,13 @@ void MechanismControl(Controller& controller)
 
 
 
-    if ( ControllerButtonIsPressed(controller, ControllerButtonL1) )
+
+    //  intake
+    if ( controller.leftJoystick.y > .25 )
+    {
+      servo[Intake] = kIntakeReverse;
+    }
+    else if ( controller.leftJoystick.y < -.25 )
     {
       servo[Intake] = kIntakeOn;
     }
@@ -139,6 +146,7 @@ void MechanismControl(Controller& controller)
     {
       servo[Intake] = kIntakeOff;
     }
+
 
 
 
