@@ -20,7 +20,7 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_2 //  FIXME: this isn't right port? //  FIXME: it isn't connected
+#define Magnet msensor_S4_3
 #define LeftLightSensor msensor_S4_2
 #define RightLightSensor msensor_S4_1
 #define IR msensor_S4_4

@@ -41,6 +41,8 @@ typedef struct {
 	short previousButtons;
 	short changedButtons;
 	short toggleButtons;
+	bool isFresh;
+	long lastMessage;
 } Controller;
 
 

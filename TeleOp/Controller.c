@@ -24,6 +24,16 @@ void _UpdateControllerButtons(Controller& c, short buttons)
 
 	c.changedButtons = c.previousButtons ^ c.buttons;	//	XOR operation gives us all the buttons that changed
 	c.toggleButtons = c.toggleButtons ^ (c.changedButtons & buttons);	//	toggle the changed buttons that became 'true'
+
+	if ( ntotalMessageCount > c.lastMessage )
+	{
+	  c.isFresh = true;
+	  c.lastMessage = ntotalMessageCount;
+	}
+	else
+	{
+	  c.isFresh = false;
+	}
 }
 
 

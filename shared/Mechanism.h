@@ -57,13 +57,27 @@ static bool MechanismSlideIsMoving;
 #define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
 
 
+
+//  FIXME: fix these
+#define kElevatorTargetBridgeCrossing 2207
+#define kElevatorTargetLineFollowing 30
+#define kElevatorTargetHighDispenser 1010
+#define kElevatorTargetMidDispenser 412
+
+
+
+
+
 void MechanismElevatorTarget(int targetEncoder);
-void MechanismElevatorSetHeight(float height);
+//void MechanismElevatorSetHeight(float height);
 
+//  to move elevator asynchronously, set MechanismElevatorTarget,
+//  then call the task.  watch MechanismElevatorIsTargeting to see if
+//  it's still going or if it's finished
+task MechanismElevatorTargetTask();
+static int MechanismElevatorTargetEncoder;
+static bool MechanismElevatorIsTargeting;
 
-
-static bool MechanismElevatorIsOscillating;	//	FIXME: implement these!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-task MechanismElevatorOscillate();
 
 
 task MechanismKickerKick();

@@ -19,7 +19,7 @@
 
 
 //  SMUX1
-#define Magnet msensor_S4_2 //  FIXME: this isn't right port? //  FIXME: it isn't connected
+#define Magnet msensor_S4_3
 #define LeftLightSensor msensor_S4_2
 #define RightLightSensor msensor_S4_1
 #define IR msensor_S4_4
@@ -93,43 +93,16 @@ void DriveControl(Controller& controller)
 
 
 
-
-bool vibrating = false;
-task vibrate()
-{
-  vibrating = true;
-
-  int encoder = 20;
-
-  motor[Left] = 20;
-  while ( nMotorEncoder[Left] < encoder ) {}
-
-  motor[Left] = -25;
-  while ( nMotorEncoder[Left] > 0 ) {}
-
-
-  motor[Left] = 0;
-
-  vibrating = false;
-}
-
-
-
-long lastMessage = 0;
-
 #define kSlideIncrement -1
 
 void MechanismControl(Controller& controller)
 {
     //  slide adjustment w/horizontal of DPad
-    if ( ntotalMessageCount > lastMessage )
+    if ( controller.isFresh )
     {
-      lastMessage = ntotalMessageCount;
-
       if ( controller.dPad.x == -1 ) servo[Slide] += kSlideIncrement;
       else if ( controller.dPad.x == 1 ) servo[Slide] -= kSlideIncrement;
     }
-
 
 
 
@@ -161,20 +134,56 @@ void MechanismControl(Controller& controller)
     }
 
 
+    //  FIXME: slide positions
 
+
+//#define ABORT_ELEVATOR_TARGET() StopTask(MechanismElevatorTargetTask)
+
+
+    if ( MechanismElevatorIsTargeting == false )
+    {
+      if ( ControllerButtonIsPressed(controller, ControllerButton2) )
+      {
+        //ABORT_ELEVATOR_TARGET();
+        MechanismElevatorTargetEncoder = kElevatorTargetMidDispenser;
+        StartTask(MechanismElevatorTargetTask);
+      }
+      /*
+      else if ( ControllerButtonIsPressed(controller, ControllerButton3) )
+      {
+        ABORT_ELEVATOR_TARGET();
+        MechanismElevatorTargetEncoder = kElevatorTargetHighDispenser;
+        StartTask(MechanismElevatorTargetTask);
+      }
+      else if ( ControllerButtonIsPressed(controller, ControllerButton4) )
+      {
+        ABORT_ELEVATOR_TARGET();
+        MechanismElevatorTargetEncoder = kElevatorTargetLineFollowing;
+        StartTask(MechanismElevatorTargetTask);
+      }*/
+    }
+
+
+    /*  //  uncomment this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //  elevator up/down control with L1 & L2
     if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
     {
+      ABORT_ELEVATOR_TARGET();
       motor[Elevator] = kElevatorSpeed;
     }
     else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom() )
     {
+      ABORT_ELEVATOR_TARGET();
       motor[Elevator] = -kElevatorSpeed;
     }
-    else
+    else if ( !MechanismElevatorIsTargeting )
     {
-      motor[Elevator] = 0;
+      motor[Elevator] = true;
     }
+    */
 
+
+    /*
 	//  magnet slide position
 	if ( ControllerButtonIsPressed(controller, ControllerButton4) )
 	{
@@ -198,24 +207,7 @@ void MechanismControl(Controller& controller)
 	{
 		servo[Slide] = kSlideLongPosition;
 	}
-
-
-  /*
-  //  trap door on magazine
-	if ( controller.dPad.y == -1 )
-	{
-	  servo[Flap] = kFlapDownPosition;
-  }
-  else if ( controller.dPad.y == 1 )
-  {
-    servo[Flap] = kFlapUpPosition;
-  }
-  else
-  {
-    servo[Flap] = kFlapFlatPosition;
-  }*/
-
-
+  */
 }
 
 
@@ -227,17 +219,35 @@ task main()
 	waitForStart();   // wait for start of tele-op phase
 
 
+	//  FIXME: this worked!!!
+	//MechanismElevatorTargetEncoder = kElevatorTargetMidDispenser;
+	//StartTask(MechanismElevatorTargetTask);
+	//wait10Msec(1000);
+
+
+
+	//  FIXME: remove below 2 trash lines!!!
+	//MechanismElevatorTarget(kElevatorTargetMidDispenser);   //  THIS WORKS FINE
+	//wait10Msec(1000);
+
+
+
 	while (true)
 	{
 		Controller primary, secondary;
 		UpdatePrimaryController(primary);
 		UpdateSecondaryController(secondary);
 
-		DriveControl(primary);
-		MechanismControl(secondary);
+		if ( primary.isFresh || secondary.isFresh )
+		{
+		  DriveControl(primary);
+		  MechanismControl(secondary);
+    }
+
+		nxtDisplayCenteredTextLine(0, (string)nMotorEncoder[Elevator]);
 
 
-		nxtDisplayCenteredTextLine(0, (string)HTMAGreadVal(Magnet));
+		//nxtDisplayCenteredTextLine(0, (string)HTMAGreadVal(Magnet));
 
 		if ( MagnetBatonPresent() )
 		{

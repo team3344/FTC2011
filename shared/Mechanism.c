@@ -28,7 +28,7 @@ void MechanismInit()
 
 
   //  calibrate elevator
-#if 0
+#if 1
   motor[Elevator] = -kElevatorSpeed;
   long time = nPgmTime;
   while ( !ElevatorIsAtBottom() )	//	lower the elevator until it hits the bottom
@@ -112,6 +112,8 @@ void MechanismElevatorTarget(int targetEncoder)
 
 
 #define ElevatorIsSafe() (!ElevatorIsAtTop() && !ElevatorIsAtBottom())
+
+/*
 void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 {
 	float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
@@ -120,9 +122,18 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 
 	MechanismElevatorTarget(targetEncoder);
 }
+*/
 
 
+task MechanismElevatorTargetTask()
+{
+  MechanismElevatorIsTargeting = true;
 
+  MechanismElevatorTarget(MechanismElevatorTargetEncoder);
+  motor[Elevator] = 0;  //  turn it off
+
+  MechanismElevatorIsTargeting = false;
+}
 
 
 
