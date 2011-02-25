@@ -192,72 +192,69 @@ task main()
 
 
 	/**********   Preloads   **********/
-if ( score_preloads )
-{
+  if ( score_preloads )
+  {
 
-	if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
-	{
+	  if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
+	  {
 
-    servo[Slide] = kSlideLongPosition;  //  extend the slide out
+      servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
-	  RobotRotateToOrientation(0.13);
-	  RobotMoveDistance(20, false);
-	  RobotRotateToOrientation(-1.5 + (PI / 11));
+	    RobotRotateToOrientation(0.13);
+	    RobotMoveDistance(20, false);
+	    RobotRotateToOrientation(-1.5 + (PI / 11));
 
-	  DispenseBatons(preload_count);
-
-
-
-	  //  push the goal out of the way
-	  RobotRotateToOrientation(PI / 6);
-	  RobotMoveDistance(12, false);
-	  RobotMoveDistance(-13, false);
+	    DispenseBatons(preload_count);
 
 
 
-	  //  go back to the node
-	  Vector location;
-	  FieldGetNodeLocation(NodeLine1BottomEnd, location);
-	  RobotMoveToLocation(location, false, false);
-	  FieldSetCurrentNode(NodeLine1BottomEnd);
-	}
-	else
-	{
-	  //  go to mobile goal & line up next to it
-	  RobotRotateToOrientation(3.0159423);
-	  RobotMoveDistance(21, false);
-
-
-    servo[Slide] = kSlideLongPosition;  //  extend the slide out
-
-	  RobotRotateToOrientation(PI / 3.5);
+	    //  push the goal out of the way
+	    RobotRotateToOrientation(PI / 6);
+	    RobotMoveDistance(12, false);
+	    RobotMoveDistance(-13, false);
 
 
 
-	  DispenseBatons(preload_count);
+	    //  go back to the node
+	    Vector location;
+	    FieldGetNodeLocation(NodeLine1BottomEnd, location);
+	    RobotMoveToLocation(location, false, false);
+	    FieldSetCurrentNode(NodeLine1BottomEnd);
+	  }
+	  else
+	  {
+	    //  go to mobile goal & line up next to it
+	    RobotRotateToOrientation(3.0159423);
+	    RobotMoveDistance(21, false);
 
 
-	  //wait10Msec(500); //  FIXME: remove this wait
+      servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
-
-
-	  //  FIXME: push mobile goal out of the way!!!
-
-
-
-	  //  go back to the node
-	  Vector location;
-	  FieldGetNodeLocation(NodeLine3BottomEnd, location);
-	  RobotMoveToLocation(location, false, false);
-	  FieldSetCurrentNode(NodeLine3BottomEnd);
-
-
-	servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
+	    RobotRotateToOrientation(PI / 3.5);
 
 
 
-}
-	/********** End Preloads  **********/
+	    DispenseBatons(preload_count);
+
+
+	    //wait10Msec(500); //  FIXME: remove this wait
+
+
+
+	    //  FIXME: push mobile goal out of the way!!!
+
+
+
+	    //  go back to the node
+	    Vector location;
+	    FieldGetNodeLocation(NodeLine3BottomEnd, location);
+	    RobotMoveToLocation(location, false, false);
+	    FieldSetCurrentNode(NodeLine3BottomEnd);
+
+
+	    servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
+    }
+  }/********** End Preloads  **********/
 
 
 
@@ -265,66 +262,66 @@ if ( score_preloads )
 
 
 	/**********  Mission   **********/
-if ( get_doubler )
-{
-
-	//  where we are and where we're going
-	Node src = FieldGetCurrentNode();
-	Node dest = NodeFriendDispenserCenter;
-
-	if ( RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
+  if ( get_doubler )
   {
-    RobotRotateToOrientation(PI / 2.0); //  turn towards dispenser
 
-    //servo[Gate] = kGateUpPosition;
+  	//  where we are and where we're going
+	  Node src = FieldGetCurrentNode();
+	  Node dest = NodeFriendDispenserCenter;
 
-    MechanismElevatorSetHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
-
-    if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
+	  if ( RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
     {
-      for ( int i = 0; i < 3; i++ )
+      RobotRotateToOrientation(PI / 2.0); //  turn towards dispenser
+
+      //servo[Gate] = kGateUpPosition;
+
+      MechanismElevatorSetHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
+
+      if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
       {
-        MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);
-        wait10Msec(100);
+        for ( int i = 0; i < 3; i++ )
+        {
+          MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);
+          wait10Msec(100);
 
-        RobotMoveDistance(-.5, false);
-        wait10Msec(20);
+          RobotMoveDistance(-.5, false);
+          wait10Msec(20);
 
-        RobotMoveDistance(-.5, false);
-        wait10Msec(20);
+          RobotMoveDistance(-.5, false);
+          wait10Msec(20);
 
-        RobotMoveDistance(-.5, false);
-        wait10Msec(20);
+          RobotMoveDistance(-.5, false);
+          wait10Msec(20);
 
 
-        MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+          MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
 
-        RobotMoveDistance(1.5, false);
+          RobotMoveDistance(1.5, false);
+        }
+
+
+
+        //  FIXME: DO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
       }
 
 
-
-      //  FIXME: DO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+      //servo[Gate] = kGateDownPosition;
     }
 
+    Vector location;
+    FieldGetNodeLocation(NodeFriendDispenserCenter, location);
+    RobotMoveToLocation(location, true, false);   //  backup to the node
 
-    //servo[Gate] = kGateDownPosition;
+
   }
-
-  Vector location;
-  FieldGetNodeLocation(NodeFriendDispenserCenter, location);
-  RobotMoveToLocation(location, true, false);   //  backup to the node
-
-
-}
   /**********   End Mission   **********/
 
 
 
 
-
+  //  FIXME: what is this for??????????????????????????????//
   //  put elevator at bottom
   motor[Elevator] = -kElevatorSpeed;
   while ( !ElevatorIsAtBottom() ) {}
@@ -335,26 +332,25 @@ if ( get_doubler )
 
 
   /**********   Balance   **********/
-if ( balance )  //  FIXME: implement a better balancing system that actually uses the accelerometer
-{
-  if ( (nPgmTime - startTime ) > 3000 )  //  balance on the bridge if there's more than 3 seconds left
-	{
-	  Node currentID = FieldGetCurrentNode();
-	  RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
+  if ( balance )  //  FIXME: implement a better balancing system that actually uses the accelerometer
+  {
+    if ( (nPgmTime - startTime ) > 3000 )  //  balance on the bridge if there's more than 3 seconds left
+	  {
+	    Node currentID = FieldGetCurrentNode();
+	    RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
 
-	  RobotMoveDistance(2.5 , false);
+	    RobotMoveDistance(2.5 , false);
 
-	  //RobotBalance();	//	use the accelerometor to balance the bot
-	}
+	    //RobotBalance();	//	use the accelerometor to balance the bot
+	  }
 
-}
-	/**********   End Balance **********/
+  }/**********   End Balance **********/
 
-if ( block_center )
-{
-  Node currentID = FieldGetCurrentNode();
-  RobotTravelFromNodeToNode(currentID, NodeFriendDispenserCenter);
-}
+  if ( block_center )
+  {
+    Node currentID = FieldGetCurrentNode();
+    RobotTravelFromNodeToNode(currentID, NodeFriendDispenserCenter, true);
+  }
 
 
 }
