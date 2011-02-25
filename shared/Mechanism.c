@@ -129,5 +129,15 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 
 task MechanismKickerKick()
 {
+  if ( MechanismKickerIsKicking ) return;
+  MechanismKickerIsKicking = true;
 
+  servo[Kicker] = kKickerUp;
+  wait1Msec(300);
+  servo[Kicker] = kKickerDown;
+  wait1Msec(100);
+
+
+
+  MechanismKickerIsKicking = false;
 }
