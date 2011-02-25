@@ -30,8 +30,16 @@
 #define Accelerometer msensor_S3_4
 
 
+#define DEBUG //  FIXME: remove this!!!
+
+
+
+
 #include "shared/include.c"
 #include "TeleOp/include.c"
+
+
+
 
 
 void initializeRobot()
@@ -238,10 +246,11 @@ task main()
 		  MechanismControl(secondary);
     }
 
+#ifdef DEBUG
 		nxtDisplayCenteredTextLine(0, (string)nMotorEncoder[Elevator]);
+    nxtDisplayCenteredTextLine(1, (string)elevatorTaskCount);
+#endif
 
-
-		//nxtDisplayCenteredTextLine(0, (string)HTMAGreadVal(Magnet));
 
 		if ( MagnetBatonPresent() )
 		{

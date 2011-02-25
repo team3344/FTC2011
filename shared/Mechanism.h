@@ -63,6 +63,12 @@ static bool MechanismSlideIsMoving;
 
 
 
+#ifdef DEBUG
+static int elevatorTaskCount = 0;
+#endif
+
+
+
 
 void MechanismElevatorTarget(int targetEncoder);  //  synchronous
 

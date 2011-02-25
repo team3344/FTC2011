@@ -99,8 +99,13 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 */
 
 
+
 task MechanismElevatorTargetTask()
 {
+#ifdef DEBUG
+  ++elevatorTaskCount;
+#endif
+
   MechanismElevatorIsTargeting = true;
 
   MechanismElevatorTarget(MechanismElevatorTargetEncoder);
