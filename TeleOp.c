@@ -36,14 +36,8 @@
 
 void initializeRobot()
 {
-  //  init smuxi
-  HTSMUXinit();
-  HTSMUXscanPorts(SMUX1);
-  HTSMUXscanPorts(SMUX2);
-
-
+  SensorsInit();
 	AbortIfNoSMUX();
-
 	MechanismInit();
 
 	DrivePowerMultiplier = 1;

@@ -275,13 +275,17 @@ task main()
 
       //servo[Gate] = kGateUpPosition;
 
-      MechanismElevatorSetHeight(kElevatorHeightMidDispenser);  //  get the elevator to the right height
+      //  FIXME: can this be asynchronous???????????????????????????????????????????????
+      MechanismElevatorTarget(kElevatorTargetMidDispenser);
+
 
       if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
       {
         for ( int i = 0; i < 3; i++ )
         {
-          MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);
+          //  FIXME: what is this???? - can it be optimized????
+          //MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);
+          MechanismElevatorTarget(kElevatorTargetMidDispenser);
           wait10Msec(100);
 
           RobotMoveDistance(-.5, false);
@@ -294,8 +298,7 @@ task main()
           wait10Msec(20);
 
 
-          MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
-
+          MechanismElevatorTarget(kElevatorTargetMidDispenser);
           RobotMoveDistance(1.5, false);
         }
 
