@@ -16,14 +16,14 @@ void MechanismInit()
 
 
   servo[Slide] = kSlideDownPosition;
-  servo[Gate] = kGateDownPosition;
+  servo[Flap] = kFlapFlatPosition;
 
   //  put stompers in up position
   servo[RightStomper] = kRightStomperUp;
   servo[LeftStomper] = kLeftStomperUp;
 
 
-  servo[Kicker] = kKickerStopped;
+  servo[Kicker] = kKickerDown;
 
 
 
@@ -119,4 +119,15 @@ void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
 	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
 
 	MechanismElevatorTarget(targetEncoder);
+}
+
+
+
+
+
+
+
+task MechanismKickerKick()
+{
+
 }

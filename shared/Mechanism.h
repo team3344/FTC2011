@@ -15,13 +15,13 @@
 void MechanismInit();
 
 
-#define kSlideMaxPosition 144
-#define kSlideMinPosition 10
+#define kSlideMaxPosition 121
+#define kSlideMinPosition 244
 
-#define kSlideDownPosition 20
-#define kSlideMagnetPosition 95
-#define kSlideRegularPosition 85
-#define kSlideLongPosition 110
+#define kSlideDownPosition 244
+#define kSlideMagnetPosition 163
+#define kSlideRegularPosition 150
+#define kSlideLongPosition 125
 
 static bool MechanismSlideIsMoving;
 
@@ -29,18 +29,21 @@ static bool MechanismSlideIsMoving;
 
 
 
-#define kKickerSpeed 255
-#define kKickerSpeedReverse 0
-#define kKickerStopped 128
+//#define kKickerSpeed 255
+//#define kKickerSpeedReverse 0
+//#define kKickerStopped 128
 
+
+#define kKickerUp 165
+#define kKickerDown 80
 
 
 
 //	stomper
-#define kRightStomperUp 220
-#define kRightStomperDown 72
-#define kLeftStomperUp 17
-#define kLeftStomperDown 165
+#define kRightStomperUp 0
+#define kRightStomperDown 144
+#define kLeftStomperUp 248
+#define kLeftStomperDown 98
 
 
 
@@ -53,11 +56,11 @@ static bool MechanismSlideIsMoving;
 
 
 
-#define kElevatorHeightLowDispenser 1
+#define kElevatorHeightLowDispenser 1 //  FIXME: change these
 #define kElevatorHeightMidDispenser 4
 #define kElevatorHeightHighDispenser 10
 
-#define kElevatorHeightBridgeCrossing 10
+#define kElevatorHeightBridgeCrossing 10  //  FIXME: fix
 #define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
 
 
@@ -70,20 +73,12 @@ static bool MechanismElevatorIsOscillating;	//	FIXME: implement these!!!!!!!!!!!
 task MechanismElevatorOscillate();
 
 
+task MechanismKickerKick();
+static bool MechanismKickerIsKicking;
 
 
-
-
-/*
-#define kFlapUpPosition 205
-#define kFlapDownPosition 80
-#define kFlapFlatPosition  140
-*/
-
-
-
-#define kGateDownPosition 41
-#define kGateUpPosition 159
+#define kFlapDownPosition 78
+#define kFlapFlatPosition  153
 
 
 
