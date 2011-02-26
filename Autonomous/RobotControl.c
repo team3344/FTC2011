@@ -495,7 +495,7 @@ void RobotMountBridge()
 {
 	MechanismElevatorTarget(kElevatorTargetBridgeCrossing);
 
-	RobotMoveDistance(9, false);  //  get flush against the bridge  //  FIXME: is our angle bad when we're here???????
+	RobotMoveDistance(7, false);  //  get flush against the bridge
 
 	float distanceFromCenter = (kBridgeLength / 2) + kRotationPointDistanceFromFront;
 	float center = kFieldSize / 2;
@@ -591,8 +591,8 @@ bool RobotMountCenterDispenser()
 
 
 #define kRobotAccReadingBalanced -24
-#define kRobotAccThreshold 5
-#define kRobotAccBalancedThreshold 20
+#define kRobotAccThreshold 4
+#define kRobotAccBalancedThreshold 24
 #define kSampleInterval 750
 
 void RobotBalance()

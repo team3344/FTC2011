@@ -246,8 +246,8 @@ task main()
       servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
 	    RobotRotateToOrientation(0.13);
-	    RobotMoveDistance(20, false);
-	    RobotRotateToOrientation(-1.5 + (PI / 11));
+	    RobotMoveDistance(17.4, false);
+	    RobotRotateToOrientation(-1.5 + (PI / 6));
 
 
 	    //  FIXME: can i remove this????
@@ -298,10 +298,10 @@ task main()
 	    FieldGetNodeLocation(NodeLine3BottomEnd, location);
 	    RobotMoveToLocation(location, false, false);
 	    FieldSetCurrentNode(NodeLine3BottomEnd);
-
-
-	    servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
     }
+
+	  servo[Slide] = kSlideDownPosition;  //  retract the slide to keep it protected
+
   }/********** End Preloads  **********/
 
 
