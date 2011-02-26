@@ -60,6 +60,8 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
 {
   nxtDisplayCenteredTextLine(0, "folw line fo dist");
   nxtDisplayCenteredTextLine(1, (string)distance);
+  PlaySound(soundUpwardTones);
+
 
   MechanismElevatorTarget(kElevatorTargetLineFollowing);
 
@@ -263,6 +265,14 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
   while ( abs(nMotorEncoder[Left]) < scanEncoder ) {}
   RobotStop();
 
+
+  //  FIXME: remove this chunk!!!!!!!!!!
+  hogCPU();
+  nxtDisplayCenteredTextLine(0, (string)CurrentLineFollowingContext.lineBrightness);
+  nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.surroundingBrightness);
+  PlaySound(soundShortBlip);
+  wait10Msec(1000);
+  releaseCPU();
 
 	return false;
 }

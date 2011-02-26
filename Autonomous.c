@@ -53,9 +53,9 @@ void DispenseBatons(int count)
   PlaySound(soundFastUpwardTones);
 
   //  put the elevator up to the top
-  //motor[Elevator] = kElevatorSpeed; //  FIXME: remove this to a separate thread?
-  //while ( !ElevatorIsAtTop() ) {}
-  //motor[Elevator] = 0;
+  motor[Elevator] = kElevatorSpeed;
+  while ( !ElevatorIsAtTop() ) {}
+  motor[Elevator] = 0;
 
   //  position slide
   servo[Slide] = kSlideRegularPosition;
@@ -215,9 +215,9 @@ task main()
 	/**********   Preloads   **********/
   if ( score_preloads )
   {
-    //  asynchronously raise the elevator to the top
-    MechanismElevatorTargetEncoder = kElevatorMaxEncoder;
-    StartTask(MechanismElevatorTarget, kHighPriority);
+    //  asynchronously raise the elevator to the top  //  FIXME: why don't this work. wtf???
+    //MechanismElevatorTargetEncoder = kElevatorMaxEncoder;
+    //StartTask(MechanismElevatorTarget, kHighPriority);
 
 
 	  if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
@@ -229,16 +229,16 @@ task main()
 	    RobotRotateToOrientation(-1.5 + (PI / 11));
 
 
-
+	    //  FIXME: can i remove this????
 	    while ( MechanismElevatorIsTargeting ) {} //  wait 'til the elevator reaches the top
 	    DispenseBatons(preload_count);
 
 
 
 	    //  push the goal out of the way
-	    RobotRotateToOrientation(PI / 6);
-	    RobotMoveDistance(12, false);
-	    RobotMoveDistance(-13, false);
+	    RobotRotateToOrientation(PI / 6.3);
+	    RobotMoveDistance(13, false);
+	    RobotMoveDistance(-14, false);
 
 
 
@@ -260,18 +260,13 @@ task main()
 	    RobotRotateToOrientation(PI / 3.5);
 
 
+      //  FIXME: can i remove this???
       while ( MechanismElevatorIsTargeting ) {} //  wait 'til the elevator reaches the top
 	    DispenseBatons(preload_count);
 
 
-	    //wait10Msec(500); //  FIXME: remove this wait
-
-
-
-	    //  FIXME: push mobile goal out of the way!!!
-
-
-	    RobotRotateToOrientation(5.0 /6.0 * PI);
+	    //  push mobile goal out of the way!!
+	    RobotRotateToOrientation(4.6 /6.0 * PI);
 	    RobotMoveDistance(13, false);
 	    RobotMoveDistance(-14, false);
 
