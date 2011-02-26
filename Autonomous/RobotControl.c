@@ -185,7 +185,7 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 
 #define kWhiteLineScanAngle PI / 4.0
 #define kRobotLineScanPower 20
-#define kMinLineSurroundingDifference 11
+#define kMinLineSurroundingDifference 10
 
 void _RecordLineBrightness(int b)
 {
@@ -264,21 +264,6 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
   _RobotZeroDriveEncoders();
   while ( abs(nMotorEncoder[Left]) < scanEncoder ) {}
   RobotStop();
-
-
-  //  FIXME: remove this chunk!!!!!!!!!!
-  //hogCPU();
-  while ( true )
-  {
-    nxtDisplayCenteredTextLine(0, (string)CurrentLineFollowingContext.lineBrightness);
-    nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.surroundingBrightness);
-    PlaySound(soundShortBlip);
-    PlaySound(soundUpwardTones);
-    PlaySound(soundDownwardTones);
-  }
-  wait10Msec(1000);
-  wait10Msec(5000);
-  //releaseCPU();
 
 	return false;
 }

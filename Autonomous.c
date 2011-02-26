@@ -293,10 +293,16 @@ task main()
   {
 
   	//  where we are and where we're going
-	  Node src = FieldGetCurrentNode();
+	  Node src = FieldGetCurrentNode(); //  FIXME: make sure we're actually on the node????
 	  Node dest = NodeFriendDispenserCenter;
 
-	  if ( RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
+
+	  RobotTravelFromNodeToNode(src, NodeMountainCenterPeak, false);
+	  RobotTravelFromNodeToNode(NodeMountainCenterPeak, dest, false);
+
+
+
+	  if ( true ) //RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
     {
       RobotRotateToOrientation(PI / 2.0); //  turn towards dispenser
 
@@ -353,10 +359,11 @@ task main()
 
   //  FIXME: what is this for??????????????????????????????//
   //  put elevator at bottom
+  /*
   motor[Elevator] = -kElevatorSpeed;
   while ( !ElevatorIsAtBottom() ) {}
   motor[Elevator] = 0;
-
+*/
 
 
 
@@ -373,11 +380,15 @@ task main()
 
   }/**********   End Balance **********/
 
+
+
+  /**********   Block   **********/
   if ( block_center )
   {
     Node currentID = FieldGetCurrentNode();
-    RobotTravelFromNodeToNode(currentID, NodeFriendDispenserCenter, true);
+    RobotTravelFromNodeToNode(currentID, NodeFoeDispenserCenter, true);
+    RobotRotateToOrientation(PI / 2); //  look straight ahead to prep for TeleOp
   }
-
+  /**********   Block   **********/
 
 }

@@ -61,7 +61,7 @@ static bool MechanismSlideIsMoving;
 
 
 #define kElevatorTargetBridgeCrossing 2207
-#define kElevatorTargetLineFollowing 30
+#define kElevatorTargetLineFollowing 0
 #define kElevatorTargetHighDispenser 1010
 #define kElevatorTargetMidDispenser 412
 
