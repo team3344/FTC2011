@@ -598,10 +598,10 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		Start Squares		**********/
-	FieldSetNodeCoordinates(NodeFriendStartSquareLeft, kStartSquareWidth / 2, kStartPointDistanceFromFieldEnd, 0);
-	FieldSetNodeCoordinates(NodeFriendStartSquareRight, kFieldSize - (kStartSquareWidth / 2), kStartPointDistanceFromFieldEnd, 0);
-	FieldSetNodeCoordinates(NodeFoeStartSquareLeft, kStartSquareWidth / 2, kFieldSize - kStartPointDistanceFromFieldEnd, 0);
-	FieldSetNodeCoordinates(NodeFoeStartSquareRight, kFieldSize - (kStartSquareWidth / 2), kFieldSize - kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFriendStartSquareLeft, kStartPointDistanceFromFieldSide, kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFriendStartSquareRight, kFieldSize - kStartPointDistanceFromFieldSide, kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFoeStartSquareLeft, kStartPointDistanceFromFieldSide, kFieldSize - kStartPointDistanceFromFieldEnd, 0);
+	FieldSetNodeCoordinates(NodeFoeStartSquareRight, kFieldSize - kStartPointDistanceFromFieldSide, kFieldSize - kStartPointDistanceFromFieldEnd, 0);
 
 
 	/**********		Dispensers		**********/

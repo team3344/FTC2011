@@ -4,7 +4,7 @@
 
 
 
-
+//  include the appropriate drivers from HiTechnic
 #include "../HT RobotC Drivers/drivers/LEGOLS-driver.h"
 #include "../HT RobotC Drivers/drivers/LEGOTS-driver.h"
 #include "../HT RobotC Drivers/drivers/HTAC-driver.h"
@@ -20,13 +20,13 @@
 
 
 #define LEFT_LIGHT_SENSOR() LSvalNorm(LeftLightSensor)
-#define RIGHT_LIGHT_SENSOR() (LSvalNorm(RightLightSensor) -2)
+#define RIGHT_LIGHT_SENSOR() (LSvalNorm(RightLightSensor) -2) //  FIXME: is this adjustment still valid??
 
 
 
 #define IRSensorValue() (HTIRS2readACDir(IR))
 
-#define SonarSensorDistance() (USreadDist(Sonar) / 2.54)  //  distance in inches
+//#define SonarSensorDistance() (USreadDist(Sonar) / 2.54)  //  distance in inches
 
 
 

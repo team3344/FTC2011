@@ -11,7 +11,7 @@
 
 
 
-bool EnemyRobotDetected() //  FIXME: adjust this method's constants!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+bool EnemyRobotDetected()
 {
   return false;
 

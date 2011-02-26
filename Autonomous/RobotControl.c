@@ -16,6 +16,18 @@
 
 
 
+
+void abort(string errStr)
+{
+  hogCPU();
+
+  nxtDisplayCenteredTextLine(0, errStr);
+  PlaySound(soundException);
+  while ( true ) {} //  loop forever
+}
+
+
+
 void RobotStop()
 {
   motor[Left] = 0;
@@ -49,7 +61,8 @@ bool RobotFollowWhiteLineForDistance(float distance, bool avoidEnemies)
   nxtDisplayCenteredTextLine(0, "folw line fo dist");
   nxtDisplayCenteredTextLine(1, (string)distance);
 
-  MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+  MechanismElevatorTarget(kElevatorTargetLineFollowing);
+
 
 	_RobotZeroDriveEncoders();
 
@@ -107,7 +120,7 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 {
   nxtDisplayCenteredTextLine(0, "following line");
 
-  MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+  MechanismElevatorTarget(kElevatorTargetLineFollowing);
 
   _RobotZeroDriveEncoders();
 
@@ -188,7 +201,7 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
   nxtDisplayCenteredTextLine(0, "finding line");
 
-  MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+  MechanismElevatorTarget(kElevatorTargetLineFollowing);
 
   //  initial values
   CurrentLineFollowingContext.lineBrightness = 0;
@@ -483,7 +496,7 @@ bool RobotMoveToLocation(Vector& location, bool backwards, bool avoidEnemies)
 
 void RobotMountBridge()
 {
-	MechanismElevatorSetHeight(kElevatorHeightBridgeCrossing);
+	MechanismElevatorTarget(kElevatorTargetBridgeCrossing);
 
 	RobotMoveDistance(9, false);  //  get flush against the bridge  //  FIXME: is our angle bad when we're here???????
 
@@ -543,7 +556,7 @@ bool RobotMountCenterDispenser()
       }
     }
 
-    float speed = ( SonarSensorDistance() > 18 ) ? kRobotMoveSpeed : kRobotMoveSpeed / 2;
+    float speed = kRobotMoveSpeed * .7;
     float errorRange = 4;
     float turnRange = speed * .9;
     float gain = turnRange / errorRange;
@@ -559,7 +572,7 @@ bool RobotMountCenterDispenser()
   motor[Left] = 0;
   motor[Right] = 0;
 
-  MechanismElevatorSetHeight(kElevatorHeightMidDispenser);
+  MechanismElevatorTarget(kElevatorTargetMidDispenser);
 
 
   RobotMoveDistance(14, false); //  get pressed up against the dispenser

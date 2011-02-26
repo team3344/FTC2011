@@ -96,7 +96,7 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 
 	if ( (segmentFlags & PathSegmentFlagWhiteConnectingLine) && FollowLines )  //  there's a line between nodes, so follow it
 	{
-		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+		MechanismElevatorTarget(kElevatorTargetLineFollowing);
 
 		if ( RobotFindWhiteLine() ) //  look for the line, proceed if we find it
 		{
@@ -130,7 +130,7 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	}
 	else if ( segmentFlags & PathSegmentFlagPerpendicularWhiteLineAtEnd )
 	{
-		MechanismElevatorSetHeight(kElevatorHeightLineFollowing);
+		MechanismElevatorTarget(kElevatorTargetLineFollowing);
 
 	  if ( RobotMoveUntilPerpendicularLine(distance, avoidEnemies) )
 	  {

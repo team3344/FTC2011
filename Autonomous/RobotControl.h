@@ -33,6 +33,11 @@ typedef struct {
 
 
 
+void abort(string errStr);
+
+
+
+
 //	Position Tracking
 //===========================================================================================================
 static RobotPosition CurrentRobotPosition;

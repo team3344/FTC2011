@@ -15,6 +15,11 @@
 void MechanismInit();
 
 
+
+#define kElevatorMaxEncoder 3152
+
+
+
 #define kSlideMaxPosition 121
 #define kSlideMinPosition 244
 
@@ -27,13 +32,6 @@ static bool MechanismSlideIsMoving;
 
 
 
-
-
-//#define kKickerSpeed 255
-//#define kKickerSpeedReverse 0
-//#define kKickerStopped 128
-
-
 #define kKickerUp 165
 #define kKickerDown 80
 
@@ -41,9 +39,9 @@ static bool MechanismSlideIsMoving;
 
 //	stomper
 #define kRightStomperUp 0
-#define kRightStomperDown 144
+#define kRightStomperDown 155
 #define kLeftStomperUp 248
-#define kLeftStomperDown 98
+#define kLeftStomperDown 87
 
 
 
@@ -56,21 +54,36 @@ static bool MechanismSlideIsMoving;
 
 
 
-#define kElevatorHeightLowDispenser 1 //  FIXME: change these
-#define kElevatorHeightMidDispenser 4
-#define kElevatorHeightHighDispenser 10
-
 #define kElevatorHeightBridgeCrossing 10  //  FIXME: fix
 #define kElevatorHeightLineFollowing kElevatorHeightLowDispenser
 
 
-void MechanismElevatorTarget(int targetEncoder);
-void MechanismElevatorSetHeight(float height);
+
+
+#define kElevatorTargetBridgeCrossing 2207
+#define kElevatorTargetLineFollowing 30
+#define kElevatorTargetHighDispenser 1010
+#define kElevatorTargetMidDispenser 412
 
 
 
-static bool MechanismElevatorIsOscillating;	//	FIXME: implement these!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-task MechanismElevatorOscillate();
+
+#ifdef DEBUG
+static int elevatorTaskCount = 0;
+#endif
+
+
+
+
+void MechanismElevatorTarget(int targetEncoder);  //  synchronous
+
+//  to move elevator asynchronously, set MechanismElevatorTarget,
+//  then call the task.  watch MechanismElevatorIsTargeting to see if
+//  it's still going or if it's finished
+task MechanismElevatorTargetTask(); //  asynchronous
+static int MechanismElevatorTargetEncoder;
+static bool MechanismElevatorIsTargeting;
+
 
 
 task MechanismKickerKick();
@@ -81,6 +94,10 @@ static bool MechanismKickerIsKicking;
 #define kFlapFlatPosition  153
 
 
+
+#define kIntakeOn 255
+#define kIntakeOff 127
+#define kIntakeReverse 0
 
 
 #endif
