@@ -267,12 +267,18 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
   //  FIXME: remove this chunk!!!!!!!!!!
-  hogCPU();
-  nxtDisplayCenteredTextLine(0, (string)CurrentLineFollowingContext.lineBrightness);
-  nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.surroundingBrightness);
-  PlaySound(soundShortBlip);
+  //hogCPU();
+  while ( true )
+  {
+    nxtDisplayCenteredTextLine(0, (string)CurrentLineFollowingContext.lineBrightness);
+    nxtDisplayCenteredTextLine(1, (string)CurrentLineFollowingContext.surroundingBrightness);
+    PlaySound(soundShortBlip);
+    PlaySound(soundUpwardTones);
+    PlaySound(soundDownwardTones);
+  }
   wait10Msec(1000);
-  releaseCPU();
+  wait10Msec(5000);
+  //releaseCPU();
 
 	return false;
 }

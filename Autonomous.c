@@ -252,12 +252,12 @@ task main()
 	  {
 	    //  go to mobile goal & line up next to it
 	    RobotRotateToOrientation(3.0159423);
-	    RobotMoveDistance(21, false);
+	    RobotMoveDistance(19, false);
 
 
       servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
-	    RobotRotateToOrientation(PI / 3.5);
+	    RobotRotateToOrientation(PI / 3.7);
 
 
       //  FIXME: can i remove this???
