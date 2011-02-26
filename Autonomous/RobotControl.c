@@ -592,7 +592,7 @@ bool RobotMountCenterDispenser()
 
 #define kRobotAccReadingBalanced -24
 #define kRobotAccThreshold 4
-#define kRobotAccBalancedThreshold 24
+#define kRobotAccBalancedThreshold 26
 #define kSampleInterval 750
 
 void RobotBalance()
@@ -633,11 +633,11 @@ void RobotBalance()
         }
         else if ( abs(maxError) > kRobotAccBalancedThreshold )
         {
-          RobotMoveDistance(1, false);  //  forwards an inch
+          RobotMoveDistance(.75, false);  //  forwards an inch
         }
         else if ( abs(minError) > kRobotAccBalancedThreshold )
         {
-          RobotMoveDistance(-1, false); //  backwards an inch
+          RobotMoveDistance(-.75, false); //  backwards an inch
         }
       }
 

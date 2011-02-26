@@ -125,8 +125,8 @@ void MechanismControl(Controller& controller)
 
 
 
-
-    if ( ControllerButtonIsPressed(controller, ControllerButtonR1) )
+    //  R1 kicks batons, but only when the elevator is at the top
+    if ( ControllerButtonIsPressed(controller, ControllerButtonR1) && ElevatorIsAtTop() )
     {
       if ( !MechanismKickerIsKicking )
       {
@@ -198,6 +198,10 @@ void MechanismControl(Controller& controller)
 task main()
 {
 	initializeRobot();
+
+
+	//while ( true ) {} //  FIXME: remove this!!!
+
 
 	waitForStart();   // wait for start of tele-op phase
 
