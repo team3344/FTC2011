@@ -28,7 +28,7 @@
 
 //  SMUX2
 #define ElevatorTopStop msensor_S3_1
-#define Accelerometer msensor_S3_4
+#define Accelerometer msensor_S3_3
 
 
 #include "JoystickDriver.c"
@@ -94,19 +94,40 @@ task main()
 	bool block_center;
 
 
-	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
 
-
-
-
-	//  FIXME: remove this
 	/*
+	hogCPU();
+	while ( true )
+	{
+	  int x, y, z;
+	  HTACreadX(Accelerometer, y);
+	  nxtDisplayCenteredTextLine(1, (string)y);
+	}
+	releaseCPU();
+
+	//  x = -24 is normal
+
+
+	positive error means go forward
+	//  8 is unbalanced - need to move forward
+	*/
+
+
+	//  FIXME: remove this - prints out line sensor info
+	/*
+	MechanismElevatorTarget(kElevatorTargetLineFollowing);
 	while ( true )
 	{
 	  nxtDisplayCenteredTextLine(0, (string)LEFT_LIGHT_SENSOR());
 	  nxtDisplayCenteredTextLine(1, (string)RIGHT_LIGHT_SENSOR());
 	}
 	*/
+
+
+	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
+
+
+
 
 
 

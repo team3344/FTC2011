@@ -27,7 +27,7 @@
 
 //  SMUX2
 #define ElevatorTopStop msensor_S3_1
-#define Accelerometer msensor_S3_4
+#define Accelerometer msensor_S3_3
 
 
 #define DEBUG //  FIXME: remove this!!!

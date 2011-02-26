@@ -52,7 +52,7 @@ void _RobotZeroDriveEncoders()
 //===========================================================================================================
 
 #define kLineFollowerMotorPower 20
-#define kLineFollowerTurnRange (kLineFollowerMotorPower * .9)
+#define kLineFollowerTurnRange (kLineFollowerMotorPower)  //  FIXME: does this work??
 
 
 
@@ -185,7 +185,7 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 
 #define kWhiteLineScanAngle PI / 4.0
 #define kRobotLineScanPower 20
-#define kMinLineSurroundingDifference 10
+#define kMinLineSurroundingDifference 7
 
 void _RecordLineBrightness(int b)
 {
@@ -590,9 +590,10 @@ bool RobotMountCenterDispenser()
 
 
 
-#define kRobotAccReadingBalanced
-#define kRobotAccThreshold 100
-#define kSampleInterval 1000
+#define kRobotAccReadingBalanced -24
+#define kRobotAccThreshold 5
+#define kRobotAccBalancedThreshold 20
+#define kSampleInterval 750
 
 void RobotBalance()
 {
@@ -607,29 +608,42 @@ void RobotBalance()
   while ( true )
   {
     int reading;
-    HTACreadY(Accelerometer, reading);
+    HTACreadX(Accelerometer, reading);
 
     int error = reading - kRobotAccReadingBalanced;
 
-    if ( error > maxError ) maxError = error;
-    if ( error < minError ) minError = error;
+    if ( error > maxError )
+    {
+      maxError = error;
+    }
+
+    if ( error < minError )
+    {
+      minError = error;
+    }
 
 
     if ( nPgmTime > lastSampleTime + kSampleInterval )
     {
       if ( MAX(abs(minError), abs(maxError)) > kRobotAccThreshold ) //  we're not balanced
       {
-        if ( abs(maxError) > abs(minError) )
+        if ( abs(minError) > kRobotAccThreshold && maxError > kRobotAccThreshold )
+        {
+          //  we're still oscillating, wait another interval
+        }
+        else if ( abs(maxError) > kRobotAccBalancedThreshold )
         {
           RobotMoveDistance(1, false);  //  forwards an inch
         }
-        else
+        else if ( abs(minError) > kRobotAccBalancedThreshold )
         {
           RobotMoveDistance(-1, false); //  backwards an inch
         }
       }
 
-
+      //  clear and prepare for next stuff
+      minError = 0;
+      maxError = 0;
       lastSampleTime = nPgmTime;
     }
 

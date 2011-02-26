@@ -48,7 +48,7 @@ void MechanismInit()
 #endif
 }
 
-#define kElevatorEncoderTargetTolerance 90
+#define kElevatorEncoderTargetTolerance 60
 
 
 void MechanismElevatorTarget(int targetEncoder)
