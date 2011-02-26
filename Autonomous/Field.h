@@ -139,7 +139,7 @@ void FieldRecalculatePath();
 bool FieldNodesAreConnected(Node n1, Node n2);				//	note: order matters
 //void FieldConnectNodes(Node n1, Node n2, float cost);		//	tell it the distance between the two given nodes
 void FieldConnectNodesAutomatically(Node n1, Node n2, bool bidirectional);		//	calculates the distance between the nodes using their locations. note: order doesn't matter
-void FieldInvalidatePathFromNodeToNode(Node n1, Node n2);	//	tell it there is no path between the two given nodes.  order MATTERS
+//void FieldInvalidatePathFromNodeToNode(Node n1, Node n2);	//	tell it there is no path between the two given nodes.  order MATTERS
 void FieldTemporarilyInvalidatePathBetweenNodes(Node n1, Node n2, int time);	//	tell it there is no path between the two given nodes.  order DOESN'T matter.  time = time in msec until it's validation
 //bool FieldPathBetweenNodesIsValid(Node n1, Node n2);
 

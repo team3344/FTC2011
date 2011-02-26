@@ -189,21 +189,33 @@ task main()
 	long startTime = nPgmTime;
 
 
+  //  get out of the corner, so we don't hit the wall when we move
+	bool left = FieldGetCurrentNode() == NodeFriendStartSquareLeft;
+	RobotRotateToOrientation(PI / 2.0 + ((left) ? -PI / 6 : PI / 6) );
+	RobotMoveDistance(4, false);
+
+
 
 
 	/**********   Preloads   **********/
   if ( score_preloads )
   {
+    //  asynchronously raise the elevator to the top
+    MechanismElevatorTargetEncoder = kElevatorMaxEncoder;
+    StartTask(MechanismElevatorTarget);
+
 
 	  if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
 	  {
-
       servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
 	    RobotRotateToOrientation(0.13);
 	    RobotMoveDistance(20, false);
 	    RobotRotateToOrientation(-1.5 + (PI / 11));
 
+
+
+	    while ( MechanismElevatorIsTargeting ) {} //  wait 'til the elevator reaches the top
 	    DispenseBatons(preload_count);
 
 
@@ -221,7 +233,7 @@ task main()
 	    RobotMoveToLocation(location, false, false);
 	    FieldSetCurrentNode(NodeLine1BottomEnd);
 	  }
-	  else
+	  else  //  right side
 	  {
 	    //  go to mobile goal & line up next to it
 	    RobotRotateToOrientation(3.0159423);
@@ -233,7 +245,7 @@ task main()
 	    RobotRotateToOrientation(PI / 3.5);
 
 
-
+      while ( MechanismElevatorIsTargeting ) {} //  wait 'til the elevator reaches the top
 	    DispenseBatons(preload_count);
 
 
@@ -242,6 +254,11 @@ task main()
 
 
 	    //  FIXME: push mobile goal out of the way!!!
+
+
+	    RobotRotateToOrientation(5.0 /6.0 * PI);
+	    RobotMoveDistance(13, false);
+	    RobotMoveDistance(-14, false);
 
 
 
@@ -335,16 +352,16 @@ task main()
 
 
   /**********   Balance   **********/
-  if ( balance )  //  FIXME: implement a better balancing system that actually uses the accelerometer
+  if ( balance )
   {
     if ( (nPgmTime - startTime ) > 3000 )  //  balance on the bridge if there's more than 3 seconds left
 	  {
 	    Node currentID = FieldGetCurrentNode();
 	    RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
 
-	    RobotMoveDistance(2.5 , false);
+	    RobotMoveDistance(2 , false);
 
-	    //RobotBalance();	//	use the accelerometor to balance the bot
+	    RobotBalance();	//	FIXME: use the accelerometor to balance the bot
 	  }
 
   }/**********   End Balance **********/
