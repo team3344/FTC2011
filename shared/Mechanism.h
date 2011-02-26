@@ -25,7 +25,7 @@ void MechanismInit();
 
 #define kSlideDownPosition 244
 #define kSlideMagnetPosition 163
-#define kSlideRegularPosition 150
+#define kSlideRegularPosition 160
 #define kSlideLongPosition 125
 
 static bool MechanismSlideIsMoving;
@@ -91,7 +91,7 @@ static bool MechanismKickerIsKicking;
 
 
 #define kFlapDownPosition 78
-#define kFlapFlatPosition  153
+#define kFlapFlatPosition  151
 
 
 
