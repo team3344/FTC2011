@@ -166,50 +166,30 @@ void MechanismControl(Controller& controller)
     }
 
 
-    /*  //  uncomment this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     //  elevator up/down control with L1 & L2
-    if ( ControllerButtonIsPressed(controller, ControllerButtonL1) && !ElevatorIsAtTop() )
+    if ( controller.dPad.y > .5 && !ElevatorIsAtTop() )
     {
-      ABORT_ELEVATOR_TARGET();
       motor[Elevator] = kElevatorSpeed;
     }
-    else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) && !ElevatorIsAtBottom() )
+    else if ( controller.dPad.y < -.5 && !ElevatorIsAtBottom() )
     {
-      ABORT_ELEVATOR_TARGET();
       motor[Elevator] = -kElevatorSpeed;
     }
-    else if ( !MechanismElevatorIsTargeting )
+    else  //  FIXME: what about elevator targeting???
     {
-      motor[Elevator] = true;
+      motor[Elevator] = 0;
     }
-    */
 
 
-    /*
-	//  magnet slide position
-	if ( ControllerButtonIsPressed(controller, ControllerButton4) )
-	{
-		servo[Slide] = kSlideMagnetPosition;
-	}
-
-	//  regular slide position
-	if ( ControllerButtonIsPressed(controller, ControllerButton2) )
-	{
-		servo[Slide] = kSlideRegularPosition;
-	}
-
-	//  down position
-	if ( ControllerButtonIsPressed(controller, ControllerButton3) )
-	{
-	  servo[Slide] = kSlideDownPosition;
-	}
-
-	//  long position
-	if ( ControllerButtonIsPressed(controller, ControllerButton1) )
-	{
-		servo[Slide] = kSlideLongPosition;
-	}
-  */
+    if ( ControllerButtonIsPressed(controller, ControllerButtonL1) )
+    {
+      servo[Slide] = kSlideRegularPosition;
+    }
+    else if ( ControllerButtonIsPressed(controller, ControllerButtonL2) )
+    {
+      servo[Slide] = kSlideDownPosition;
+    }
 }
 
 
