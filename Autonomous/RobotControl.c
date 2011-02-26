@@ -286,10 +286,6 @@ bool RobotFindWhiteLine()	//	returns true if it finds it
 
 
 
-
-
-
-#define kRobotMoveSpeed 45
 #define kRobotRotateSpeed 30
 
 
@@ -359,7 +355,7 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 
 
 	//	start moving
-	motor[Left] = kRobotMoveSpeed * SIGN(encoderPoints);
+	motor[Left] = RobotMoveSpeed * SIGN(encoderPoints);
 	motor[Right] = motor[Left];
 
 
@@ -370,14 +366,14 @@ bool RobotMoveDistance(float distance, bool avoidEnemies)
 	  bool left = false, right = false;
 
 	  if ( MotorClose(Left, encoderPoints) )
-	    motor[Left] = kRobotMoveSpeed / 2 * SIGN(encoderPoints);
+	    motor[Left] = RobotMoveSpeed / 2 * SIGN(encoderPoints);
 	  else
-	    motor[Left] = kRobotMoveSpeed * SIGN(encoderPoints);
+	    motor[Left] = RobotMoveSpeed * SIGN(encoderPoints);
 
 	  if ( MotorClose(Right, encoderPoints) )
-	    motor[Right] = kRobotMoveSpeed / 2 * SIGN(encoderPoints);
+	    motor[Right] = RobotMoveSpeed / 2 * SIGN(encoderPoints);
 	  else
-	    motor[Right] = kRobotMoveSpeed * SIGN(encoderPoints);
+	    motor[Right] = RobotMoveSpeed * SIGN(encoderPoints);
 
 
 	  if ( abs(nMotorEncoder[Left]) > abs(encoderPoints) )
@@ -433,8 +429,8 @@ bool RobotMoveUntilPerpendicularLine(float maxDistance, bool avoidEnemies)
 
 
   //  start moving
-  motor[Left] = kRobotMoveSpeed;
-  motor[Right] = kRobotMoveSpeed;
+  motor[Left] = RobotMoveSpeed;
+  motor[Right] = RobotMoveSpeed;
 
   int brightnessThreshold = (.75 * CurrentLineFollowingContext.lineBrightness) + (.25 * CurrentLineFollowingContext.surroundingBrightness);
 
@@ -572,7 +568,7 @@ bool RobotMountCenterDispenser()
       }
     }
 
-    float speed = kRobotMoveSpeed * .7;
+    float speed = RobotMoveSpeed * .7;
     float errorRange = 4;
     float turnRange = speed * .9;
     float gain = turnRange / errorRange;

@@ -32,6 +32,14 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	bool success;
 
 
+	//  robot move speed
+	if ( segmentFlags & PathSegmentFlagSlowTravel )
+	  RobotMoveSpeed = kRobotMoveSpeedSlow;
+	else
+	  RobotMoveSpeed = kRobotMoveSpeedRegular;
+
+
+
 	//	if there's a bridge in front of us, GET OVER IT!
 	if ( segmentFlags & PathSegmentFlagBridgeEntrance )
 	{
@@ -51,11 +59,11 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	FieldGetNodeLocation(segment.destination, destination);
 
 
-
-	//  FIXME: log $#%! herae so we can see why it's turning once it gets on the bridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
+  //  if we're climbing the peak, put the elevator up
+	if ( segment.destination == NodeMountainCenterPeak )
+	{
+	  MechanismElevatorTarget(kElevatorTargetBridgeCrossing);
+	}
 
 
 	//	what we have to do to get there

@@ -630,16 +630,26 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		Mountain		**********/
-	//FieldSetNodeCoordinates(??Node??, kFieldSize / 2, (kFieldSize / 2) + (kMountainLength / 2), location);
-	//FieldSetNodeLocation(NodeMountainCenterTopEdge, "mntn cntr top edge", location);
 
-	//VectorMake(kFieldSize / 2, kFieldSize / 2, kMountainHeight, location);
-	//FieldSetNodeLocation(NodeMountainCenterPeak, "mntn cntr peak", location);
-
-	//FieldSetNodeCoordinates(??Node??, kFieldSize / 2, (kFieldSize / 2) - (kMountainLength / 2), location);
-	//FieldSetNodeLocation(NodeMountainCenterBottomEdge, "mntn cntr btm edge", location);
+	#define ADD_SLOW_ZONE(n1, n2) globalField.segmentFlags[n1][n2] |= PathSegmentFlagSlowTravel
 
 
+	FieldSetNodeCoordinates(NodeMountainCenterTopEdge,
+	                          kFieldSize / 2,
+	                          (kFieldSize / 2) + (kMountainLength / 2) + kLightSensorDistanceFromCenter, 0);
+
+
+	FieldSetNodeCoordinates(NodeMountainCenterPeak, kFieldSize / 2, kFieldSize / 2, 0);
+
+	FieldSetNodeCoordinates(NodeMountainCenterBottomEdge,
+	                          kFieldSize / 2,
+	                          (kFieldSize / 2) - (kMountainLength / 2 + kLightSensorDistanceFromCenter), 0);
+
+	//  tell the bot to go slow over the mtn
+	ADD_SLOW_ZONE(NodeMountainCenterBottomEdge, NodeMountainCenterPeak);
+	ADD_SLOW_ZONE(NodeMountainCenterPeak, NodeMountainCenterBottomEdge);
+	ADD_SLOW_ZONE(NodeMountainCenterPeak, NodeMountainCenterTopEdge);
+	ADD_SLOW_ZONE(NodeMountainCenterTopEdge, NodeMountainCenterPeak);
 
 
 	/**********		White Lines		**********/

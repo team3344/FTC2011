@@ -33,6 +33,14 @@ typedef struct {
 
 
 
+
+#define kRobotMoveSpeedSlow 25
+#define kRobotMoveSpeedRegular 45
+
+static float RobotMoveSpeed = kRobotMoveSpeedRegular;
+
+
+
 void abort(string errStr);
 
 

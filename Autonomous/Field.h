@@ -43,9 +43,9 @@
 
 
 	//	mountain	//
-	//NodeMountainCenterTopEdge,
-	//NodeMountainCenterPeak,
-	//NodeMountainCenterBottomEdge,
+	NodeMountainCenterTopEdge,
+	NodeMountainCenterPeak,
+	NodeMountainCenterBottomEdge,
 
 
 
@@ -108,7 +108,8 @@ typedef struct {
 typedef enum {
 	PathSegmentFlagBridgeEntrance		            = 1 << 0,
 	PathSegmentFlagWhiteConnectingLine	        = 1 << 1,
-	PathSegmentFlagPerpendicularWhiteLineAtEnd  = 1 << 2
+	PathSegmentFlagPerpendicularWhiteLineAtEnd  = 1 << 2,
+	PathSegmentFlagSlowTravel                   = 1 << 3
 } PathSegmentFlags;
 
 
@@ -195,7 +196,7 @@ PathSegmentFlags FieldGetPathSegmentFlags(PathSegment& segment);
 
 
 #define kMountainHeight 6
-#define kMountainLength 20.78
+#define kMountainLength 21
 #define kMountainWidth 42
 
 #define kLineDistanceFromFieldEnd 22.75
