@@ -48,11 +48,20 @@ void MechanismInit()
 #endif
 }
 
+#define kElevatorEncoderTargetTolerance 100
 
 
 void MechanismElevatorTarget(int targetEncoder)
 {
-  long endTime = nPgmTime + 4000;  //  4 seconds from now
+  long endTime = nPgmTime + 3500;  //  3.5 seconds from now
+
+  if ( abs(targetEncoder - nMotorEncoder[Elevator]) < kElevatorEncoderTargetTolerance )
+  {
+    //  we're basically there, so return
+    PlaySound(soundLowBuzz);
+    return;
+  }
+
 
   //  restrict encoder
   if ( targetEncoder > kElevatorMaxEncoder ) targetEncoder = kElevatorMaxEncoder;
@@ -70,6 +79,11 @@ void MechanismElevatorTarget(int targetEncoder)
 	      break;
 	    }
 		}
+
+		if ( abs(targetEncoder - nMotorEncoder[Elevator]) < 300 )
+		{
+		  motor[Elevator] = SIGN(motor[Elevator]) * kElevatorSpeed / 2;
+		}
 	}
 	else
 	{
@@ -81,6 +95,11 @@ void MechanismElevatorTarget(int targetEncoder)
 	      PlaySound(soundException);
 	      break;
 	    }
+
+	    if ( abs(targetEncoder - nMotorEncoder[Elevator]) < 300 )
+		  {
+		    motor[Elevator] = SIGN(motor[Elevator]) * kElevatorSpeed / 2;
+		  }
 	  }
   }
 

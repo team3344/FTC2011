@@ -160,29 +160,28 @@ void MechanismControl(Controller& controller)
       else if ( ControllerButtonIsPressed(controller, ControllerButton4) )
       {
         ABORT_ELEVATOR_TARGET();
-        MechanismElevatorTargetEncoder = kElevatorTargetLineFollowing;
+        MechanismElevatorTargetEncoder = kElevatorTargetBridgeCrossing;
         StartTask(MechanismElevatorTargetTask);
       }
     }
 
 
-
-    //  elevator up/down control with L1 & L2
-    if ( controller.dPad.y > .5 && !ElevatorIsAtTop() )
+    if ( !MechanismElevatorIsTargeting )
     {
-      ABORT_ELEVATOR_TARGET();
-      motor[Elevator] = kElevatorSpeed;
+      //  elevator up/down control with L1 & L2
+      if ( controller.dPad.y > .5 && !ElevatorIsAtTop() )
+      {
+        motor[Elevator] = kElevatorSpeed;
+      }
+      else if ( controller.dPad.y < -.5 && !ElevatorIsAtBottom() )
+      {
+        motor[Elevator] = -kElevatorSpeed;
+      }
+      else
+      {
+        motor[Elevator] = 0;
+      }
     }
-    else if ( controller.dPad.y < -.5 && !ElevatorIsAtBottom() )
-    {
-      ABORT_ELEVATOR_TARGET();
-      motor[Elevator] = -kElevatorSpeed;
-    }
-    else if ( !MechanismElevatorIsTargeting ) //  if we're not targeting, turn it off
-    {
-      motor[Elevator] = 0;
-    }
-
 
     if ( ControllerButtonIsPressed(controller, ControllerButtonL1) )
     {
