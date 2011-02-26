@@ -48,7 +48,7 @@ void MechanismInit()
 #endif
 }
 
-#define kElevatorEncoderTargetTolerance 100
+#define kElevatorEncoderTargetTolerance 90
 
 
 void MechanismElevatorTarget(int targetEncoder)
@@ -58,67 +58,48 @@ void MechanismElevatorTarget(int targetEncoder)
   if ( abs(targetEncoder - nMotorEncoder[Elevator]) < kElevatorEncoderTargetTolerance )
   {
     //  we're basically there, so return
-    PlaySound(soundLowBuzz);
+    //PlaySound(soundLowBuzz);
     return;
   }
+
+
+
 
 
   //  restrict encoder
   if ( targetEncoder > kElevatorMaxEncoder ) targetEncoder = kElevatorMaxEncoder;
 
+
+
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
-  if ( targetEncoder < nMotorEncoder[Elevator] )
-	{
-		while ( nMotorEncoder[Elevator] > targetEncoder && !ElevatorIsAtBottom() )  //  go until we're there or we hit the bottom
-		{
-		  if ( nPgmTime > endTime )
-	    {
-	      PlaySound(soundException);
-	      PlaySound(soundException);
-	      break;
-	    }
-		}
 
-		if ( abs(targetEncoder - nMotorEncoder[Elevator]) < 300 )
-		{
-		  motor[Elevator] = SIGN(motor[Elevator]) * kElevatorSpeed / 2;
-		}
-	}
-	else
+
+	long error;
+	while ( abs( (error = (targetEncoder - nMotorEncoder[Elevator])) ) > kElevatorEncoderTargetTolerance &&
+	        nPgmTime < endTime )
 	{
-		while ( nMotorEncoder[Elevator] < targetEncoder )  //  go until we're there of we hit the top
+	  //  wait
+
+	  if ( abs(error) < 400 ) //  go half speed when we're 400 or less away
 	  {
-	    if ( nPgmTime > endTime )
-	    {
-	      PlaySound(soundException);
-	      PlaySound(soundException);
-	      break;
-	    }
-
-	    if ( abs(targetEncoder - nMotorEncoder[Elevator]) < 300 )
-		  {
-		    motor[Elevator] = SIGN(motor[Elevator]) * kElevatorSpeed / 2;
-		  }
+	    motor[Elevator] = SIGN(error) * kElevatorSpeed * .5;
 	  }
-  }
+	}
+
+
+	if ( nPgmTime > endTime )
+	{
+	  PlaySound(soundException);  //  it timed out!!
+	  PlaySound(soundException);  //
+	}
+
 
 	motor[Elevator] = 0;  //  stop
 }
 
 
 #define ElevatorIsSafe() (!ElevatorIsAtTop() && !ElevatorIsAtBottom())
-
-/*
-void MechanismElevatorSetHeight(float height)	//	FIXME: recheck this method???
-{
-	float angle = asin( (height - kElevatorArmHeight - kToothHeightAboveElevator) / kElevatorArmRadius);
-
-	int targetEncoder = ( (angle - kElevatorInitialAngle) / ( 2 * PI ) ) * kTetrixMotorEncoderPointsPerRotation * 9;
-
-	MechanismElevatorTarget(targetEncoder);
-}
-*/
 
 
 
