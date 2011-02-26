@@ -20,7 +20,7 @@
 
 
 #define LEFT_LIGHT_SENSOR() LSvalNorm(LeftLightSensor)
-#define RIGHT_LIGHT_SENSOR() (LSvalNorm(RightLightSensor) -2) //  FIXME: is this adjustment still valid??
+#define RIGHT_LIGHT_SENSOR() (LSvalNorm(RightLightSensor) -1) //  FIXME: is this adjustment still valid??
 
 
 

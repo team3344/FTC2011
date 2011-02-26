@@ -53,9 +53,9 @@ void DispenseBatons(int count)
   PlaySound(soundFastUpwardTones);
 
   //  put the elevator up to the top
-  motor[Elevator] = kElevatorSpeed; //  FIXME: remove this to a separate thread?
-  while ( !ElevatorIsAtTop() ) {}
-  motor[Elevator] = 0;
+  //motor[Elevator] = kElevatorSpeed; //  FIXME: remove this to a separate thread?
+  //while ( !ElevatorIsAtTop() ) {}
+  //motor[Elevator] = 0;
 
   //  position slide
   servo[Slide] = kSlideRegularPosition;
@@ -95,6 +95,21 @@ task main()
 
 
 	hogCPU(); //  do this so the waitForStart task doesn't display its trash on the screen while we're trying to get input
+
+
+
+
+	//  FIXME: remove this
+	/*
+	while ( true )
+	{
+	  nxtDisplayCenteredTextLine(0, (string)LEFT_LIGHT_SENSOR());
+	  nxtDisplayCenteredTextLine(1, (string)RIGHT_LIGHT_SENSOR());
+	}
+	*/
+
+
+
 
 
 	NXTMenu sideMenu;
@@ -202,7 +217,7 @@ task main()
   {
     //  asynchronously raise the elevator to the top
     MechanismElevatorTargetEncoder = kElevatorMaxEncoder;
-    StartTask(MechanismElevatorTarget);
+    StartTask(MechanismElevatorTarget, kHighPriority);
 
 
 	  if ( FieldGetCurrentNode() == NodeFriendStartSquareLeft ) //  left start position;
@@ -354,15 +369,12 @@ task main()
   /**********   Balance   **********/
   if ( balance )
   {
-    if ( (nPgmTime - startTime ) > 3000 )  //  balance on the bridge if there's more than 3 seconds left
-	  {
-	    Node currentID = FieldGetCurrentNode();
-	    RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
+    Node currentID = FieldGetCurrentNode();
+    RobotTravelFromNodeToNode(currentID, targetBridge, true);	//	go to the bridge
 
-	    RobotMoveDistance(2 , false);
+	  RobotMoveDistance(2 , false);
 
-	    RobotBalance();	//	FIXME: use the accelerometor to balance the bot
-	  }
+	  RobotBalance();	//	FIXME: use the accelerometor to balance the bot
 
   }/**********   End Balance **********/
 
