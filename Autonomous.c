@@ -318,9 +318,9 @@ task main()
 	  Node dest = NodeFriendDispenserCenter;
 
 
-	  RobotTravelFromNodeToNode(src, NodeLine2BottomEnd, false);
+	  //RobotTravelFromNodeToNode(src, NodeLine2BottomEnd, false);
 	  PlaySound(soundUpwardTones);
-	  RobotTravelFromNodeToNode(NodeLine2BottomEnd, NodeMountainCenterTopEdge, false);
+	  RobotTravelFromNodeToNode(src, NodeMountainCenterBottomEdge, false);
     PlaySound(soundUpwardTones);
 
 

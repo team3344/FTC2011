@@ -696,6 +696,15 @@ void FieldInit()		//	sets values specific to our field.
 	ADD_WHITE_LINE(NodeLine6Bottom, NodeLine6TopEnd);      	//	line 6
 
 
+	//  mountain node lines
+	ADD_WHITE_LINE(NodeLine2Top, NodeMountainCenterBottomEdge);
+	ADD_WHITE_LINE(NodeMountainCenterBottomEdge, NodeLine2Top);
+
+	ADD_WHITE_LINE(NodeMountainCenterTopEdge, NodeLine5Bottom);
+	ADD_WHITE_LINE(NodeLine5Bottom, NodeMountainCenterTopEdge);
+
+
+
   #define ADD_LINE_END(n) globalField.nodeInfo[n].flags |= NodeFlagLineEnd
 	//ADD_LINE_END(NodeLine1Bottom);
 	ADD_LINE_END(NodeLine2Bottom);
@@ -773,8 +782,11 @@ void FieldInit()		//	sets values specific to our field.
 
 
 	/**********		Mountain	**********/
-	//FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterTopEdge, true);
-	//FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterBottomEdge, true);
+	FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterTopEdge, true);
+	FieldConnectNodesAutomatically(NodeMountainCenterPeak, NodeMountainCenterBottomEdge, true);
+
+	FieldConnectNodesAutomatically(NodeMountainCenterTopEdge, NodeLine5Bottom, true);
+	FieldConnectNodesAutomatically(NodeMountainCenterBottomEdge, NodeLine2Top, true);
 
 
 	/**********		Pits	**********/
