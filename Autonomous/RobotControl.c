@@ -588,13 +588,50 @@ bool RobotMountCenterDispenser()
   return success;
 }
 
+
+
+#define kRobotAccReadingBalanced
+#define kRobotAccThreshold 100
+#define kSampleInterval 1000
+
 void RobotBalance()
 {
+  RobotMoveSpeed = 35;  //  go a little slower than usual
 
 
+  long lastSampleTime = nPgmTime;
+
+  int minError = 0;
+  int maxError = 0;
+
+  while ( true )
+  {
+    int reading;
+    HTACreadY(Accelerometer, reading);
+
+    int error = reading - kRobotAccReadingBalanced;
+
+    if ( error > maxError ) maxError = error;
+    if ( error < minError ) minError = error;
 
 
+    if ( nPgmTime > lastSampleTime + kSampleInterval )
+    {
+      if ( MAX(abs(minError), abs(maxError)) > kRobotAccThreshold ) //  we're not balanced
+      {
+        if ( abs(maxError) > abs(minError) )
+        {
+          RobotMoveDistance(1, false);  //  forwards an inch
+        }
+        else
+        {
+          RobotMoveDistance(-1, false); //  backwards an inch
+        }
+      }
 
 
-	//  FIXME: implement
+      lastSampleTime = nPgmTime;
+    }
+
+  }
 }

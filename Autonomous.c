@@ -382,13 +382,16 @@ task main()
 
 
 
-  /**********   Block   **********/
+
+
+
+  /**********   Blocking   **********/
   if ( block_center )
   {
     Node currentID = FieldGetCurrentNode();
     RobotTravelFromNodeToNode(currentID, NodeFoeDispenserCenter, true);
     RobotRotateToOrientation(PI / 2); //  look straight ahead to prep for TeleOp
   }
-  /**********   Block   **********/
+  /**********   Blocking   **********/
 
 }
