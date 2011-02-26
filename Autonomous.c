@@ -318,13 +318,32 @@ task main()
 	  Node dest = NodeFriendDispenserCenter;
 
 
-	  //RobotTravelFromNodeToNode(src, NodeLine2BottomEnd, false);
-	  PlaySound(soundUpwardTones);
-	  RobotTravelFromNodeToNode(src, NodeMountainCenterBottomEdge, false);
+	  RobotTravelFromNodeToNode(src, NodeLine2Bottom, false);
+	  //RobotMoveDistance(-1, false); //  FIXME:
     PlaySound(soundUpwardTones);
+    //RobotTravelFromNodeToNode(NodeLine2Bottom, NodeLine2Top, false);
+	  //RobotTravelFromNodeToNode(NodeLine2Top, dest, false);
+	  //PlaySound(soundUpwardTones);
+
+    RobotRotateToOrientation(PI / 1.9);
+    RobotFindWhiteLine();
+    RobotFollowWhiteLineForDistance(18, false);
+
+    MechanismElevatorTarget(kElevatorTargetBridgeCrossing);
+
+    RobotMoveDistance(30, false);
+
+    RobotFindWhiteLine();
+    RobotFollowWhiteLineToEnd(true);
+
+    while ( true )
+    {
+      PlaySound(soundBeepBeep);
+    }
 
 
-	  if ( true ) //RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
+
+	  if ( false ) //RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies
     {
       RobotRotateToOrientation(PI / 2.0); //  turn towards dispenser
 
@@ -336,26 +355,6 @@ task main()
 
       if ( RobotMountCenterDispenser() )	//	get aligned with the dispenser
       {
-        for ( int i = 0; i < 3; i++ )
-        {
-          //  FIXME: what is this???? - can it be optimized????
-          //MechanismElevatorSetHeight(kElevatorHeightMidDispenser + 1);
-          MechanismElevatorTarget(kElevatorTargetMidDispenser);
-          wait10Msec(100);
-
-          RobotMoveDistance(-.5, false);
-          wait10Msec(20);
-
-          RobotMoveDistance(-.5, false);
-          wait10Msec(20);
-
-          RobotMoveDistance(-.5, false);
-          wait10Msec(20);
-
-
-          MechanismElevatorTarget(kElevatorTargetMidDispenser);
-          RobotMoveDistance(1.5, false);
-        }
 
 
 

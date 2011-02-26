@@ -34,7 +34,7 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 
 	//  robot move speed
 	if ( segmentFlags & PathSegmentFlagSlowTravel )
-	  RobotMoveSpeed = kRobotMoveSpeedSlow;
+	  RobotMoveSpeed = kRobotMoveSpeedRegular;  //  FIXME: change this to slow!!!
 	else
 	  RobotMoveSpeed = kRobotMoveSpeedRegular;
 
@@ -133,7 +133,7 @@ bool RobotTravelPathSegment(PathSegment& segment, bool avoidEnemies)
 	      PlaySound(soundException);  //  play "Exception" 10 times
 	    }
 
-	    //  FIXME: what to do here??????????????????????????????????????????????????????????????
+	    abort("no line!");
 	  }
 	}
 	else if ( segmentFlags & PathSegmentFlagPerpendicularWhiteLineAtEnd )
