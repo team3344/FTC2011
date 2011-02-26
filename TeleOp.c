@@ -139,18 +139,18 @@ void MechanismControl(Controller& controller)
     //  FIXME: slide positions
 
 
-//#define ABORT_ELEVATOR_TARGET() StopTask(MechanismElevatorTargetTask)
+#define ABORT_ELEVATOR_TARGET() StopTask(MechanismElevatorTargetTask)
 
 
     if ( MechanismElevatorIsTargeting == false )
     {
       if ( ControllerButtonIsPressed(controller, ControllerButton2) )
       {
-        //ABORT_ELEVATOR_TARGET();
+        ABORT_ELEVATOR_TARGET();
         MechanismElevatorTargetEncoder = kElevatorTargetMidDispenser;
         StartTask(MechanismElevatorTargetTask);
       }
-      /*
+
       else if ( ControllerButtonIsPressed(controller, ControllerButton3) )
       {
         ABORT_ELEVATOR_TARGET();
@@ -162,7 +162,7 @@ void MechanismControl(Controller& controller)
         ABORT_ELEVATOR_TARGET();
         MechanismElevatorTargetEncoder = kElevatorTargetLineFollowing;
         StartTask(MechanismElevatorTargetTask);
-      }*/
+      }
     }
 
 
@@ -170,13 +170,15 @@ void MechanismControl(Controller& controller)
     //  elevator up/down control with L1 & L2
     if ( controller.dPad.y > .5 && !ElevatorIsAtTop() )
     {
+      ABORT_ELEVATOR_TARGET();
       motor[Elevator] = kElevatorSpeed;
     }
     else if ( controller.dPad.y < -.5 && !ElevatorIsAtBottom() )
     {
+      ABORT_ELEVATOR_TARGET();
       motor[Elevator] = -kElevatorSpeed;
     }
-    else  //  FIXME: what about elevator targeting???
+    else if ( !MechanismElevatorIsTargeting ) //  if we're not targeting, turn it off
     {
       motor[Elevator] = 0;
     }
@@ -228,7 +230,7 @@ task main()
 
 #ifdef DEBUG
 		nxtDisplayCenteredTextLine(0, (string)nMotorEncoder[Elevator]);
-    nxtDisplayCenteredTextLine(1, (string)elevatorTaskCount);
+    nxtDisplayCenteredTextLine(1, (string)motor[Elevator]);
 #endif
 
 

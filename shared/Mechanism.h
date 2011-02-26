@@ -15,6 +15,11 @@
 void MechanismInit();
 
 
+
+#define kElevatorMaxEncoder 3152
+
+
+
 #define kSlideMaxPosition 121
 #define kSlideMinPosition 244
 

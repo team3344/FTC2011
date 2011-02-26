@@ -54,6 +54,9 @@ void MechanismElevatorTarget(int targetEncoder)
 {
   long endTime = nPgmTime + 4000;  //  4 seconds from now
 
+  //  restrict encoder
+  if ( targetEncoder > kElevatorMaxEncoder ) targetEncoder = kElevatorMaxEncoder;
+
 	motor[Elevator] = kElevatorSpeed * SIGN(targetEncoder - nMotorEncoder[Elevator]);
 
   if ( targetEncoder < nMotorEncoder[Elevator] )
@@ -70,7 +73,7 @@ void MechanismElevatorTarget(int targetEncoder)
 	}
 	else
 	{
-		while ( nMotorEncoder[Elevator] < targetEncoder && !ElevatorIsAtTop() )  //  go until we're there of we hit the top
+		while ( nMotorEncoder[Elevator] < targetEncoder )  //  go until we're there of we hit the top
 	  {
 	    if ( nPgmTime > endTime )
 	    {
