@@ -318,9 +318,10 @@ task main()
 	  Node dest = NodeFriendDispenserCenter;
 
 
-	  RobotTravelFromNodeToNode(src, NodeMountainCenterPeak, false);
-	  RobotTravelFromNodeToNode(NodeMountainCenterPeak, dest, false);
-
+	  RobotTravelFromNodeToNode(src, NodeLine2BottomEnd, false);
+	  PlaySound(soundUpwardTones);
+	  RobotTravelFromNodeToNode(NodeLine2BottomEnd, NodeMountainCenterTopEdge, false);
+    PlaySound(soundUpwardTones);
 
 
 	  if ( true ) //RobotTravelFromNodeToNode(src, dest, true) )	// go to the dispenser.  avoid enemies

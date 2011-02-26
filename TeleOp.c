@@ -124,7 +124,6 @@ void MechanismControl(Controller& controller)
 
 
 
-
     //  R1 kicks batons, but only when the elevator is at the top
     if ( ControllerButtonIsPressed(controller, ControllerButtonR1) && ElevatorIsAtTop() )
     {
