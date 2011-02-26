@@ -91,7 +91,7 @@ static bool MechanismKickerIsKicking;
 
 
 #define kFlapDownPosition 78
-#define kFlapFlatPosition  151
+#define kFlapFlatPosition  152
 
 
 

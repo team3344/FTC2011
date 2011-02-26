@@ -52,7 +52,7 @@ void _RobotZeroDriveEncoders()
 //===========================================================================================================
 
 #define kLineFollowerMotorPower 20
-#define kLineFollowerTurnRange (kLineFollowerMotorPower * 1.1)  //  FIXME: does this work??
+#define kLineFollowerTurnRange (kLineFollowerMotorPower * 1.0)  //  FIXME: does this work??
 
 
 
@@ -185,7 +185,7 @@ bool RobotFollowWhiteLineToEnd(bool avoidEnemies) //  FIXME: error in this metho
 
 #define kWhiteLineScanAngle PI / 5.0
 #define kRobotLineScanPower 18
-#define kMinLineSurroundingDifference 7
+#define kMinLineSurroundingDifference 13
 
 void _RecordLineBrightness(int b)
 {

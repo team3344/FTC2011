@@ -218,9 +218,9 @@ task main()
 	Node targetBridge = (FieldGetCurrentNode() == NodeFriendStartSquareLeft) ? NodeFoeBridgeCenter : NodeFriendBridgeCenter;
 
 
-#if DEBUG == 0
-	waitForStart();
-#endif
+//#if DEBUG == 0
+	waitForStart(); //  FIXME: uncomment this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//#endif
 
 	long startTime = nPgmTime;
 
@@ -247,7 +247,7 @@ task main()
 
 	    RobotRotateToOrientation(0.13);
 	    RobotMoveDistance(17.4, false);
-	    RobotRotateToOrientation(-1.5 + (PI / 6));
+	    RobotRotateToOrientation(-1.5 + (PI / 3.9));
 
 
 	    //  FIXME: can i remove this????
@@ -278,7 +278,7 @@ task main()
 
       servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
-	    RobotRotateToOrientation(PI / 3.7);
+	    RobotRotateToOrientation(PI / 3.1);
 
 
       //  FIXME: can i remove this???
