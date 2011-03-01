@@ -278,7 +278,7 @@ task main()
 
       servo[Slide] = kSlideLongPosition;  //  extend the slide out
 
-	    RobotRotateToOrientation(PI / 3.1);
+	    RobotRotateToOrientation(PI / 3.2);
 
 
       //  FIXME: can i remove this???
